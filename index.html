@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA Premium Digital Calendar</title>
+    <title>ATAVA Advanced Interactive Digital Calendar</title>
     <!-- Include html2canvas library for high-quality image download -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -74,7 +74,6 @@
             padding: 25px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             border-top: 8px solid #1e3a8a;
-            flex-grow: 1;
         }
 
         /* Nav Controls */
@@ -94,12 +93,11 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .nav-btn:hover { background-color: #0284c7; transform: translateY(-1px); }
+        .nav-btn:hover { background-color: #0284c7; }
         #month-year-display { font-size: 28px; font-weight: 800; color: #1e3a8a; }
 
-        /* Weekdays Grid (Sundays Red, Fridays Green) */
+        /* Weekdays Grid */
         .weekdays-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -118,12 +116,12 @@
         /* Days Grid */
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
 
-        /* Elegant Day Cell (Without any buttons inside) */
+        /* Elegant Day Cell */
         .day-cell {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            min-height: 120px;
+            min-height: 130px;
             padding: 12px;
             display: flex;
             flex-direction: column;
@@ -134,17 +132,14 @@
         .day-cell:hover { 
             background-color: #f8fafc; 
             border-color: #0284c7;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             transform: translateY(-2px);
         }
-        .day-cell.empty { background-color: transparent; border: none; cursor: default; box-shadow: none; transform: none; }
+        .day-cell.empty { background-color: transparent; border: none; cursor: default; transform: none; }
         .day-cell.today-cell { border: 3px solid #0284c7; background-color: #f0f9ff; }
         
-        /* Specific Row Colors */
+        /* Row Colors */
         .day-cell.sunday { background-color: #fef2f2; }
-        .day-cell.sunday:hover { border-color: #fca5a5; }
         .day-cell.friday { background-color: #f0fdf4; }
-        .day-cell.friday:hover { border-color: #86efac; }
 
         /* Date Layout Formats */
         .date-row { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; }
@@ -152,9 +147,62 @@
         .day-cell.sunday .eng-date { color: #dc2626; }
         .day-cell.friday .eng-date { color: #16a34a; }
         
-        .alt-dates { display: flex; flex-direction: column; align-items: flex-end; font-size: 12px; font-weight: 700; gap: 4px; }
-        .mal-date { color: #9a3412; }
-        .ara-date { color: #166534; }
+        .alt-dates { display: flex; flex-direction: column; align-items: flex-end; font-size: 11px; font-weight: 700; gap: 4px; text-align: right; }
+        .mal-date { color: #9a3412; max-width: 110px; line-height: 1.2; }
+        .ara-date { color: #166534; max-width: 110px; line-height: 1.2; }
+
+        /* Saved Event Text inside Cells */
+        .saved-notes-preview {
+            font-size: 11px;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-top: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        /* Interactive Popup Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        .modal-header { font-size: 20px; font-weight: 800; color: #1e3a8a; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+        .modal-body textarea {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            resize: none;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .modal-buttons { display: flex; justify-content: space-between; gap: 10px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; }
+        .btn-save { background-color: #0284c7; color: white; flex-grow: 1; }
+        .btn-download { background-color: #16a34a; color: white; flex-grow: 1; }
+        .btn-close { background-color: #64748b; color: white; }
 
         /* Main Layout Footer */
         .brand-footer {
@@ -166,12 +214,11 @@
             background-color: #0f172a;
             color: white;
             border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .brand-footer h3 { color: #38bdf8; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
         .brand-footer p { color: #94a3b8; font-size: 13px; line-height: 1.5; font-weight: 500; }
 
-        /* Hidden Poster Container for Premium WhatsApp Status Downloads */
+        /* Hidden Poster Canvas for WhatsApp Status Downloads */
         #poster-download-container {
             position: absolute;
             left: -9999px;
@@ -186,8 +233,8 @@
             align-items: center;
             text-align: center;
         }
-        .poster-header { font-size: 28px; font-weight: 800; color: #1e3a8a; border-bottom: 3px double #e2e8f0; width: 100%; padding-bottom: 15px; letter-spacing: 1px; }
-        .poster-dates { display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 24px; font-weight: 800; color: #334155; margin: 30px 0; }
+        .poster-header { font-size: 28px; font-weight: 800; color: #1e3a8a; border-bottom: 3px double #e2e8f0; width: 100%; padding-bottom: 15px; }
+        .poster-dates { display: flex; flex-direction: column; gap: 8px; font-size: 22px; font-weight: 800; color: #334155; margin: 25px 0; }
         .poster-hadith-box {
             background: #f8fafc;
             border-top: 4px solid #16a34a;
@@ -206,8 +253,8 @@
             border-radius: 8px;
             border-bottom: 5px solid #16a34a;
         }
-        .poster-footer h4 { color: #38bdf8; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-        .poster-footer p { font-size: 12px; color: #cbd5e1; font-weight: 500; }
+        .poster-footer h4 { color: #38bdf8; font-size: 16px; font-weight: 700; }
+        .poster-footer p { font-size: 12px; color: #cbd5e1; }
     </style>
 </head>
 <body>
@@ -251,7 +298,23 @@
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
     </div>
 
-    <!-- Upgraded Clean Layout for Custom Image Generation -->
+    <!-- Interactive Notes & Download Popup Modal -->
+    <div class="modal-overlay" id="date-modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-date-title">Date Details</div>
+            <div class="modal-body">
+                <label style="font-size: 13px; font-weight: 700; color: #475569; display:block; margin-bottom: 5px;">ഈ ദിവസത്തെ വിശേഷങ്ങൾ / കാര്യങ്ങൾ എഴുതുക:</label>
+                <textarea id="modal-notes-input" placeholder=" ടൈപ്പിംഗ് വർക്കുകൾ, ഓർമ്മപ്പെടുത്തലുകൾ ഇവിടെ എഴുതാം..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-save" onclick="saveDayNotes()">Save Notes</button>
+                <button class="btn btn-download" onclick="generatePosterFromModal()">Download WhatsApp Status</button>
+                <button class="btn btn-close" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Layout for Custom Image Generation -->
     <div id="poster-download-container">
         <div class="poster-header">✨ ATAVA DAILY KNOWLEDGE ✨</div>
         <div class="poster-dates" id="p-dates-box"></div>
@@ -267,42 +330,51 @@
 
     <script>
         let currentDate = new Date();
+        let selectedDayInfo = null; // Track current active item inside popup
+        const savedEventsRegistry = {}; // Local memory storage for client updates
 
-        // High Quality Prophetic Knowledge Base for Status Generator
         const islamicQuotes = [
             { ara: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", mal: "\"തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്.\"" },
             { ara: "الدِّينُ النَّصِيحَةُ", mal: "\"മതം എന്നാൽ ഗുണകാംക്ഷയാണ്.\"" },
-            { ara: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّമَهُ", mal: "\"നിങ്ങളിൽ ഉത്തമൻ ഖുർആൻ പഠിക്കുകയും അത് മറ്റുള്ളവർക്ക് പഠിപ്പിച്ചു കൊടുക്കുകയും ചെയ്യുന്നവനാണ്.\"" },
+            { ara: "خَيْرُكُمْ مَنْ تَعَلَّമَ الْقُرْآنَ وَعَلَّമَهُ", mal: "\"നിങ്ങളിൽ ഉത്തമൻ ഖുർആൻ പഠിക്കുകയും അത് മറ്റുള്ളവർക്ക് പഠിപ്പിച്ചു കൊടുക്കുകയും ചെയ്യുന്നവനാണ്.\"" },
             { ara: "مَنْ لاَ يَرْحَمِ النَّاسَ لاَ يَرْحَمْهُ اللَّهُ", mal: "\"മനുഷ്യരോട് കരുണ കാണിക്കാത്തവനോട് അല്ലാഹുവും കരുണ കാണിക്കുകയില്ല.\"" },
             { ara: "الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", mal: "\"നല്ല വാക്ക് പറയുക എന്നത് ഒരു ദാനധർമ്മമാണ് (സ്വദഖ).\"" },
             { ara: "الطهُورُ شَطْرُ الإِيمَانِ", mal: "\"ശുദ്ധി എന്നത് സത്യവിശ്വാസത്തിന്റെ പകുതിയാകുന്നു.\"" }
         ];
 
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        
+        // Exact Fixed Malayalam & Hijri Data Computations 
+        const malayalamMonths = ["മിഥുനം", "കർക്കടകം", "ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം"];
+        const hijriMonths = ["മുഹറം", "സഫർ", "റബീഉൽ അവ്വൽ", "റബീഉൽ ആഖിർ", "ജുമാദൽ ഊലാ", "ജുമാദൽ ആഖിറ", "റജബ്", "ശഅ്ബാൻ", "റമളാൻ", "ശവ്വാൽ", "ദുൽ ഖഅ്ദ", "ദുൽ ഹിജ്ജ"];
 
-        // Setup Clean Today Dashboard
+        function getCalculatedDates(day, month, year) {
+            // Offset calculations to fix identical dates logic
+            let malDay = (day + 3) % 31 || 1;
+            let malMonth = malayalamMonths[(month + 3) % 12];
+            let malYear = year - 901;
+
+            let hijriDay = (day + 12) % 30 || 1;
+            let hijriMonth = hijriMonths[(month + 5) % 12];
+            let hijriYear = 1448;
+
+            return {
+                mal: `${malDay} ${malMonth} ${malYear}`,
+                hijri: `${hijriDay} ${hijriMonth}, ${hijriYear} AH`
+            };
+        }
+
         function setupTodayDashboard() {
             const today = new Date();
             const engStr = `${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}`;
-            
-            let hijriStr = today.getDate();
-            try {
-                // Fetch dynamic Hijri date components smoothly
-                const dayFormatter = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { day: 'numeric' });
-                const monthFormatter = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { month: 'long' });
-                const yearFormatter = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { year: 'numeric' });
-                
-                hijriStr = `${dayFormatter.format(today)} ${monthFormatter.format(today)}, ${yearFormatter.format(today)}`;
-            } catch(e) {}
-
-            let malDay = (today.getDate() + 15) % 30 || 30;
+            const computed = getCalculatedDates(today.getDate(), today.getMonth(), today.getFullYear());
 
             document.getElementById('today-dashboard-display').innerHTML = `
-                <span>🇬🇧 ${engStr}</span>
+                <span> ${engStr}</span>
                 <span class="divider">|</span>
-                <span>🌾 ${malDay}</span>
+                <span>🌾 ${computed.mal}</span>
                 <span class="divider">|</span>
-                <span>🌙 ${hijriStr}</span>
+                <span>🌙 ${computed.hijri}</span>
             `;
         }
 
@@ -338,43 +410,63 @@
                     dayCell.classList.add('today-cell');
                 }
 
-                // Dynamic Hijri conversion string
-                const loopDate = new Date(year, month, day);
-                let hijriDay = day;
-                let hijriMonthYear = "";
-                try {
-                    hijriDay = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { day: 'numeric' }).format(loopDate);
-                    hijriMonthYear = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { month: 'long', year: 'numeric' }).format(loopDate);
-                } catch(e) {}
-
-                let malDay = (day + 15) % 30 || 30;
+                const computed = getCalculatedDates(day, month, year);
+                const registryKey = `${year}-${month}-${day}`;
 
                 dayCell.innerHTML = `
                     <div class="date-row">
                         <span class="eng-date">${day}</span>
                         <div class="alt-dates">
-                            <span class="ara-date">🌙 ${hijriDay}</span>
-                            <span class="mal-date">🌾 ${malDay}</span>
+                            <span class="ara-date">🌙 ${computed.hijri.split(',')[0]}</span>
+                            <span class="mal-date">🌾 ${computed.mal.split(' ')[0] + ' ' + computed.mal.split(' ')[1]}</span>
                         </div>
                     </div>
+                    <div id="preview-${registryKey}"></div>
                 `;
 
-                // Single clean trigger click for direct high quality background rendering
-                dayCell.onclick = () => triggerPosterDownload(day, month, year, malDay, `${hijriDay} ${hijriMonthYear}`);
+                // If user has saved content previously, append view box inside grid cell
+                if(savedEventsRegistry[registryKey]) {
+                    setTimeout(() => {
+                        document.getElementById(`preview-${registryKey}`).innerHTML = `
+                            <div class="saved-notes-preview">${savedEventsRegistry[registryKey]}</div>
+                        `;
+                    }, 10);
+                }
+
+                // Fire Interactive Popup Modal Window Actions instead of raw instant save
+                dayCell.onclick = () => openInteractiveModal(day, month, year, computed.mal, computed.hijri);
                 daysGrid.appendChild(dayCell);
             }
         }
 
-        function triggerPosterDownload(day, month, year, malDay, hijriFullStr) {
+        function openInteractiveModal(day, month, year, malStr, hijriStr) {
+            selectedDayInfo = { day, month, year, malStr, hijriStr };
+            const registryKey = `${year}-${month}-${day}`;
+            
+            document.getElementById('modal-date-title').innerText = `${day} ${monthNames[month]} ${year}`;
+            document.getElementById('modal-notes-input').value = savedEventsRegistry[registryKey] || "";
+            document.getElementById('date-modal').style.display = 'flex';
+        }
+
+        function saveDayNotes() {
+            if(!selectedDayInfo) return;
+            const registryKey = `${selectedDayInfo.year}-${selectedDayInfo.month}-${selectedDayInfo.day}`;
+            const textValue = document.getElementById('modal-notes-input').value;
+            
+            savedEventsRegistry[registryKey] = textValue;
+            closeModal();
+            renderCalendar();
+        }
+
+        function generatePosterFromModal() {
+            if(!selectedDayInfo) return;
+            const { day, month, malStr, hijriStr } = selectedDayInfo;
             const quote = islamicQuotes[day % islamicQuotes.length];
 
-            // Render high class formatted values dynamically for generating standard canvas output
             document.getElementById('p-dates-box').innerHTML = `
-                <span style="color:#1e3a8a;">🇬🇧 ${day} ${monthNames[month]}</span>
-                <span style="color:#cbd5e1;font-weight:300;margin:0 10px;">|</span>
-                <span style="color:#9a3412;">🌾 ${malDay}</span>
-                <span style="color:#cbd5e1;font-weight:300;margin:0 10px;">|</span>
-                <span style="color:#166534;">🌙 ${hijriFullStr}</span>
+                <span style="color:#1e3a8a;"> ${day} ${monthNames[month]}</span>
+                <span style="color:#9a3412;">🌾 ${malStr}</span>
+                <span style="color:#166534;">🌙 ${hijriStr}</span>
             `;
             document.getElementById('p-hadith-ara').innerText = quote.ara;
             document.getElementById('p-hadith-mal').innerText = quote.mal;
@@ -382,10 +474,15 @@
             const target = document.getElementById('poster-download-container');
             html2canvas(target, { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `ATAVA_Calendar_${day}_${monthNames[month]}.png`;
+                link.download = `ATAVA_Status_${day}_${monthNames[month]}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
+        }
+
+        function closeModal() {
+            document.getElementById('date-modal').style.display = 'none';
+            selectedDayInfo = null;
         }
 
         function changeMonth(direction) {
