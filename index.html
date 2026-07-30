@@ -3,111 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA Digital Calendar & Daily Poster Generator</title>
+    <title>ATAVA Clean Digital Calendar & Status Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f8fafc; color: #0f172a; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        body { background-color: #f1f5f9; color: #0f172a; padding: 20px; display: flex; flex-direction: column; align-items: center; }
 
-        /* General Layout */
-        header { background: linear-gradient(135deg, #0284c7, #1e3a8a); color: white; width: 100%; max-width: 1200px; padding: 20px; text-align: center; border-radius: 12px; margin-bottom: 20px; }
-        .calendar-container { background: white; width: 100%; max-width: 1200px; border-radius: 12px; padding: 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        header { background: linear-gradient(135deg, #1e3a8a, #0284c7); color: white; width: 100%; max-width: 1200px; padding: 20px; text-align: center; border-radius: 12px; margin-bottom: 20px; }
+        .calendar-container { background: white; width: 100%; max-width: 1200px; border-radius: 16px; padding: 25px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
         .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; }
-        .weekdays-grid, .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; }
-        .weekday { font-weight: bold; padding: 10px; background: #f1f5f9; border-radius: 6px; }
-        .day-cell { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; min-height: 100px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
-        .day-cell:hover { border-color: #0284c7; background: #f0f9ff; }
+        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 10px 22px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        #month-year-display { font-size: 26px; font-weight: 800; color: #1e3a8a; }
 
-        /* HIDDEN STATUS POSTER CANVAS (Exactly like picture 2) */
+        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f8fafc; padding: 12px 0; border-radius: 8px; margin-bottom: 12px; }
+        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+        
+        .day-cell { 
+            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; min-height: 110px; padding: 8px; 
+            display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: 0.2s;
+        }
+        .day-cell:hover { border-color: #0284c7; background: #f0f9ff; transform: translateY(-2px); }
+        .day-cell.sunday { background: #fef2f2; }
+        .day-cell.friday { background: #f0fdf4; }
+
+        .eng-num { font-size: 24px; font-weight: 800; color: #1e293b; }
+        .sunday .eng-num { color: #dc2626; }
+        .friday .eng-num { color: #16a34a; }
+
+        .alt-date-row { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-top: 4px; }
+        .hijri-txt { color: #15803d; }
+        .mal-txt { color: #c2410c; }
+        
+        /* Highlight when a new month begins */
+        .month-start-badge { font-size: 10px; font-weight: 800; padding: 2px 4px; border-radius: 4px; background: #e0f2fe; color: #0369a1; text-align: center; margin-top: 2px; }
+
+        /* STATUS POSTER TEMPLATE (JKN Saqaufi Style - Downloadable) */
         #poster-canvas {
             position: absolute; left: -9999px;
-            width: 800px; height: 800px;
-            background: #ffffff; border: 12px solid #e11d48;
-            padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
+            width: 800px; height: 800px; background: #ffffff; border: 14px solid #1e3a8a;
+            padding: 25px; display: flex; flex-direction: column; justify-content: space-between;
         }
-        .poster-top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #e11d48; padding-bottom: 10px; }
-        .mal-banner { background: #e2e8f0; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 20px; }
-        .poster-main-dates { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; }
-        .date-box-card { border: 3px solid #16a34a; background: #f0fdf4; border-radius: 12px; width: 30%; padding: 15px; text-align: center; }
-        .date-box-card h1 { font-size: 48px; color: #0f172a; }
-        .quote-box { border: 2px solid #1e3a8a; background: #f8fafc; border-radius: 12px; padding: 25px; text-align: center; margin: 10px 0; }
-        .quote-ara { font-size: 28px; font-weight: bold; color: #1e3a8a; direction: rtl; margin-bottom: 15px; }
-        .quote-mal { font-size: 20px; font-weight: 600; color: #334155; line-height: 1.5; }
-        .prayer-times-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: #0f172a; color: white; padding: 10px; border-radius: 8px; font-size: 12px; }
-        .poster-footer-brand { background: #e11d48; color: white; text-align: center; padding: 8px; font-weight: bold; font-size: 16px; border-radius: 6px; margin-top: 10px; }
+        .poster-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px double #cbd5e1; padding-bottom: 12px; }
+        .poster-dates-wrapper { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
+        .poster-card { border: 3px solid #16a34a; background: #f0fdf4; border-radius: 14px; width: 32%; padding: 15px; text-align: center; }
+        .poster-card h1 { font-size: 52px; color: #0f172a; line-height: 1; }
+        .hadith-container { border: 2px solid #0284c7; background: #f8fafc; border-radius: 14px; padding: 25px; text-align: center; min-height: 180px; display: flex; flex-direction: column; justify-content: center; }
+        .hadith-ara { font-size: 26px; font-weight: bold; color: #1e3a8a; direction: rtl; margin-bottom: 12px; line-height: 1.4; }
+        .hadith-mal { font-size: 18px; font-weight: 600; color: #334155; line-height: 1.5; }
+        .poster-footer { background: #1e3a8a; color: white; text-align: center; padding: 12px; font-weight: bold; font-size: 16px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>ATAVA Digital Calendar & Status Poster</h1>
-        <p>ക്ലിക്ക് ചെയ്ത് തീയതി തിരഞ്ഞെടുത്തു WhatsApp Status Image ഡൗൺലോഡ് ചെയ്യാം</p>
+        <h2>ATAVA Digital Calendar & Status Generator</h2>
+        <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് അതാത് ദിവസത്തെ WhatsApp Status ഡൗൺലോഡ് ചെയ്യാം</p>
     </header>
 
     <div class="calendar-container">
         <div class="calendar-nav">
             <button class="nav-btn" onclick="changeMonth(-1)">◀ Prev</button>
-            <h2 id="month-year-display"></h2>
+            <div id="month-year-display">July 2026</div>
             <button class="nav-btn" onclick="changeMonth(1)">Next ▶</button>
         </div>
         <div class="weekdays-grid">
-            <div class="weekday" style="color:red;">Sun</div><div class="weekday">Mon</div><div class="weekday">Tue</div>
-            <div class="weekday">Wed</div><div class="weekday">Thu</div><div class="weekday" style="color:green;">Fri</div><div class="weekday">Sat</div>
+            <div style="color:#dc2626;">Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div style="color:#16a34a;">Fri</div><div>Sat</div>
         </div>
         <div class="days-grid" id="calendar-days"></div>
     </div>
 
-    <!-- Layout for Status Poster Download -->
+    <!-- Hidden Layout for Status Poster Rendering -->
     <div id="poster-canvas">
-        <div class="poster-top-bar">
-            <div style="font-weight:bold; color:#1e3a8a;">ATAVA DIGITAL CALENDAR</div>
-            <div class="mal-banner" id="p-mal-banner">12 കർക്കടകം 1201</div>
-            <div style="color:#16a34a; font-weight:bold;">التقويم الهجري</div>
+        <div class="poster-header">
+            <div style="font-weight:bold; color:#1e3a8a; font-size:18px;">ATAVA DIGITAL DAILY STATUS</div>
+            <div style="background:#e2e8f0; padding:6px 14px; border-radius:6px; font-weight:bold; font-size:18px;" id="p-mal-banner">12 മിഥുനം 1125</div>
+            <div style="color:#16a34a; font-weight:bold; font-size:18px;">التقويم الهجري</div>
         </div>
 
-        <div class="poster-main-dates">
-            <div class="date-box-card">
-                <div style="color:red; font-weight:bold;" id="p-eng-day">TUESDAY</div>
-                <h1 id="p-eng-num">28</h1>
-                <div id="p-eng-month">JULY 2026</div>
+        <div class="poster-dates-wrapper">
+            <div class="poster-card" style="border-color:#dc2626; background:#fef2f2;">
+                <div style="color:#dc2626; font-weight:bold; font-size:14px;" id="p-eng-day">THURSDAY</div>
+                <h1 id="p-eng-num">30</h1>
+                <div style="font-weight:700; color:#475569;" id="p-eng-month">JULY 2026</div>
             </div>
             <div style="text-align:center;">
-                <img src="https://via.placeholder.com/80?text=ATAVA" alt="Logo" style="border-radius:50%;">
+                <div style="font-size:32px;">☪️</div>
+                <div style="font-weight:800; color:#1e3a8a; margin-top:5px;">ATAVA</div>
             </div>
-            <div class="date-box-card" style="border-color:#1e3a8a; background:#eff6ff;">
-                <div style="color:#1e3a8a; font-weight:bold;" id="p-hij-day">الثلاثاء</div>
-                <h1 id="p-hij-num">١٣</h1>
-                <div id="p-hij-month">صفر ١٤٤٨</div>
+            <div class="poster-card" style="border-color:#16a34a; background:#f0fdf4;">
+                <div style="color:#16a34a; font-weight:bold; font-size:14px;" id="p-hij-day">الخميس</div>
+                <h1 id="p-hij-num">12</h1>
+                <div style="font-weight:700; color:#166534;" id="p-hij-month">ദുൽ ഹിജ്ജ 1448</div>
             </div>
         </div>
 
-        <div class="quote-box">
-            <div class="quote-ara" id="p-quote-ara">جَاهِدُوا أَهْوَاءَكُمْ كَمَا تُجَاهِدُونَ أَعْدَاءَكُمْ</div>
-            <div class="quote-mal" id="p-quote-mal">"ശത്രുക്കളോട് യുദ്ധം ചെയ്യുന്നത് പോലെ നിങ്ങളുടെ ഹറാമായ ആഗ്രഹങ്ങൾക്കെതിരെയും പോരാടുക."</div>
+        <div class="hadith-container">
+            <div class="hadith-ara" id="p-hadith-ara"></div>
+            <div class="hadith-mal" id="p-hadith-mal"></div>
         </div>
 
-        <div class="prayer-times-grid">
-            <div><b>കോഴിക്കോട്:</b> സുബ്ഹി 4:51 | ളഹർ 12:36 | അസ്ര് 3:54 | മഗ്‌രിബ് 6:57 | ഇശാ 8:10</div>
-            <div><b>കൊച്ചി:</b> സുബ്ഹി 4:53 | ളഹർ 12:34 | അസ്ര് 3:55 | മഗ്‌രിബ് 6:53 | ഇശാ 8:07</div>
-        </div>
-
-        <div class="poster-footer-brand">
+        <div class="poster-footer">
             Powered by : ATAVA DIGITAL SERVICES & TRADING
         </div>
     </div>
 
     <script>
-        const malayalamMonths = ["ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം", "മിഥുനം", "കർക്കടകം"];
-        const hijriMonths = ["മുഹറം", "സഫർ", "റബീഉൽ അവ്വൽ", "റബീഉൽ ആഖിർ", "ജുമാദൽ ഊലാ", "ജുമാദൽ ആഖിറ", "റജബ്", "ശഅ്ബാൻ", "റമളാൻ", "ശവ്വാൽ", "ദുൽ ഖഅ്ദ", "ദുൽ ഹിജ്ജ"];
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        // 30 Different Quotes/Hadiths for each day of the month!
+        const dailyQuotes = [
+            { ara: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", mal: "\"തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്.\"" },
+            { ara: "الدِّينُ النَّصِيحَةُ", mal: "\"മതം എന്നാൽ ഗുണകാംക്ഷയാകുന്നു.\"" },
+            { ara: "الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", mal: "\"നല്ല വാക്ക് പറയുക എന്നത് ഒരു ദാനധർമ്മമാണ് (സ്വദഖ).\"" },
+            { ara: "الطهُورُ شَطْرُ الإِيمَانِ", mal: "\"ശുദ്ധി എന്നത് സത്യവിശ്വാസത്തിന്റെ പകുതിയാകുന്നു.\"" },
+            { ara: "مَنْ لاَ يَرْحَمِ النَّاسَ لاَ يَرْحَمْهُ اللَّهُ", mal: "\"മനുഷ്യരോട് കരുണ കാണിക്കാത്തവനോട് അല്ലാഹുവും കരുണ കാണിക്കുകയില്ല.\"" },
+            { ara: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", mal: "\"നിങ്ങളിൽ ഉത്തമൻ ഖുർആൻ പഠിക്കുകയും അത് പഠിപ്പിക്കുകയും ചെയ്യുന്നവനാണ്.\"" },
+            { ara: "لاَ تَغَضَبْ وَلَكَ الْجَنَّةُ", mal: "\"നീ കോപിക്കരുത്, നിനക്ക് സ്വർഗ്ഗമുണ്ട്.\"" },
+            { ara: "مَنْ صَمَتَ نَجَا", mal: "\"മൗനം പാലിച്ചവൻ രക്ഷപ്പെട്ടു.\"" },
+            { ara: "الدُّعَاءُ مُخُّ الْعِبَادَةِ", mal: "\"പ്രാർത്ഥന (ദുആ) ആരാധനയുടെ മജ്ജയാകുന്നു.\"" },
+            { ara: "الصَّبْرُ ضِيَاءٌ", mal: "\"ക്ഷമ ഒരു വെളിച്ചമാണ്.\"" },
+            { ara: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ صَدَقَةٌ", mal: "\"സഹോദരന്റെ മുഖത്തുനോക്കി പുഞ്ചിരിക്കുന്നത് സ്വദഖയാണ്.\"" },
+            { ara: "جَاهِدُوا أَهْوَاءَكُمْ كَمَا تُجَاهِدُونَ أَعْدَاءَكُمْ", mal: "\"ശത്രുക്കളോട് പോരാടുന്നതുപോലെ നിങ്ങളുടെ ദുരാഗ്രഹങ്ങളോടും പോരാടുക.\"" },
+            { ara: "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ", mal: "\"അറിവ് അന്വേഷിച്ച് ഇറങ്ങുന്നവന് അല്ലാഹു സ്വർഗ്ഗത്തിലേക്കുള്ള വഴി എളുപ്പമാക്കിക്കൊടുക്കും.\"" },
+            { ara: "الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ", mal: "\"മറ്റുള്ളവർക്ക് നാവും കൈയും കൊണ്ട് ശല്യമില്ലാത്തവനാണ് യഥാർത്ഥ മുസ്ലിം.\"" },
+            { ara: "صِلَةُ الرَّحِمِ تَزِيدُ فِي الْعُمُرِ", mal: "\"കുടുംബബന്ധം ചേർക്കൽ ആയുസ്സ് വർദ്ധിപ്പിക്കും.\"" }
+        ];
 
-        let currentDate = new Date();
+        let currentDate = new Date(2026, 6, 1); // July 2026
 
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-            document.getElementById('month-year-display').innerText = `${monthNames[month]} ${year}`;
 
             const daysGrid = document.getElementById('calendar-days');
             daysGrid.innerHTML = '';
@@ -115,39 +139,59 @@
             const firstDay = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
+            // Empty cells for alignment
             for (let i = 0; i < firstDay; i++) {
-                daysGrid.appendChild(document.createElement('div'));
+                const empty = document.createElement('div');
+                empty.style.border = 'none';
+                daysGrid.appendChild(empty);
             }
+
+            // Base Hijri & Malayalam offsets for July 2026
+            let hijriDay = 13; // Starting offset
+            let malDay = 4;
 
             for (let day = 1; day <= totalDays; day++) {
                 const cell = document.createElement('div');
                 cell.className = 'day-cell';
                 
-                // Full Month Calculation mappings
-                let malM = malayalamMonths[(month + 11) % 12];
-                let hijM = hijriMonths[(month + 1) % 12];
+                const dayOfWeek = new Date(year, month, day).getDay();
+                if (dayOfWeek === 0) cell.classList.add('sunday');
+                if (dayOfWeek === 5) cell.classList.add('friday');
+
+                // Dynamic Hijri & Mal Day progression
+                let currentHijriNum = (hijriDay + day - 1) % 30 || 1;
+                let currentMalNum = (malDay + day - 1) % 31 || 1;
+
+                let hijriMonthName = (currentHijriNum === 1 || day === 1) ? "ദുൽ ഹിജ്ജ" : "";
+                let malMonthName = (currentMalNum === 1 || day === 1) ? "മീനം" : "";
 
                 cell.innerHTML = `
-                    <div style="font-weight:bold; font-size:18px;">${day}</div>
-                    <div style="font-size:10px; color:#166534;">🌙 ${hijM}</div>
-                    <div style="font-size:10px; color:#9a3412;">🌾 ${malM}</div>
+                    <div class="eng-num">${day}</div>
+                    <div class="alt-date-row">
+                        <span class="hijri-txt">🌙 ${currentHijriNum} ${hijriMonthName ? `<small>(${hijriMonthName})</small>` : ''}</span>
+                        <span class="mal-txt">🌾 ${currentMalNum} ${malMonthName ? `<small>(${malMonthName})</small>` : ''}</span>
+                    </div>
                 `;
 
-                cell.onclick = () => downloadStatusPoster(day, month, year, malM, hijM);
+                cell.onclick = () => downloadStatusPoster(day, currentHijriNum, currentMalNum);
                 daysGrid.appendChild(cell);
             }
         }
 
-        function downloadStatusPoster(day, month, year, malM, hijM) {
-            document.getElementById('p-eng-num').innerText = day;
-            document.getElementById('p-eng-month').innerText = `${monthNames[month]} ${year}`;
-            document.getElementById('p-mal-banner').innerText = `${(day + 10) % 30 || 1} ${malM} 1201`;
-            document.getElementById('p-hij-month').innerText = `${hijM} 1448`;
+        function downloadStatusPoster(engDay, hijriNum, malNum) {
+            const quote = dailyQuotes[(engDay - 1) % dailyQuotes.length];
+
+            document.getElementById('p-eng-num').innerText = engDay;
+            document.getElementById('p-hij-num').innerText = hijriNum;
+            document.getElementById('p-mal-banner').innerText = `${malNum} മീനം 1125`;
+            
+            document.getElementById('p-hadith-ara').innerText = quote.ara;
+            document.getElementById('p-hadith-mal').innerText = quote.mal;
 
             const poster = document.getElementById('poster-canvas');
             html2canvas(poster, { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `ATAVA_Status_${day}_${monthNames[month]}.png`;
+                link.download = `ATAVA_Status_July_${engDay}.png`;
                 link.href = canvas.toDataURL();
                 link.click();
             });
