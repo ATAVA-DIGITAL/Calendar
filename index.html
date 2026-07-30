@@ -3,45 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA Clean Digital Calendar & Status Generator</title>
+    <title>ATAVA Digital Calendar & Status Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f1f5f9; color: #0f172a; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        body { background-color: #f8fafc; color: #0f172a; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
-        header { background: linear-gradient(135deg, #1e3a8a, #0284c7); color: white; width: 100%; max-width: 1200px; padding: 20px; text-align: center; border-radius: 12px; margin-bottom: 20px; }
-        .calendar-container { background: white; width: 100%; max-width: 1200px; border-radius: 16px; padding: 25px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
+        header { background: linear-gradient(135deg, #0284c7, #1e3a8a); color: white; width: 100%; max-width: 1200px; padding: 22px; text-align: center; border-radius: 14px; margin-bottom: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        header h1 { font-size: 28px; font-weight: 800; }
+        header p { font-size: 14px; margin-top: 5px; opacity: 0.9; }
+
+        .calendar-container { background: white; width: 100%; max-width: 1200px; border-radius: 16px; padding: 25px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08); border-top: 6px solid #1e3a8a; }
         .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 10px 22px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 10px 22px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .nav-btn:hover { background-color: #0284c7; }
         #month-year-display { font-size: 26px; font-weight: 800; color: #1e3a8a; }
 
-        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f8fafc; padding: 12px 0; border-radius: 8px; margin-bottom: 12px; }
+        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f1f5f9; padding: 14px 0; border-radius: 10px; margin-bottom: 15px; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
         
         .day-cell { 
-            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; min-height: 110px; padding: 8px; 
+            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; min-height: 110px; padding: 10px; 
             display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: 0.2s;
         }
         .day-cell:hover { border-color: #0284c7; background: #f0f9ff; transform: translateY(-2px); }
         .day-cell.sunday { background: #fef2f2; }
         .day-cell.friday { background: #f0fdf4; }
 
-        .eng-num { font-size: 24px; font-weight: 800; color: #1e293b; }
+        /* Today Highlight Styling */
+        .day-cell.today-cell { 
+            border: 3.5px solid #0284c7 !important; 
+            background-color: #e0f2fe !important; 
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        .eng-num { font-size: 26px; font-weight: 800; color: #1e293b; line-height: 1; }
         .sunday .eng-num { color: #dc2626; }
         .friday .eng-num { color: #16a34a; }
 
-        .alt-date-row { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-top: 4px; }
+        .alt-date-row { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-top: 6px; }
         .hijri-txt { color: #15803d; }
         .mal-txt { color: #c2410c; }
-        
-        /* Highlight when a new month begins */
-        .month-start-badge { font-size: 10px; font-weight: 800; padding: 2px 4px; border-radius: 4px; background: #e0f2fe; color: #0369a1; text-align: center; margin-top: 2px; }
 
-        /* STATUS POSTER TEMPLATE (JKN Saqaufi Style - Downloadable) */
+        /* ATAVA Footer Styling */
+        .brand-footer {
+            margin-top: 25px; text-align: center; width: 100%; max-width: 1200px; padding: 18px; background-color: #0f172a; color: white; border-radius: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .brand-footer h3 { color: #38bdf8; font-size: 16px; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .brand-footer p { color: #cbd5e1; font-size: 12px; font-weight: 500; }
+
+        /* STATUS POSTER TEMPLATE (Downloadable Canvas) */
         #poster-canvas {
-            position: absolute; left: -9999px;
-            width: 800px; height: 800px; background: #ffffff; border: 14px solid #1e3a8a;
-            padding: 25px; display: flex; flex-direction: column; justify-content: space-between;
+            position: absolute; left: -9999px; width: 800px; height: 800px; background: #ffffff; border: 14px solid #1e3a8a; padding: 25px; display: flex; flex-direction: column; justify-content: space-between;
         }
         .poster-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px double #cbd5e1; padding-bottom: 12px; }
         .poster-dates-wrapper { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
@@ -50,13 +63,15 @@
         .hadith-container { border: 2px solid #0284c7; background: #f8fafc; border-radius: 14px; padding: 25px; text-align: center; min-height: 180px; display: flex; flex-direction: column; justify-content: center; }
         .hadith-ara { font-size: 26px; font-weight: bold; color: #1e3a8a; direction: rtl; margin-bottom: 12px; line-height: 1.4; }
         .hadith-mal { font-size: 18px; font-weight: 600; color: #334155; line-height: 1.5; }
-        .poster-footer { background: #1e3a8a; color: white; text-align: center; padding: 12px; font-weight: bold; font-size: 16px; border-radius: 8px; }
+        .poster-footer { background: #0f172a; color: white; text-align: center; padding: 14px; border-radius: 8px; border-bottom: 4px solid #38bdf8; }
+        .poster-footer h4 { color: #38bdf8; font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+        .poster-footer p { font-size: 11px; color: #cbd5e1; }
     </style>
 </head>
 <body>
 
     <header>
-        <h2>ATAVA Digital Calendar & Status Generator</h2>
+        <h1>ATAVA Digital Calendar & Status Generator</h1>
         <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് അതാത് ദിവസത്തെ WhatsApp Status ഡൗൺലോഡ് ചെയ്യാം</p>
     </header>
 
@@ -72,28 +87,34 @@
         <div class="days-grid" id="calendar-days"></div>
     </div>
 
+    <!-- Main Footer Branding -->
+    <div class="brand-footer">
+        <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
+        <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
+    </div>
+
     <!-- Hidden Layout for Status Poster Rendering -->
     <div id="poster-canvas">
         <div class="poster-header">
-            <div style="font-weight:bold; color:#1e3a8a; font-size:18px;">ATAVA DIGITAL DAILY STATUS</div>
-            <div style="background:#e2e8f0; padding:6px 14px; border-radius:6px; font-weight:bold; font-size:18px;" id="p-mal-banner">12 മിഥുനം 1125</div>
+            <div style="font-weight:bold; color:#1e3a8a; font-size:18px;">ATAVA DAILY KNOWLEDGE</div>
+            <div style="background:#e2e8f0; padding:6px 14px; border-radius:6px; font-weight:bold; font-size:18px;" id="p-mal-banner"></div>
             <div style="color:#16a34a; font-weight:bold; font-size:18px;">التقويم الهجري</div>
         </div>
 
         <div class="poster-dates-wrapper">
             <div class="poster-card" style="border-color:#dc2626; background:#fef2f2;">
-                <div style="color:#dc2626; font-weight:bold; font-size:14px;" id="p-eng-day">THURSDAY</div>
-                <h1 id="p-eng-num">30</h1>
+                <div style="color:#dc2626; font-weight:bold; font-size:14px;" id="p-eng-day">DAY</div>
+                <h1 id="p-eng-num">1</h1>
                 <div style="font-weight:700; color:#475569;" id="p-eng-month">JULY 2026</div>
             </div>
             <div style="text-align:center;">
-                <div style="font-size:32px;">☪️</div>
-                <div style="font-weight:800; color:#1e3a8a; margin-top:5px;">ATAVA</div>
+                <div style="font-size:36px;">☪️</div>
+                <div style="font-weight:800; color:#1e3a8a; margin-top:5px; font-size:18px;">ATAVA</div>
             </div>
             <div class="poster-card" style="border-color:#16a34a; background:#f0fdf4;">
-                <div style="color:#16a34a; font-weight:bold; font-size:14px;" id="p-hij-day">الخميس</div>
-                <h1 id="p-hij-num">12</h1>
-                <div style="font-weight:700; color:#166534;" id="p-hij-month">ദുൽ ഹിജ്ജ 1448</div>
+                <div style="color:#16a34a; font-weight:bold; font-size:14px;" id="p-hij-day">اليوم</div>
+                <h1 id="p-hij-num">1</h1>
+                <div style="font-weight:700; color:#166534;" id="p-hij-month">സഫർ 1448</div>
             </div>
         </div>
 
@@ -103,12 +124,12 @@
         </div>
 
         <div class="poster-footer">
-            Powered by : ATAVA DIGITAL SERVICES & TRADING
+            <h4>Powered by : ATAVA DIGITAL SERVICES & TRADING</h4>
+            <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
         </div>
     </div>
 
     <script>
-        // 30 Different Quotes/Hadiths for each day of the month!
         const dailyQuotes = [
             { ara: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", mal: "\"തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്.\"" },
             { ara: "الدِّينُ النَّصِيحَةُ", mal: "\"മതം എന്നാൽ ഗുണകാംക്ഷയാകുന്നു.\"" },
@@ -127,11 +148,15 @@
             { ara: "صِلَةُ الرَّحِمِ تَزِيدُ فِي الْعُمُرِ", mal: "\"കുടുംബബന്ധം ചേർക്കൽ ആയുസ്സ് വർദ്ധിപ്പിക്കും.\"" }
         ];
 
-        let currentDate = new Date(2026, 6, 1); // July 2026
+        const dayNamesEng = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+        let currentDate = new Date(); // Dynamic System Today
 
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('month-year-display').innerText = `${monthNames[month]} ${year}`;
 
             const daysGrid = document.getElementById('calendar-days');
             daysGrid.innerHTML = '';
@@ -139,51 +164,72 @@
             const firstDay = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Empty cells for alignment
             for (let i = 0; i < firstDay; i++) {
                 const empty = document.createElement('div');
                 empty.style.border = 'none';
                 daysGrid.appendChild(empty);
             }
 
-            // Base Hijri & Malayalam offsets for July 2026
-            let hijriDay = 13; // Starting offset
-            let malDay = 4;
+            const today = new Date();
 
             for (let day = 1; day <= totalDays; day++) {
                 const cell = document.createElement('div');
                 cell.className = 'day-cell';
-                
+
                 const dayOfWeek = new Date(year, month, day).getDay();
                 if (dayOfWeek === 0) cell.classList.add('sunday');
                 if (dayOfWeek === 5) cell.classList.add('friday');
 
-                // Dynamic Hijri & Mal Day progression
-                let currentHijriNum = (hijriDay + day - 1) % 30 || 1;
-                let currentMalNum = (malDay + day - 1) % 31 || 1;
+                // Check and highlight Today
+                if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    cell.classList.add('today-cell');
+                }
 
-                let hijriMonthName = (currentHijriNum === 1 || day === 1) ? "ദുൽ ഹിജ്ജ" : "";
-                let malMonthName = (currentMalNum === 1 || day === 1) ? "മീനം" : "";
+                // Exact Astronomical / Calendar Calculations for July 2026
+                // July 1, 2026 = 16 Muharram 1448 AH & 17 Mithunam 1101 ME
+                let hijriNum = (15 + day);
+                let hijriMonth = "മുഹറം";
+
+                if (hijriNum > 30) {
+                    hijriNum = hijriNum - 30;
+                    hijriMonth = "സഫർ";
+                }
+
+                let malNum = (16 + day);
+                let malMonth = "മിഥുനം";
+
+                if (malNum > 31) {
+                    malNum = malNum - 31;
+                    malMonth = "കർക്കടകം";
+                }
+
+                // Display Month Name ONLY when Month Starts or on Day 1
+                let hijriDisplay = (hijriNum === 1 || day === 1) ? `${hijriNum} (${hijriMonth})` : `${hijriNum}`;
+                let malDisplay = (malNum === 1 || day === 1) ? `${malNum} (${malMonth})` : `${malNum}`;
 
                 cell.innerHTML = `
                     <div class="eng-num">${day}</div>
                     <div class="alt-date-row">
-                        <span class="hijri-txt">🌙 ${currentHijriNum} ${hijriMonthName ? `<small>(${hijriMonthName})</small>` : ''}</span>
-                        <span class="mal-txt">🌾 ${currentMalNum} ${malMonthName ? `<small>(${malMonthName})</small>` : ''}</span>
+                        <span class="hijri-txt">🌙 ${hijriDisplay}</span>
+                        <span class="mal-txt">🌾 ${malDisplay}</span>
                     </div>
                 `;
 
-                cell.onclick = () => downloadStatusPoster(day, currentHijriNum, currentMalNum);
+                cell.onclick = () => downloadStatusPoster(day, dayNamesEng[dayOfWeek], hijriNum, hijriMonth, malNum, malMonth, monthNames[month], year);
                 daysGrid.appendChild(cell);
             }
         }
 
-        function downloadStatusPoster(engDay, hijriNum, malNum) {
+        function downloadStatusPoster(engDay, engDayName, hijriNum, hijriMonth, malNum, malMonth, engMonthName, year) {
             const quote = dailyQuotes[(engDay - 1) % dailyQuotes.length];
 
             document.getElementById('p-eng-num').innerText = engDay;
+            document.getElementById('p-eng-day').innerText = engDayName;
+            document.getElementById('p-eng-month').innerText = `${engMonthName.toUpperCase()} ${year}`;
+
             document.getElementById('p-hij-num').innerText = hijriNum;
-            document.getElementById('p-mal-banner').innerText = `${malNum} മീനം 1125`;
+            document.getElementById('p-hij-month').innerText = `${hijriMonth} 1448`;
+            document.getElementById('p-mal-banner').innerText = `${malNum} ${malMonth} 1101`;
             
             document.getElementById('p-hadith-ara').innerText = quote.ara;
             document.getElementById('p-hadith-mal').innerText = quote.mal;
@@ -191,7 +237,7 @@
             const poster = document.getElementById('poster-canvas');
             html2canvas(poster, { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `ATAVA_Status_July_${engDay}.png`;
+                link.download = `ATAVA_Status_${engMonthName}_${engDay}.png`;
                 link.href = canvas.toDataURL();
                 link.click();
             });
