@@ -205,56 +205,60 @@
         const hijriMonthsAra = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
         const malMonths = ["ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം", "മിഥുനം", "കർക്കടകം"];
 
-        let currentDate = new Date(); // Dynamic System Today
+        let currentDate = new Date(); // Dynamic System Date
         let selectedDayInfo = null;
         const notesRegistry = {};
 
-        // Precise Date Aligned Hijri Calculator
-        function getHijriDetails(date) {
-            // Anchor Base: July 31, 2026 = 17 Safar 1448
-            const anchorDate = new Date(2026, 6, 31);
-            const diffDays = Math.round((date - anchorDate) / (1000 * 60 * 60 * 24));
+        // Unified Hijri Calculation (Base: July 31, 2026 = 17 Safar 1448)
+        function getHijriDetails(targetDate) {
+            const baseDate = new Date(2026, 6, 31); // July 31, 2026
+            const baseTime = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime();
+            const targetTime = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
             
-            let totalHijriDays = 17 + diffDays;
-            let monthIdx = 1; // Safar (0 = Muharram, 1 = Safar)
+            const diffDays = Math.round((targetTime - baseTime) / (1000 * 60 * 60 * 24));
+
+            let day = 17 + diffDays;
+            let monthIdx = 1; // Safar
             let year = 1448;
 
-            while (totalHijriDays > 30) {
-                totalHijriDays -= 30;
+            while (day > 30) {
+                day -= 30;
                 monthIdx = (monthIdx + 1) % 12;
                 if (monthIdx === 0) year++;
             }
-            while (totalHijriDays < 1) {
-                totalHijriDays += 30;
+            while (day < 1) {
+                day += 30;
                 monthIdx = (monthIdx - 1 + 12) % 12;
                 if (monthIdx === 11) year--;
             }
 
-            return { day: totalHijriDays, monthName: hijriMonthsAra[monthIdx], year: year };
+            return { day, monthName: hijriMonthsAra[monthIdx], year };
         }
 
-        // Precise Malayalam Calculator
-        function getMalayalamDetails(date) {
-            // Anchor Base: July 31, 2026 = 15 Karkidakam 1201
-            const anchorDate = new Date(2026, 6, 31);
-            const diffDays = Math.round((date - anchorDate) / (1000 * 60 * 60 * 24));
-            
-            let malDay = 15 + diffDays;
-            let malMonthIdx = 11; // Karkidakam
-            let malYear = 1201;
+        // Unified Malayalam Calculation (Base: July 31, 2026 = 15 Karkidakam 1201)
+        function getMalayalamDetails(targetDate) {
+            const baseDate = new Date(2026, 6, 31); // July 31, 2026
+            const baseTime = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime();
+            const targetTime = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
 
-            while (malDay > 30) {
-                malDay -= 30;
-                malMonthIdx = (malMonthIdx + 1) % 12;
-                if (malMonthIdx === 0) malYear++;
+            const diffDays = Math.round((targetTime - baseTime) / (1000 * 60 * 60 * 24));
+
+            let day = 15 + diffDays;
+            let monthIdx = 11; // Karkidakam
+            let year = 1201;
+
+            while (day > 30) {
+                day -= 30;
+                monthIdx = (monthIdx + 1) % 12;
+                if (monthIdx === 0) year++;
             }
-            while (malDay < 1) {
-                malDay += 30;
-                malMonthIdx = (malMonthIdx - 1 + 12) % 12;
-                if (malMonthIdx === 11) malYear--;
+            while (day < 1) {
+                day += 30;
+                monthIdx = (monthIdx - 1 + 12) % 12;
+                if (monthIdx === 11) year--;
             }
 
-            return { day: malDay, monthName: malMonths[malMonthIdx], year: malYear };
+            return { day, monthName: malMonths[monthIdx], year };
         }
 
         function renderTopTodayHeader() {
@@ -279,7 +283,7 @@
             const firstDay = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Find Last Sunday of the current viewing month
+            // Find Last Sunday
             let lastSundayDay = -1;
             for (let d = totalDays; d >= 1; d--) {
                 if (new Date(year, month, d).getDay() === 0) {
