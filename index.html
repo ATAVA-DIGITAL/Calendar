@@ -45,12 +45,32 @@
         .hijri-txt { color: #15803d; }
         .mal-txt { color: #c2410c; }
 
+        .saved-note-badge { font-size: 11px; background-color: #e0f2fe; color: #0369a1; padding: 3px 6px; border-radius: 4px; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+
         /* ATAVA Footer Styling */
         .brand-footer {
             margin-top: 25px; text-align: center; width: 100%; max-width: 1200px; padding: 18px; background-color: #0f172a; color: white; border-radius: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
         .brand-footer h3 { color: #38bdf8; font-size: 16px; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px; }
         .brand-footer p { color: #cbd5e1; font-size: 12px; font-weight: 500; }
+
+        /* MODAL POPUP WINDOW STYLING */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: fadeIn 0.25s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .modal-header { font-size: 20px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+        .modal-body textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; resize: none; font-size: 14px; margin-top: 6px; margin-bottom: 15px; }
+        .modal-buttons { display: flex; gap: 10px; }
+        .btn { padding: 10px 16px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; flex-grow: 1; }
+        .btn-save { background-color: #0284c7; color: white; }
+        .btn-download { background-color: #16a34a; color: white; }
+        .btn-close { background-color: #64748b; color: white; flex-grow: 0; }
 
         /* STATUS POSTER TEMPLATE (Downloadable Canvas) */
         #poster-canvas {
@@ -72,7 +92,7 @@
 
     <header>
         <h1>ATAVA Digital Calendar & Status Generator</h1>
-        <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് അതാത് ദിവസത്തെ WhatsApp Status ഡൗൺലോഡ് ചെയ്യാം</p>
+        <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് നോട്സ് എഴുതാം & WhatsApp Status ഡൗൺലോഡ് ചെയ്യാം</p>
     </header>
 
     <div class="calendar-container">
@@ -91,6 +111,22 @@
     <div class="brand-footer">
         <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
+    </div>
+
+    <!-- Interactive Notes Popup Modal -->
+    <div class="modal-overlay" id="date-modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-date-title">Date Details</div>
+            <div class="modal-body">
+                <label style="font-size: 13px; font-weight: 700; color: #475569;">ഈ ദിവസത്തെ വിശേഷങ്ങൾ / കാര്യങ്ങൾ എഴുതുക:</label>
+                <textarea id="modal-notes-input" placeholder=" ടൈപ്പിംഗ് വർക്കുകൾ, ഓർമ്മപ്പെടുത്തലുകൾ ഇവിടെ എഴുതാം..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-save" onclick="saveDayNotes()">Save Notes</button>
+                <button class="btn btn-download" onclick="generatePosterFromModal()">Download WhatsApp Status</button>
+                <button class="btn btn-close" onclick="closeModal()">Close</button>
+            </div>
+        </div>
     </div>
 
     <!-- Hidden Layout for Status Poster Rendering -->
@@ -149,7 +185,9 @@
         ];
 
         const dayNamesEng = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
-        let currentDate = new Date(); // Dynamic System Today
+        let currentDate = new Date(2026, 6, 1); // Set to July 2026
+        let selectedDayInfo = null;
+        const notesRegistry = {};
 
         function renderCalendar() {
             const year = currentDate.getFullYear();
@@ -170,6 +208,7 @@
                 daysGrid.appendChild(empty);
             }
 
+            // Real Today Reference (July 31, 2026)
             const today = new Date();
 
             for (let day = 1; day <= totalDays; day++) {
@@ -180,56 +219,83 @@
                 if (dayOfWeek === 0) cell.classList.add('sunday');
                 if (dayOfWeek === 5) cell.classList.add('friday');
 
-                // Check and highlight Today
+                // Highlight Today
                 if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                     cell.classList.add('today-cell');
                 }
 
-                // Exact Astronomical / Calendar Calculations for July 2026
-                // July 1, 2026 = 16 Muharram 1448 AH & 17 Mithunam 1101 ME
-                let hijriNum = (15 + day);
-                let hijriMonth = "മുഹറം";
-
-                if (hijriNum > 30) {
-                    hijriNum = hijriNum - 30;
+                // ACCURATE DATE FORMULAS FOR JULY 2026
+                // July 31, 2026 = 17 Safar 1448 AH & 15 Karkidakam 1201
+                let hijriNum, hijriMonth;
+                if (day <= 14) {
+                    hijriNum = day + 16;
+                    hijriMonth = "മുഹറം";
+                } else {
+                    hijriNum = day - 14;
                     hijriMonth = "സഫർ";
                 }
 
-                let malNum = (16 + day);
-                let malMonth = "മിഥുനം";
-
-                if (malNum > 31) {
-                    malNum = malNum - 31;
+                let malNum, malMonth;
+                if (day <= 16) {
+                    malNum = day + 15;
+                    malMonth = "മിഥുനം";
+                } else {
+                    malNum = day - 16;
                     malMonth = "കർക്കടകം";
                 }
 
-                // Display Month Name ONLY when Month Starts or on Day 1
+                // Show month name only when month starts or on day 1
                 let hijriDisplay = (hijriNum === 1 || day === 1) ? `${hijriNum} (${hijriMonth})` : `${hijriNum}`;
                 let malDisplay = (malNum === 1 || day === 1) ? `${malNum} (${malMonth})` : `${malNum}`;
 
+                const key = `${year}-${month}-${day}`;
+                const noteText = notesRegistry[key] || "";
+
                 cell.innerHTML = `
-                    <div class="eng-num">${day}</div>
+                    <div>
+                        <div class="eng-num">${day}</div>
+                        ${noteText ? `<div class="saved-note-badge">${noteText}</div>` : ''}
+                    </div>
                     <div class="alt-date-row">
                         <span class="hijri-txt">🌙 ${hijriDisplay}</span>
                         <span class="mal-txt">🌾 ${malDisplay}</span>
                     </div>
                 `;
 
-                cell.onclick = () => downloadStatusPoster(day, dayNamesEng[dayOfWeek], hijriNum, hijriMonth, malNum, malMonth, monthNames[month], year);
+                cell.onclick = () => openModal(day, dayNamesEng[dayOfWeek], hijriNum, hijriMonth, malNum, malMonth, monthNames[month], year);
                 daysGrid.appendChild(cell);
             }
         }
 
-        function downloadStatusPoster(engDay, engDayName, hijriNum, hijriMonth, malNum, malMonth, engMonthName, year) {
-            const quote = dailyQuotes[(engDay - 1) % dailyQuotes.length];
+        function openModal(day, engDayName, hijriNum, hijriMonth, malNum, malMonth, engMonthName, year) {
+            selectedDayInfo = { day, engDayName, hijriNum, hijriMonth, malNum, malMonth, engMonthName, year };
+            const key = `${year}-${currentDate.getMonth()}-${day}`;
+            
+            document.getElementById('modal-date-title').innerText = `${day} ${engMonthName} ${year}`;
+            document.getElementById('modal-notes-input').value = notesRegistry[key] || "";
+            document.getElementById('date-modal').style.display = 'flex';
+        }
 
-            document.getElementById('p-eng-num').innerText = engDay;
+        function saveDayNotes() {
+            if(!selectedDayInfo) return;
+            const key = `${selectedDayInfo.year}-${currentDate.getMonth()}-${selectedDayInfo.day}`;
+            notesRegistry[key] = document.getElementById('modal-notes-input').value;
+            closeModal();
+            renderCalendar();
+        }
+
+        function generatePosterFromModal() {
+            if(!selectedDayInfo) return;
+            const { day, engDayName, hijriNum, hijriMonth, malNum, malMonth, engMonthName, year } = selectedDayInfo;
+            const quote = dailyQuotes[(day - 1) % dailyQuotes.length];
+
+            document.getElementById('p-eng-num').innerText = day;
             document.getElementById('p-eng-day').innerText = engDayName;
             document.getElementById('p-eng-month').innerText = `${engMonthName.toUpperCase()} ${year}`;
 
             document.getElementById('p-hij-num').innerText = hijriNum;
             document.getElementById('p-hij-month').innerText = `${hijriMonth} 1448`;
-            document.getElementById('p-mal-banner').innerText = `${malNum} ${malMonth} 1101`;
+            document.getElementById('p-mal-banner').innerText = `${malNum} ${malMonth} 1201`;
             
             document.getElementById('p-hadith-ara').innerText = quote.ara;
             document.getElementById('p-hadith-mal').innerText = quote.mal;
@@ -237,10 +303,15 @@
             const poster = document.getElementById('poster-canvas');
             html2canvas(poster, { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `ATAVA_Status_${engMonthName}_${engDay}.png`;
+                link.download = `ATAVA_Status_${engMonthName}_${day}.png`;
                 link.href = canvas.toDataURL();
                 link.click();
             });
+        }
+
+        function closeModal() {
+            document.getElementById('date-modal').style.display = 'none';
+            selectedDayInfo = null;
         }
 
         function changeMonth(dir) {
