@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA Digital Calendar & Status Generator</title>
+    <title>CM CENTER CHERUVATTOOR, VAZHAKKAD - Calendar</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f8fafc; color: #0f172a; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
         header { background: linear-gradient(135deg, #0284c7, #1e3a8a); color: white; width: 100%; max-width: 1200px; padding: 22px; text-align: center; border-radius: 14px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        header h1 { font-size: 28px; font-weight: 800; }
+        header h1 { font-size: 28px; font-weight: 800; letter-spacing: 0.5px; }
         header p { font-size: 14px; margin-top: 5px; opacity: 0.9; }
 
-        /* Super Today Top Banner */
+        /* Highlighted Today Banner */
         .today-banner {
             background: #ffffff; border: 2px solid #0284c7; width: 100%; max-width: 1200px;
             padding: 14px 20px; border-radius: 12px; margin-bottom: 20px; display: flex;
@@ -36,49 +36,50 @@
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
         
         .day-cell { 
-            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; min-height: 115px; padding: 10px; 
+            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; min-height: 120px; padding: 10px; 
             display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: 0.2s;
         }
         .day-cell:hover { border-color: #0284c7; background: #f0f9ff; transform: translateY(-2px); }
         .day-cell.sunday { background: #fef2f2; }
         .day-cell.friday { background: #f0fdf4; }
 
-        /* Current Date Prominent Highlighting */
+        /* Current Date Highlight */
         .day-cell.today-cell { 
             border: 4px solid #0284c7 !important; 
             background-color: #e0f2fe !important; 
             box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
-        .day-cell.today-cell .eng-num { font-size: 34px !important; color: #0284c7 !important; font-weight: 900; }
+        .day-cell.today-cell .eng-num { font-size: 32px !important; color: #0284c7 !important; font-weight: 900; }
 
         .eng-num { font-size: 26px; font-weight: 800; color: #1e293b; line-height: 1; }
         .sunday .eng-num { color: #dc2626; }
         .friday .eng-num { color: #16a34a; }
 
         .alt-date-row { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-top: 6px; }
-        .hijri-txt { color: #15803d; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        .hijri-txt { color: #15803d; }
         .mal-txt { color: #c2410c; }
 
-        .saved-note-badge { font-size: 11px; background-color: #38bdf8; color: #0f172a; padding: 3px 6px; border-radius: 4px; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+        /* Badges */
+        .event-badge { font-size: 10px; background-color: #7c3aed; color: white; padding: 3px 6px; border-radius: 4px; margin-top: 4px; font-weight: 800; text-align: center; }
+        .saved-note-badge { font-size: 10px; background-color: #0284c7; color: white; padding: 3px 6px; border-radius: 4px; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
 
-        /* ATAVA Footer Styling */
+        /* Footer Branding */
         .brand-footer {
             margin-top: 25px; text-align: center; width: 100%; max-width: 1200px; padding: 18px; background-color: #0f172a; color: white; border-radius: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
         .brand-footer h3 { color: #38bdf8; font-size: 16px; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px; }
         .brand-footer p { color: #cbd5e1; font-size: 12px; font-weight: 500; }
 
-        /* MODAL POPUP WINDOW STYLING */
+        /* Modal styling */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 1000;
         }
         .modal-content {
             background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 500px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: fadeIn 0.25s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .modal-header { font-size: 20px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
         .modal-body textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; resize: none; font-size: 14px; margin-top: 6px; margin-bottom: 15px; }
         .modal-buttons { display: flex; gap: 10px; }
@@ -87,7 +88,7 @@
         .btn-download { background-color: #16a34a; color: white; }
         .btn-close { background-color: #64748b; color: white; flex-grow: 0; }
 
-        /* STATUS POSTER TEMPLATE (Downloadable Canvas) */
+        /* Canvas Poster */
         #poster-canvas {
             position: absolute; left: -9999px; width: 800px; height: 800px; background: #ffffff; border: 14px solid #1e3a8a; padding: 25px; display: flex; flex-direction: column; justify-content: space-between;
         }
@@ -106,11 +107,11 @@
 <body>
 
     <header>
-        <h1>ATAVA Digital Calendar & Status Generator</h1>
+        <h1>CM CENTER CHERUVATTOOR, VAZHAKKAD</h1>
         <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് നോട്സ് എഴുതാം & WhatsApp Status ഡൗൺലോഡ് ചെയ്യാം</p>
     </header>
 
-    <!-- Highlighted Today Banner -->
+    <!-- Top Today Banner -->
     <div class="today-banner">
         <div class="today-title">📌 TODAY (ഇന്ന്):</div>
         <div class="today-details">
@@ -138,13 +139,13 @@
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
     </div>
 
-    <!-- Interactive Notes Popup Modal -->
+    <!-- Interactive Modal -->
     <div class="modal-overlay" id="date-modal">
         <div class="modal-content">
             <div class="modal-header" id="modal-date-title">Date Details</div>
             <div class="modal-body">
                 <label style="font-size: 13px; font-weight: 700; color: #475569;">ഈ ദിവസത്തെ വിശേഷങ്ങൾ / കാര്യങ്ങൾ എഴുതുക:</label>
-                <textarea id="modal-notes-input" placeholder=" ടൈപ്പിംഗ് വർക്കുകൾ, ഓർമ്മപ്പെടുത്തലുകൾ ഇവിടെ എഴുതാം..."></textarea>
+                <textarea id="modal-notes-input" placeholder="വിശേഷങ്ങൾ അല്ലെങ്കിൽ ഓർമ്മപ്പെടുത്തലുകൾ ഇവിടെ എഴുതാം..."></textarea>
             </div>
             <div class="modal-buttons">
                 <button class="btn btn-save" onclick="saveDayNotes()">Save Notes</button>
@@ -154,10 +155,10 @@
         </div>
     </div>
 
-    <!-- Hidden Layout for Status Poster Rendering -->
+    <!-- Download Canvas Template -->
     <div id="poster-canvas">
         <div class="poster-header">
-            <div style="font-weight:bold; color:#1e3a8a; font-size:18px;">ATAVA DAILY KNOWLEDGE</div>
+            <div style="font-weight:bold; color:#1e3a8a; font-size:18px;">CM CENTER CHERUVATTOOR</div>
             <div style="background:#e2e8f0; padding:6px 14px; border-radius:6px; font-weight:bold; font-size:18px;" id="p-mal-banner"></div>
             <div style="color:#16a34a; font-weight:bold; font-size:18px;">التقويم الهجري</div>
         </div>
@@ -169,8 +170,8 @@
                 <div style="font-weight:700; color:#475569;" id="p-eng-month">JULY 2026</div>
             </div>
             <div style="text-align:center;">
-                <div style="font-size:36px;">☪️</div>
-                <div style="font-weight:800; color:#1e3a8a; margin-top:5px; font-size:18px;">ATAVA</div>
+                <div style="font-size:36px;">🕌</div>
+                <div style="font-weight:800; color:#1e3a8a; margin-top:5px; font-size:16px;">CM CENTER</div>
             </div>
             <div class="poster-card" style="border-color:#16a34a; background:#f0fdf4;">
                 <div style="color:#16a34a; font-weight:bold; font-size:14px;" id="p-hij-day">اليوم</div>
@@ -196,46 +197,47 @@
             { ara: "الدِّينُ النَّصِيحَةُ", mal: "\"മതം എന്നാൽ ഗുണകാംക്ഷയാകുന്നു.\"" },
             { ara: "الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", mal: "\"നല്ല വാക്ക് പറയുക എന്നത് ഒരു ദാനധർമ്മമാണ് (സ്വദഖ).\"" },
             { ara: "الطهُورُ شَطْرُ الإِيمَانِ", mal: "\"ശുദ്ധി എന്നത് സത്യവിശ്വാസത്തിന്റെ പകുതിയാകുന്നു.\"" },
-            { ara: "مَنْ لاَ يَرْحَمِ النَّاسَ لاَ يَرْحَمْهُ اللَّهُ", mal: "\"മനുഷ്യരോട് കരുണ കാണിക്കാത്തവനോട് അല്ലാഹുവും കരുണ കാണിക്കുകയില്ല.\"" },
-            { ara: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", mal: "\"നിങ്ങളിൽ ഉത്തമൻ ഖുർആൻ പഠിക്കുകയും അത് പഠിപ്പിക്കുകയും ചെയ്യുന്നവനാണ്.\"" },
-            { ara: "لاَ تَغَضَبْ وَلَكَ الْجَنَّةُ", mal: "\"നീ കോപിക്കരുത്, നിനക്ക് സ്വർഗ്ഗമുണ്ട്.\"" },
-            { ara: "مَنْ صَمَتَ نَجَا", mal: "\"മൗനം പാലിച്ചവൻ രക്ഷപ്പെട്ടു.\"" },
-            { ara: "الدُّعَاءُ مُخُّ الْعِبَادَةِ", mal: "\"പ്രാർത്ഥന (ദുആ) ആരാധനയുടെ മജ്ജയാകുന്നു.\"" },
-            { ara: "الصَّبْرُ ضِيَاءٌ", mal: "\"ക്ഷമ ഒരു വെളിച്ചമാണ്.\"" }
+            { ara: "مَنْ لاَ يَرْحَمِ النَّاسَ لاَ يَرْحَمْهُ اللَّهُ", mal: "\"മനുഷ്യരോട് കരുണ കാണിക്കാത്തവനോട് അല്ലാഹുവും കരുണ കാണിക്കുകയില്ല.\"" }
         ];
 
         const dayNamesEng = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        
-        // Arabic Hijri Month Names in Arabic Script
         const hijriMonthsAra = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
-        
-        // Malayalam Month Names
         const malMonths = ["ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം", "മിഥുനം", "കർക്കടകം"];
 
         let currentDate = new Date(); // Dynamic System Today
         let selectedDayInfo = null;
         const notesRegistry = {};
 
-        // Dynamic Hijri Calculator Algorithm
+        // Precise Date Aligned Hijri Calculator
         function getHijriDetails(date) {
-            const julian = Math.floor(date.getTime() / 86400000) + 2440588;
-            let l = julian - 1948440 + 10632;
-            let n = Math.floor((l - 1) / 10631);
-            l = l - 10631 * n + 354;
-            let j = (Math.floor((10985 - l) / 5316)) * (Math.floor((50 * l) / 17719)) + (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
-            l = l - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
-            let month = Math.floor((24 * l) / 709);
-            let day = l - Math.floor((709 * month) / 24);
-            let year = Math.floor((30 * n + j - 30));
-            return { day: day, monthName: hijriMonthsAra[month - 1], year: year };
+            // Anchor Base: July 31, 2026 = 17 Safar 1448
+            const anchorDate = new Date(2026, 6, 31);
+            const diffDays = Math.round((date - anchorDate) / (1000 * 60 * 60 * 24));
+            
+            let totalHijriDays = 17 + diffDays;
+            let monthIdx = 1; // Safar (0 = Muharram, 1 = Safar)
+            let year = 1448;
+
+            while (totalHijriDays > 30) {
+                totalHijriDays -= 30;
+                monthIdx = (monthIdx + 1) % 12;
+                if (monthIdx === 0) year++;
+            }
+            while (totalHijriDays < 1) {
+                totalHijriDays += 30;
+                monthIdx = (monthIdx - 1 + 12) % 12;
+                if (monthIdx === 11) year--;
+            }
+
+            return { day: totalHijriDays, monthName: hijriMonthsAra[monthIdx], year: year };
         }
 
-        // Dynamic Malayalam Date Calculator Algorithm
+        // Precise Malayalam Calculator
         function getMalayalamDetails(date) {
-            // Precise base alignment for 2026 July 31 = Karkidakam 15, 1201 ME
-            const baseDate = new Date(2026, 6, 31);
-            const diffDays = Math.round((date - baseDate) / (1000 * 60 * 60 * 24));
+            // Anchor Base: July 31, 2026 = 15 Karkidakam 1201
+            const anchorDate = new Date(2026, 6, 31);
+            const diffDays = Math.round((date - anchorDate) / (1000 * 60 * 60 * 24));
             
             let malDay = 15 + diffDays;
             let malMonthIdx = 11; // Karkidakam
@@ -244,7 +246,7 @@
             while (malDay > 30) {
                 malDay -= 30;
                 malMonthIdx = (malMonthIdx + 1) % 12;
-                if (malMonthIdx === 0) malYear++; // Chingam 1 starts new Kollavarsham
+                if (malMonthIdx === 0) malYear++;
             }
             while (malDay < 1) {
                 malDay += 30;
@@ -262,7 +264,7 @@
 
             document.getElementById('today-eng-str').innerText = `${dayNamesEng[today.getDay()]}, ${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
             document.getElementById('today-hij-str').innerText = `🌙 ${hij.day} ${hij.monthName} ${hij.year} AH`;
-            document.getElementById('today-mal-str').innerText = `🌾 ${mal.day} ${mal.monthName} ${mal.year}`;
+            document.getElementById('today-mal-str').innerText = `🌾 ${mal.monthName} ${mal.day}, ${mal.year}`;
         }
 
         function renderCalendar() {
@@ -276,6 +278,15 @@
 
             const firstDay = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Find Last Sunday of the current viewing month
+            let lastSundayDay = -1;
+            for (let d = totalDays; d >= 1; d--) {
+                if (new Date(year, month, d).getDay() === 0) {
+                    lastSundayDay = d;
+                    break;
+                }
+            }
 
             for (let i = 0; i < firstDay; i++) {
                 const empty = document.createElement('div');
@@ -294,12 +305,11 @@
                 if (dayOfWeek === 0) cell.classList.add('sunday');
                 if (dayOfWeek === 5) cell.classList.add('friday');
 
-                // Dynamic Highlighting for Real System Today
+                // Highlighting Real System Today
                 if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                     cell.classList.add('today-cell');
                 }
 
-                // Dynamic Date Calculations
                 const hijri = getHijriDetails(cellDate);
                 const mal = getMalayalamDetails(cellDate);
 
@@ -308,10 +318,12 @@
 
                 const key = `${year}-${month}-${day}`;
                 const noteText = notesRegistry[key] || "";
+                const isLastSunday = (day === lastSundayDay);
 
                 cell.innerHTML = `
                     <div>
                         <div class="eng-num">${day}</div>
+                        ${isLastSunday ? `<div class="event-badge">✨ മഹ്ളറത്തുൽ ബദ്‌രിയ്യ</div>` : ''}
                         ${noteText ? `<div class="saved-note-badge">📌 ${noteText}</div>` : ''}
                     </div>
                     <div class="alt-date-row">
@@ -353,7 +365,7 @@
 
             document.getElementById('p-hij-num').innerText = hijri.day;
             document.getElementById('p-hij-month').innerText = `${hijri.monthName} ${hijri.year}`;
-            document.getElementById('p-mal-banner').innerText = `${mal.day} ${mal.monthName} ${mal.year}`;
+            document.getElementById('p-mal-banner').innerText = `${mal.monthName} ${mal.day}, ${mal.year}`;
             
             document.getElementById('p-hadith-ara').innerText = quote.ara;
             document.getElementById('p-hadith-mal').innerText = quote.mal;
@@ -361,7 +373,7 @@
             const poster = document.getElementById('poster-canvas');
             html2canvas(poster, { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `ATAVA_Status_${engMonthName}_${day}.png`;
+                link.download = `CM_Center_Status_${engMonthName}_${day}.png`;
                 link.href = canvas.toDataURL();
                 link.click();
             });
