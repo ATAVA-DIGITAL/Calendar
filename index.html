@@ -64,12 +64,22 @@
         .event-badge { font-size: 10px; background-color: #7c3aed; color: white; padding: 3px 6px; border-radius: 4px; margin-top: 4px; font-weight: 800; text-align: center; }
         .saved-note-badge { font-size: 10px; background-color: #0284c7; color: white; padding: 3px 6px; border-radius: 4px; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
 
-        /* Footer Branding */
-        .brand-footer {
-            margin-top: 25px; text-align: center; width: 100%; max-width: 1200px; padding: 18px; background-color: #0f172a; color: white; border-radius: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        /* Programs Schedule Notice Box */
+        .programs-box {
+            width: 100%; max-width: 1200px; margin-top: 20px; background: #f0f9ff; border: 2px dashed #0284c7;
+            border-radius: 14px; padding: 18px 25px; display: flex; justify-content: space-around; align-items: center;
+            flex-wrap: wrap; gap: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
-        .brand-footer h3 { color: #38bdf8; font-size: 16px; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .brand-footer p { color: #cbd5e1; font-size: 12px; font-weight: 500; }
+        .program-item { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; color: #1e3a8a; }
+        .program-tag { background: #1e3a8a; color: white; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+
+        /* Larger Footer Branding */
+        .brand-footer {
+            margin-top: 20px; text-align: center; width: 100%; max-width: 1200px; padding: 22px; background-color: #0f172a; color: white; border-radius: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .brand-footer h2 { color: #38bdf8; font-size: 22px; font-weight: 900; margin-bottom: 6px; letter-spacing: 0.8px; text-transform: uppercase; }
+        .brand-footer p { color: #e2e8f0; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .brand-footer .author-tag { color: #fbbf24; font-size: 14px; font-weight: 800; margin-top: 6px; letter-spacing: 0.5px; }
 
         /* Modal styling */
         .modal-overlay {
@@ -100,8 +110,8 @@
         .hadith-ara { font-size: 26px; font-weight: bold; color: #1e3a8a; direction: rtl; margin-bottom: 12px; line-height: 1.4; }
         .hadith-mal { font-size: 18px; font-weight: 600; color: #334155; line-height: 1.5; }
         .poster-footer { background: #0f172a; color: white; text-align: center; padding: 14px; border-radius: 8px; border-bottom: 4px solid #38bdf8; }
-        .poster-footer h4 { color: #38bdf8; font-size: 15px; font-weight: 800; margin-bottom: 2px; }
-        .poster-footer p { font-size: 11px; color: #cbd5e1; }
+        .poster-footer h3 { color: #38bdf8; font-size: 18px; font-weight: 900; margin-bottom: 2px; }
+        .poster-footer p { font-size: 12px; color: #cbd5e1; }
     </style>
 </head>
 <body>
@@ -133,11 +143,24 @@
         <div class="days-grid" id="calendar-days"></div>
     </div>
 
-    <!-- Main Footer Branding -->
+    <!-- Highlighted Weekly Programs Notice Box -->
+    <div class="programs-box">
+        <div class="program-item">
+            <span class="program-tag">🔷 നാട്ടുദർസ് (പുരുഷന്മാർ)</span> എല്ലാ ബുധനാഴ്ചയും മഗ്രിബിന് ശേഷം
+        </div>
+        <div class="program-item">
+            <span class="program-tag" style="background:#c2410c;">🌸 നാട്ടുദർസ് (സ്ത്രീകൾ)</span> എല്ലാ വ്യാഴാഴ്ചയും ഉച്ചക്ക് 2.30 - 3.30
+        </div>
+        <div class="program-item">
+            <span class="program-tag" style="background:#15803d;">🕌 സ്വലാത്ത് മജ്‌ലിസ്</span> എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം
+        </div>
+    </div>
+
+    <!-- Main Footer Branding (Larger Size & Author Included) -->
     <div class="brand-footer">
-        <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
+        <h2>Powered by : ATAVA DIGITAL SERVICES & TRADING</h2>
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
-        <p>Abdul salam ahsani vazhakkad</p>
+        <div class="author-tag">👤 Abdul salam ahsani vazhakkad</div>
     </div>
 
     <!-- Interactive Modal -->
@@ -172,7 +195,7 @@
             </div>
             <div style="text-align:center;">
                 <div style="font-size:36px;">🕌</div>
-                <div style="font-weight:800; color:#1e3a8a; margin-top:5px; font-size:16px;">CM CENTER CHERUVATTOOR</div>
+                <div style="font-weight:800; color:#1e3a8a; margin-top:5px; font-size:16px;">CM CENTER</div>
             </div>
             <div class="poster-card" style="border-color:#16a34a; background:#f0fdf4;">
                 <div style="color:#16a34a; font-weight:bold; font-size:14px;" id="p-hij-day">اليوم</div>
@@ -187,8 +210,9 @@
         </div>
 
         <div class="poster-footer">
-            <h4>Powered by : ATAVA DIGITAL SERVICES & TRADING</h4>
+            <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
             <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
+            <p style="color:#fbbf24; font-weight:bold; margin-top:2px;">Abdul salam ahsani vazhakkad</p>
         </div>
     </div>
 
@@ -206,20 +230,19 @@
         const hijriMonthsAra = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
         const malMonths = ["ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം", "മിഥുനം", "കർക്കടകം"];
 
-        let currentDate = new Date(); // Dynamic System Date
+        let currentDate = new Date();
         let selectedDayInfo = null;
         const notesRegistry = {};
 
-        // Unified Hijri Calculation (Base: July 31, 2026 = 17 Safar 1448)
         function getHijriDetails(targetDate) {
-            const baseDate = new Date(2026, 6, 31); // July 31, 2026
+            const baseDate = new Date(2026, 6, 31);
             const baseTime = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime();
             const targetTime = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
             
             const diffDays = Math.round((targetTime - baseTime) / (1000 * 60 * 60 * 24));
 
             let day = 17 + diffDays;
-            let monthIdx = 1; // Safar
+            let monthIdx = 1;
             let year = 1448;
 
             while (day > 30) {
@@ -236,16 +259,15 @@
             return { day, monthName: hijriMonthsAra[monthIdx], year };
         }
 
-        // Unified Malayalam Calculation (Base: July 31, 2026 = 15 Karkidakam 1201)
         function getMalayalamDetails(targetDate) {
-            const baseDate = new Date(2026, 6, 31); // July 31, 2026
+            const baseDate = new Date(2026, 6, 31);
             const baseTime = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime();
             const targetTime = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
 
             const diffDays = Math.round((targetTime - baseTime) / (1000 * 60 * 60 * 24));
 
             let day = 15 + diffDays;
-            let monthIdx = 11; // Karkidakam
+            let monthIdx = 11;
             let year = 1201;
 
             while (day > 30) {
@@ -284,7 +306,6 @@
             const firstDay = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Find Last Sunday
             let lastSundayDay = -1;
             for (let d = totalDays; d >= 1; d--) {
                 if (new Date(year, month, d).getDay() === 0) {
@@ -310,7 +331,6 @@
                 if (dayOfWeek === 0) cell.classList.add('sunday');
                 if (dayOfWeek === 5) cell.classList.add('friday');
 
-                // Highlighting Real System Today
                 if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                     cell.classList.add('today-cell');
                 }
@@ -328,7 +348,7 @@
                 cell.innerHTML = `
                     <div>
                         <div class="eng-num">${day}</div>
-                        ${isLastSunday ? `<div class="event-badge">✨ മഹ്ളറത്തുൽ ബദ്‌രിയ്യ CHERUVATOOR</div>` : ''}
+                        ${isLastSunday ? `<div class="event-badge">✨ മഹ്ളറത്തുൽ ബദ്‌രിയ്യ</div>` : ''}
                         ${noteText ? `<div class="saved-note-badge">📌 ${noteText}</div>` : ''}
                     </div>
                     <div class="alt-date-row">
