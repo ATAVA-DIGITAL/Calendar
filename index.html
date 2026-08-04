@@ -8,60 +8,66 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         
-        /* Mobile App Viewport strictly 100vh */
         html, body { 
             height: 100vh; 
             width: 100vw; 
             overflow: hidden; 
-            background-color: #f1f5f9; 
+            background-color: #f8fafc; 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between;
-            padding: 6px;
+            padding: 4px;
         }
 
-        /* Compact Header */
-        header { 
-            background: linear-gradient(135deg, #0284c7, #1e3a8a); 
-            color: white; 
-            padding: 6px; 
-            text-align: center; 
-            border-radius: 8px; 
+        /* Top Banner - Red Theme */
+        .top-app-bar {
+            background: #8b0000;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            border-radius: 6px;
             flex-shrink: 0;
         }
-        header h1 { font-size: 13px; font-weight: 800; }
-        header p { font-size: 9px; opacity: 0.9; display: none; }
+        .top-app-bar h1 { font-size: 13px; font-weight: 800; letter-spacing: 0.5px; }
+        .top-app-bar p { font-size: 10px; opacity: 0.95; margin-top: 1px; color: #fef08a; }
 
-        /* Compact Today Banner */
+        /* Today Banner - Cream Style */
         .today-banner {
-            background: #ffffff; border: 1px solid #0284c7;
-            padding: 4px 6px; border-radius: 8px; margin: 4px 0;
+            background: #fef3c7; 
+            border: 1px solid #f59e0b;
+            padding: 4px; border-radius: 6px; margin: 3px 0;
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 10px; font-weight: 700; flex-shrink: 0;
+            font-size: 10px; font-weight: 800; color: #78350f; flex-shrink: 0;
         }
-        .today-chip { padding: 2px 5px; border-radius: 4px; text-align: center; font-size: 10px; }
-        .chip-eng { background: #e0f2fe; color: #0369a1; }
+        .today-chip { padding: 2px 6px; border-radius: 4px; text-align: center; font-size: 10px; }
+        .chip-eng { background: #ffffff; color: #1e3a8a; border: 1px solid #cbd5e1; }
         .chip-hij { background: #dcfce7; color: #15803d; }
-        .chip-mal { background: #ffedd5; color: #c2410c; }
+        .chip-mal { background: #fee2e2; color: #991b1b; }
 
-        /* Calendar Container Flexed to fit screen */
+        /* Main Calendar Container */
         .calendar-container { 
-            background: white; 
-            border-radius: 10px; 
-            padding: 6px; 
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
-            border-top: 4px solid #1e3a8a;
+            background: #ffffff; 
+            border-radius: 8px; 
+            padding: 4px; 
+            border: 1px solid #991b1b;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             justify-content: space-between;
         }
         
-        .calendar-nav { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; }
-        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 4px 10px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 11px; }
-        #month-year-display { font-size: 14px; font-weight: 800; color: #1e3a8a; }
+        .calendar-nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: #ffffff; padding: 2px 5px;
+        }
+        .nav-btn { background-color: #8b0000; color: white; border: none; padding: 3px 10px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        #month-year-display { font-size: 15px; font-weight: 900; color: #8b0000; }
 
-        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f8fafc; padding: 4px 0; border-radius: 6px; font-size: 10px; margin-top: 2px; }
+        .mal-month-strip {
+            background: #8b0000; color: white; text-align: center; font-size: 11px; font-weight: 800; padding: 2px; border-radius: 3px; margin: 2px 0;
+        }
+
+        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #fef3c7; padding: 3px 0; border-radius: 4px; font-size: 10px; color: #451a03; }
         
         .days-grid { 
             display: grid; 
@@ -81,49 +87,48 @@
         .day-cell.friday { background: #f0fdf4; }
 
         .day-cell.today-cell { 
-            border: 2px solid #eab308 !important; 
-            background: #fefce8 !important; 
+            border: 2px solid #d97706 !important; 
+            background: #fffbe2 !important; 
         }
         .today-badge-label {
             position: absolute; top: 0; right: 0; background: #d97706; color: white;
             font-size: 6px; font-weight: 900; padding: 1px 3px; border-bottom-left-radius: 3px;
         }
 
-        .eng-num { font-size: 14px; font-weight: 800; color: #1e293b; line-height: 1; }
+        .eng-num { font-size: 14px; font-weight: 900; color: #0f172a; line-height: 1; }
         .sunday .eng-num { color: #dc2626; }
         .friday .eng-num { color: #16a34a; }
 
         .alt-date-row { display: flex; flex-direction: column; font-size: 7.5px; font-weight: 700; line-height: 1; gap: 1px; }
-        .hijri-txt { color: #15803d; }
+        .hijri-txt { color: #16a34a; }
         .mal-txt { color: #c2410c; }
 
         .event-badge { font-size: 6.5px; background-color: #7c3aed; color: white; padding: 1px 2px; border-radius: 2px; font-weight: 800; text-align: center; margin-top: 1px; }
         .saved-note-badge { font-size: 6.5px; background-color: #0284c7; color: white; padding: 1px 2px; border-radius: 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 700; }
 
-        /* Bottom Programs & Footer */
+        /* Bottom Programs Box */
         .programs-box {
             background: #f0f9ff; border: 1px dashed #0284c7;
             border-radius: 6px; padding: 4px; display: flex; flex-direction: column; gap: 2px;
-            flex-shrink: 0; margin-top: 4px;
+            flex-shrink: 0; margin-top: 3px;
         }
-        .program-item { display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 700; color: #1e3a8a; }
-        .program-tag { background: #1e3a8a; color: white; padding: 1px 4px; border-radius: 3px; font-size: 8px; }
+        .program-item { display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; font-weight: 700; color: #1e3a8a; }
+        .program-tag { background: #1e3a8a; color: white; padding: 1px 4px; border-radius: 3px; font-size: 7.5px; }
 
+        /* Corporate Footer - Fixed Visible */
         .brand-footer {
-            text-align: center; padding: 4px; background-color: #0f172a; color: white; border-radius: 6px; flex-shrink: 0; margin-top: 4px;
+            text-align: center; padding: 4px; background-color: #0f172a; color: white; border-radius: 5px; flex-shrink: 0; margin-top: 3px;
         }
-        .brand-footer h2 { color: #38bdf8; font-size: 9px; font-weight: 800; }
-        .brand-footer p { color: #94a3b8; font-size: 7.5px; }
+        .brand-footer h2 { color: #38bdf8; font-size: 8.5px; font-weight: 800; }
+        .brand-footer p { color: #cbd5e1; font-size: 7px; }
 
-        /* Modal Styles */
+        /* Modal */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); justify-content: center; align-items: center; z-index: 1000; padding: 10px;
         }
-        .modal-content {
-            background: white; padding: 15px; border-radius: 12px; width: 100%; max-width: 350px;
-        }
-        .modal-header { font-size: 14px; font-weight: 800; color: #1e3a8a; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+        .modal-content { background: white; padding: 15px; border-radius: 12px; width: 100%; max-width: 350px; }
+        .modal-header { font-size: 14px; font-weight: 800; color: #8b0000; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
         .modal-body textarea { width: 100%; height: 60px; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; resize: none; font-size: 12px; margin-top: 4px; margin-bottom: 8px; }
         .modal-buttons { display: flex; gap: 6px; }
         .btn { padding: 6px 10px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 11px; flex-grow: 1; text-align: center; }
@@ -136,14 +141,14 @@
             position: absolute; left: -9999px; width: 800px; height: 800px; 
             background: linear-gradient(135deg, #ffffff, #f1f5f9); 
             padding: 25px; display: flex; flex-direction: column; justify-content: space-between;
-            border: 12px solid #0284c7;
+            border: 12px solid #8b0000;
         }
-        .poster-top-header { background: #ffffff; border: 2px solid #0284c7; border-radius: 18px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .poster-top-header { background: #ffffff; border: 2px solid #8b0000; border-radius: 18px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
         .header-left-part { display: flex; align-items: center; gap: 15px; }
-        .poster-photo-container { width: 55px; height: 55px; border-radius: 12px; border: 2px solid #0284c7; overflow: hidden; background: #e0f2fe; display: flex; justify-content: center; align-items: center; }
+        .poster-photo-container { width: 55px; height: 55px; border-radius: 12px; border: 2px solid #8b0000; overflow: hidden; background: #fee2e2; display: flex; justify-content: center; align-items: center; }
         .poster-photo-container img { width: 100%; height: 100%; object-fit: cover; }
-        .poster-header-title { font-size: 20px; font-weight: 900; color: #1e3a8a; }
-        .poster-header-sub { background: #0284c7; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 14px; }
+        .poster-header-title { font-size: 20px; font-weight: 900; color: #8b0000; }
+        .poster-header-sub { background: #8b0000; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 14px; }
         .poster-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 15px 0; }
         .p-card { background: #ffffff; border-radius: 18px; padding: 18px 10px; text-align: center; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
         .p-card-title { font-size: 13px; font-weight: 800; text-transform: uppercase; }
@@ -152,25 +157,20 @@
         .card-eng { border-top: 6px solid #ef4444; background: #fff5f5; } .card-eng .p-card-title { color: #dc2626; } .card-eng .p-card-num { color: #991b1b; }
         .card-mal { border-top: 6px solid #f59e0b; background: #fffbe2; } .card-mal .p-card-title { color: #d97706; } .card-mal .p-card-num { color: #b45309; }
         .card-hij { border-top: 6px solid #10b981; background: #f0fdf4; } .card-hij .p-card-title { color: #059669; } .card-hij .p-card-num { color: #065f46; }
-        .poster-hadith-box { background: #ffffff; border: 2px dashed #0284c7; border-radius: 20px; padding: 22px; text-align: center; min-height: 170px; display: flex; flex-direction: column; justify-content: center; }
+        .poster-hadith-box { background: #ffffff; border: 2px dashed #8b0000; border-radius: 20px; padding: 22px; text-align: center; min-height: 170px; display: flex; flex-direction: column; justify-content: center; }
         .hadith-ara { font-size: 25px; font-weight: bold; color: #0f172a; direction: rtl; margin-bottom: 10px; }
         .hadith-mal { font-size: 16px; font-weight: 700; color: #334155; }
         .poster-footer-bar { background: #0f172a; border-radius: 14px; padding: 12px; text-align: center; border-top: 3px solid #38bdf8; }
         .poster-footer-bar h3 { color: #38bdf8; font-size: 16px; font-weight: 900; }
         .poster-footer-bar p { color: #94a3b8; font-size: 12px; }
-
-        @media (min-width: 600px) {
-            header p { display: block; }
-            .alt-date-row { flex-direction: row; justify-content: space-between; }
-        }
     </style>
 </head>
 <body>
 
-    <header>
+    <div class="top-app-bar">
         <h1>CM CENTER CHERUVATTOOR, VAZHAKKAD</h1>
         <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് നോട്സ് എഴുതാം & Status ഡൗൺലോഡ് ചെയ്യാം</p>
-    </header>
+    </div>
 
     <div class="today-banner">
         <span>📌 TODAY (ഇന്ന്):</span>
@@ -185,31 +185,33 @@
             <div id="month-year-display">August 2026</div>
             <button class="nav-btn" onclick="changeMonth(1)">Next ▶</button>
         </div>
+
+        <div class="mal-month-strip" id="mal-month-strip-display">1201 കർക്കടകം - ചിങ്ങം</div>
+
         <div class="weekdays-grid">
-            <div style="color:#dc2626;">Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div style="color:#16a34a;">Fri</div><div>Sat</div>
+            <div style="color:#dc2626;">SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div style="color:#16a34a;">FRI</div><div>SAT</div>
         </div>
         <div class="days-grid" id="calendar-days"></div>
     </div>
 
     <div class="programs-box">
         <div class="program-item">
-            <span class="program-tag">🔷 നാട്ടുദർസ് (പു)</span>
-            <span>ബുധൻ മഗ്രിബിന് ശേഷം</span>
+            <span class="program-tag">🔷 നാട്ടുദർസ് (പുരുഷന്മാർ)</span>
+            <span>എല്ലാ ബുധനാഴ്ചയും മഗ്രിബിന് ശേഷം</span>
         </div>
         <div class="program-item">
-            <span class="program-tag" style="background:#c2410c;">🌸 നാട്ടുദർസ് (സ്)</span>
-            <span>വ്യാഴം ഉച്ചക്ക് 2.30 - 3.30</span>
+            <span class="program-tag" style="background:#c2410c;">🌸 നാട്ടുദർസ് (സ്ത്രീകൾ)</span>
+            <span>എല്ലാ വ്യാഴാഴ്ചയും ഉച്ചക്ക് 2.30 - 3.30</span>
         </div>
         <div class="program-item">
             <span class="program-tag" style="background:#15803d;">🕌 സ്വലാത്ത് മജ്‌ലിസ്</span>
-            <span>വ്യാഴം മഗ്രിബിന് ശേഷം</span>
+            <span>എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം</span>
         </div>
     </div>
 
     <div class="brand-footer">
         <h2>Powered by : ATAVA DIGITAL SERVICES & TRADING</h2>
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
-        <p>Abdul salam ahsani vazhakkad</p>
     </div>
 
     <!-- Modal -->
@@ -236,7 +238,7 @@
         <div class="poster-top-header">
             <div class="header-left-part">
                 <div class="poster-photo-container">
-                    <img id="poster-institution-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z'/></svg>" alt="Logo">
+                    <img id="poster-institution-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b0000'><path d='M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z'/></svg>" alt="Logo">
                 </div>
                 <div class="poster-header-title">CM CENTER CHERUVATTOOR</div>
             </div>
@@ -291,15 +293,13 @@
         let currentDate = new Date();
         let selectedDayInfo = null;
         const notesRegistry = {};
-        let uploadedPhotoData = null;
 
         document.getElementById('photo-upload-input').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(evt) {
-                    uploadedPhotoData = evt.target.result;
-                    document.getElementById('poster-institution-img').src = uploadedPhotoData;
+                    document.getElementById('poster-institution-img').src = evt.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -371,11 +371,18 @@
 
             document.getElementById('month-year-display').innerText = `${monthNames[month]} ${year}`;
 
+            const firstDayDate = new Date(year, month, 1);
+            const lastDayDate = new Date(year, month + 1, 0);
+            
+            const startMal = getMalayalamDetails(firstDayDate);
+            const endMal = getMalayalamDetails(lastDayDate);
+            document.getElementById('mal-month-strip-display').innerText = `${startMal.year} ${startMal.monthName} - ${endMal.monthName}`;
+
             const daysGrid = document.getElementById('calendar-days');
             daysGrid.innerHTML = '';
 
-            const firstDay = new Date(year, month, 1).getDay();
-            const totalDays = new Date(year, month + 1, 0).getDate();
+            const firstDay = firstDayDate.getDay();
+            const totalDays = lastDayDate.getDate();
 
             let lastSundayDay = -1;
             for (let d = totalDays; d >= 1; d--) {
@@ -421,7 +428,7 @@
                     ${isToday ? `<div class="today-badge-label">TODAY</div>` : ''}
                     <div>
                         <div class="eng-num">${day}</div>
-                        ${isLastSunday ? `<div class="event-badge">✨ മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ</div>` : ''}
+                        ${isLastSunday ? `<div class="event-badge">✨ ബദ്‌രിയ്യ</div>` : ''}
                         ${noteText ? `<div class="saved-note-badge">📌 ${noteText}</div>` : ''}
                     </div>
                     <div class="alt-date-row">
