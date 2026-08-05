@@ -4,111 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CM CENTER CHERUVATTOOR</title>
-    <!-- PWA Web App Manifest Link -->
-    <link rel="manifest" href="manifest.json">
+    
+    <!-- PWA Application Icons & Embedded Manifest -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="shortcut icon" href="logo.png">
+    <link rel="manifest" href='data:application/json,{"name":"CM CENTER CHERUVATTOOR","short_name":"CM CENTER","start_url":"./","display":"standalone","background_color":"#1e3a8a","theme_color":"#1e3a8a","icons":[{"src":"logo.png","sizes":"192x192","type":"image/png"},{"src":"logo.png","sizes":"512x512","type":"image/png"}]}'>
     <meta name="theme-color" content="#1e3a8a">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
-        body { 
+        html, body { 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden; /* Screen Scroll ബ്ലോക്ക് ചെയ്തു */
             background-color: #f8fafc; 
-            min-height: 100vh;
+        }
+
+        body { 
             display: flex; 
             flex-direction: column; 
-            padding: 6px;
-            overflow-y: auto;
+            justify-content: space-between;
+            padding: 4px;
         }
 
-        /* Ticker Announcement Bar */
+        /* Top Announcement Ticker */
         .news-ticker {
-            background: #dc2626; color: white; font-size: 10px; font-weight: 800; padding: 3px 6px;
-            border-radius: 4px; margin-bottom: 4px; overflow: hidden; white-space: nowrap;
+            background: #dc2626; color: white; font-size: 9px; font-weight: 800; padding: 2px 4px;
+            border-radius: 4px; overflow: hidden; white-space: nowrap; flex-shrink: 0;
         }
-        .news-ticker marquee { vertical-align: middle; }
 
-        /* Top Header */
+        /* Header */
         .top-app-bar {
-            background: #1e3a8a; color: white; text-align: center; padding: 8px 6px; border-radius: 6px; flex-shrink: 0;
+            background: #1e3a8a; color: white; text-align: center; padding: 4px 2px; border-radius: 5px; flex-shrink: 0;
         }
-        .top-app-bar h1 { font-size: 14px; font-weight: 900; letter-spacing: 0.5px; }
-        .top-app-bar p { font-size: 9px; opacity: 0.9; margin-top: 2px; color: #93c5fd; }
+        .top-app-bar h1 { font-size: 12px; font-weight: 900; letter-spacing: 0.3px; }
+        .top-app-bar p { font-size: 8px; opacity: 0.9; color: #93c5fd; }
 
-        /* Daily Quote Banner */
+        /* Hadith Bar */
         .daily-hadith-bar {
-            background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 5px 8px; margin: 4px 0;
-            text-align: center; color: #1e3a8a; font-size: 9.5px; font-weight: 700;
+            background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; padding: 3px 5px;
+            text-align: center; color: #1e3a8a; font-size: 8.5px; font-weight: 700; flex-shrink: 0;
         }
 
-        /* Prayer Times Box */
+        /* Prayer Box & Blinking Effect */
         .prayer-container {
-            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px; margin-bottom: 4px;
+            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 5px; padding: 3px 4px; flex-shrink: 0;
         }
-        .prayer-title-row { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px; }
-        .next-prayer-badge { background: #16a34a; color: white; padding: 2px 6px; border-radius: 4px; font-size: 8.5px; }
-        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; text-align: center; }
-        .prayer-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 1px; }
-        .prayer-card.active { background: #dcfce7; border-color: #16a34a; }
-        .p-name { font-size: 8px; font-weight: 800; color: #475569; }
-        .p-time { font-size: 9px; font-weight: 900; color: #0f172a; margin-top: 1px; }
+        .prayer-title-row { display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; font-weight: 800; color: #1e3a8a; margin-bottom: 2px; }
+        
+        @keyframes blinker {
+            50% { opacity: 0.3; background-color: #15803d; }
+        }
+        .next-prayer-badge { 
+            background: #16a34a; color: white; padding: 2px 5px; border-radius: 3px; font-size: 8px; font-weight: 900;
+            animation: blinker 1.2s linear infinite; 
+        }
 
-        /* Main Calendar Container */
+        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; text-align: center; }
+        .prayer-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 3px; padding: 2px 1px; }
+        .prayer-card.active { background: #dcfce7; border-color: #16a34a; }
+        .p-name { font-size: 7.5px; font-weight: 800; color: #475569; }
+        .p-time { font-size: 8px; font-weight: 900; color: #0f172a; }
+
+        /* Action Buttons */
+        .action-bar { display: flex; gap: 3px; flex-shrink: 0; }
+        .act-btn { flex: 1; padding: 4px; border: none; border-radius: 4px; font-size: 8.5px; font-weight: 800; cursor: pointer; color: white; text-align: center; }
+        .btn-wa { background: #25d366; }
+        .btn-pwa { background: #0284c7; }
+
+        /* Calendar */
         .calendar-container { 
-            background: #ffffff; border-radius: 8px; padding: 4px; border: 1.5px solid #1e3a8a; display: flex; flex-direction: column; flex-shrink: 0;
+            background: #ffffff; border-radius: 6px; padding: 2px; border: 1.5px solid #1e3a8a; display: flex; flex-direction: column; flex: 1; justify-content: space-between;
         }
-        .calendar-nav { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 2px 4px; }
-        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 4px 10px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 11px; }
-        #month-year-display { font-size: 14px; font-weight: 900; color: #1e3a8a; }
+        .calendar-nav { display: flex; justify-content: space-between; align-items: center; padding: 1px 4px; }
+        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 2px 8px; font-weight: bold; border-radius: 3px; cursor: pointer; font-size: 10px; }
+        #month-year-display { font-size: 12px; font-weight: 900; color: #1e3a8a; }
 
         .hijri-month-strip {
-            background: #1e3a8a; color: #fef08a; text-align: center; font-size: 10.5px; font-weight: 800; padding: 3px; border-radius: 3px; margin: 3px 0;
+            background: #1e3a8a; color: #fef08a; text-align: center; font-size: 9px; font-weight: 800; padding: 2px; border-radius: 2px;
         }
 
-        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f9ff; padding: 4px 0; border-radius: 4px; font-size: 9px; color: #1e3a8a; }
-        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 3px; }
+        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f9ff; padding: 2px 0; font-size: 8px; color: #1e3a8a; }
+        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; flex: 1; }
         
+        /* Cell Layout Redesign */
         .day-cell { 
-            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px; min-height: 48px;
-            display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; position: relative;
+            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 3px; padding: 1px 2px;
+            display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; position: relative; overflow: hidden;
         }
         .day-cell.sunday { background: #fff5f5; }
         .day-cell.friday { background: #f0fdf4; }
         .day-cell.today-cell { border: 2px solid #f59e0b !important; background: #fffbe2 !important; }
-        .today-badge-label { position: absolute; top: 0; right: 0; background: #f59e0b; color: white; font-size: 6px; font-weight: 900; padding: 1px 3px; border-bottom-left-radius: 3px; }
+        
+        .today-badge-label { 
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%); 
+            background: #f59e0b; color: white; font-size: 5.5px; font-weight: 900; padding: 0px 3px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; z-index: 2;
+        }
 
-        .eng-num-center { font-size: 16px; font-weight: 900; color: #0f172a; text-align: center; margin: 1px 0; line-height: 1; }
+        .eng-num-center { font-size: 13px; font-weight: 900; color: #0f172a; text-align: center; line-height: 1.1; margin-top: 3px; }
         .sunday .eng-num-center { color: #dc2626; }
         .friday .eng-num-center { color: #16a34a; }
 
-        .alt-date-row { display: flex; justify-content: space-between; align-items: center; font-size: 8px; font-weight: 800; padding: 0 1px; }
+        .alt-date-row { display: flex; justify-content: space-between; align-items: center; font-size: 7px; font-weight: 800; margin-top: auto; }
         .hijri-txt { color: #16a34a; }
         .mal-txt { color: #c2410c; }
 
-        .event-badge { font-size: 6px; background-color: #7c3aed; color: white; padding: 1px 2px; border-radius: 2px; font-weight: 800; text-align: center; margin-top: 1px; }
-        .saved-note-badge { font-size: 6px; background-color: #0284c7; color: white; padding: 1px 2px; border-radius: 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 700; text-align: center; }
+        .event-badge { font-size: 5.5px; background-color: #7c3aed; color: white; padding: 0.5px 1px; border-radius: 2px; font-weight: 800; text-align: center; }
+        .saved-note-badge { font-size: 5.5px; background-color: #0284c7; color: white; padding: 0.5px 1px; border-radius: 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 700; text-align: center; }
 
-        /* Action Buttons Bar */
-        .action-bar { display: flex; gap: 4px; margin: 4px 0; }
-        .act-btn { flex: 1; padding: 6px; border: none; border-radius: 5px; font-size: 9.5px; font-weight: 800; cursor: pointer; text-align: center; color: white; }
-        .btn-wa { background: #25d366; }
-        .btn-pwa { background: #0284c7; }
-
-        /* Upcoming Events Box */
-        .events-box { background: #fffbe2; border: 1px solid #fde68a; border-radius: 6px; padding: 5px 8px; margin-bottom: 4px; font-size: 9px; color: #92400e; }
-        .events-box h4 { font-size: 10px; font-weight: 900; margin-bottom: 2px; color: #b45309; }
+        /* Upcoming Events & Bottom Marquee */
+        .events-box { background: #fffbe2; border: 1px solid #fde68a; border-radius: 4px; padding: 2px 4px; font-size: 8px; color: #92400e; flex-shrink: 0; margin-top: 2px; }
+        
+        .bottom-ticker {
+            background: #15803d; color: white; font-size: 8.5px; font-weight: 800; padding: 2px 4px;
+            border-radius: 4px; overflow: hidden; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+        }
 
         /* Branding Footer */
-        .brand-footer { text-align: center; padding: 6px 4px; background-color: #0f172a; color: white; border-radius: 5px; flex-shrink: 0; margin-top: 4px; }
-        .brand-footer h2 { color: #38bdf8; font-size: 8.5px; font-weight: 800; }
-        .brand-footer p { color: #cbd5e1; font-size: 7px; margin-top: 1px; }
+        .brand-footer { text-align: center; padding: 3px 2px; background-color: #0f172a; color: white; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+        .brand-footer h2 { color: #38bdf8; font-size: 7.5px; font-weight: 800; }
+        .brand-footer p { color: #cbd5e1; font-size: 6px; }
 
-        /* Modal styling */
+        /* Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); justify-content: center; align-items: center; z-index: 1000; padding: 10px; }
-        .modal-content { background: white; padding: 15px; border-radius: 12px; width: 100%; max-width: 350px; }
-        .modal-header { font-size: 14px; font-weight: 800; color: #1e3a8a; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
-        .modal-body textarea { width: 100%; height: 60px; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; resize: none; font-size: 12px; margin-top: 4px; margin-bottom: 8px; }
-        .modal-buttons { display: flex; gap: 6px; }
-        .btn { padding: 6px 10px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 11px; flex-grow: 1; text-align: center; }
+        .modal-content { background: white; padding: 12px; border-radius: 10px; width: 100%; max-width: 320px; }
+        .modal-header { font-size: 13px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; }
+        .modal-body textarea { width: 100%; height: 50px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; resize: none; font-size: 11px; margin: 4px 0; }
+        .modal-buttons { display: flex; gap: 4px; }
+        .btn { padding: 5px 8px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 10px; flex-grow: 1; text-align: center; }
         .btn-save { background-color: #0284c7; color: white; }
         .btn-download { background-color: #16a34a; color: white; }
         .btn-close { background-color: #64748b; color: white; flex-grow: 0; }
@@ -137,17 +164,14 @@
         .poster-footer-bar p { color: #94a3b8; font-size: 12px; }
     </style>
 </head>
-    <!-- App Icon Support for Mobile & Chrome -->
-<link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
 <body>
 
-    <!-- Announcements Ticker Bar -->
+    <!-- Header News Ticker -->
     <div class="news-ticker">
-        <marquee scrollamount="4">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ് നടക്കും. | നാട്ടുദർസ് സമയം: ബുധൻ മഗ്രിബിന് ശേഷം.</marquee>
+        <marquee scrollamount="3">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ്  | നാട്ടുദർസ് പുരുഷന്മാർ : ബുധൻ മഗ്രിബിന് ശേഷം | നാട്ടുദർസ് സഹോദരിമാർ :വ്യാഴം ഉച്ചക്ക് 2.30 To 3.30 വരെ .</marquee>
     </div>
 
-    <!-- Header -->
+    <!-- Main Header -->
     <div class="top-app-bar">
         <h1>CM CENTER CHERUVATTOOR, VAZHAKKAD</h1>
         <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് നോട്സ് എഴുതാം & Status ഡൗൺലോഡ് ചെയ്യാം</p>
@@ -158,43 +182,28 @@
         📖 "തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്."
     </div>
 
-    <!-- Prayer Times Box (Vazhakkad / Calicut Accurate Times) -->
+    <!-- Prayer Times Box (12-Hour Format & Blinking Alert) -->
     <div class="prayer-container">
         <div class="prayer-title-row">
             <span>🕌 നിസ്കാര സമയങ്ങൾ (വാഴക്കാട്)</span>
             <span class="next-prayer-badge" id="next-prayer-txt">അടുത്തത്: --</span>
         </div>
         <div class="prayer-grid">
-            <div class="prayer-card" id="p-subah">
-                <div class="p-name">സുബഹി</div>
-                <div class="p-time">04:56 AM</div>
-            </div>
-            <div class="prayer-card" id="p-luhar">
-                <div class="p-name">ളുഹർ</div>
-                <div class="p-time">12:30 PM</div>
-            </div>
-            <div class="prayer-card" id="p-asar">
-                <div class="p-name">അസർ</div>
-                <div class="p-time">03:52 PM</div>
-            </div>
-            <div class="prayer-card" id="p-magrib">
-                <div class="p-name">മഗ്‌രിബ്</div>
-                <div class="p-time">06:48 PM</div>
-            </div>
-            <div class="prayer-card" id="p-isha">
-                <div class="p-name">ഇശാഅ്</div>
-                <div class="p-time">08:02 PM</div>
-            </div>
+            <div class="prayer-card" id="p-subah"><div class="p-name">സുബഹി</div><div class="p-time">04:56 AM</div></div>
+            <div class="prayer-card" id="p-luhar"><div class="p-name">ളുഹർ</div><div class="p-time">12:30 PM</div></div>
+            <div class="prayer-card" id="p-asar"><div class="p-name">അസർ</div><div class="p-time">03:52 PM</div></div>
+            <div class="prayer-card" id="p-magrib"><div class="p-name">മഗ്‌രിബ്</div><div class="p-time">06:48 PM</div></div>
+            <div class="prayer-card" id="p-isha"><div class="p-name">ഇശാഅ്</div><div class="p-time">08:02 PM</div></div>
         </div>
     </div>
 
-    <!-- Quick Action Bar -->
+    <!-- Action Bar -->
     <div class="action-bar">
         <button class="act-btn btn-wa" onclick="shareToWhatsApp()">📲 WhatsApp Share</button>
-        <button class="act-btn btn-pwa" id="installPWA flexBtn" onclick="installApp()">📲 Mobile App ലോഗോയായി ഇൻസ്റ്റാൾ ചെയ്യാം</button>
+        <button class="act-btn btn-pwa" onclick="installApp()">📲 Mobile App ലോഗോയായി ഇൻസ്റ്റാൾ ചെയ്യാം</button>
     </div>
 
-    <!-- Calendar Box -->
+    <!-- Calendar Container -->
     <div class="calendar-container">
         <div class="calendar-nav">
             <button class="nav-btn" onclick="changeMonth(-1)">◀ Prev</button>
@@ -210,43 +219,48 @@
         <div class="days-grid" id="calendar-days"></div>
     </div>
 
-    <!-- Upcoming Important Days -->
-    <div class="events-box" style="margin-top: 4px;">
-        <h4>✨ വരുന്ന വിശേഷ ദിവസങ്ങൾ:</h4>
-        <div>• മാസത്തിലെ അവസാന ഞായർ: <b>ബദ്‌രിയ്യ മജ്‌ലിസ്</b></div>
-        <div>• എല്ലാ വ്യാഴാഴ്ചയും: <b>സ്വലാത്ത് മജ്‌ലിസ് & വനിതാ ദർസ്</b></div>
+    <!-- Upcoming Events -->
+    <div class="events-box">
+        <b>✨ വരുന്ന വിശേഷ ദിവസങ്ങൾ:</b> അവസാന ഞായർ: മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ മജ്‌ലിസ് | വ്യാഴം: സ്വലാത്ത് മജ്‌ലിസ് മഗ്‌രിബിന് ശേഷം 
     </div>
 
+    <!-- Bottom Event Announcements Marquee (നാട്ടിലെ പരിപാടികൾ) -->
+    <div class="bottom-ticker" id="bottom-event-ticker">
+        <marquee scrollamount="3" id="bottom-marquee-text">🕌 നാട്ടിലെ പരിപാടികൾ: വാർഷിക മജ്‌ലിസ് സ്വലാത്തും പ്രാർത്ഥനാ സദസ്സും വരുന്നു...</marquee>
+    </div>
+
+    <!-- Footer -->
     <div class="brand-footer">
         <h2>Powered by : ATAVA DIGITAL SERVICES & TRADING</h2>
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
+         <p>Abdul salam ahsani vazhakkad</p>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Dialog -->
     <div class="modal-overlay" id="date-modal">
         <div class="modal-content">
             <div class="modal-header" id="modal-date-title">Date Details</div>
             <div class="modal-body">
-                <label style="font-size: 11px; font-weight: 700; color: #475569;">ഈ ദിവസത്തെ വ്യക്തിഗത നോട്സ് / റിമൈൻഡറുകൾ:</label>
-                <textarea id="modal-notes-input" placeholder="വിശേഷങ്ങളോ ഓർമ്മപ്പെടുത്തലുകളോ എഴുതാം..."></textarea>
+                <label style="font-size: 10px; font-weight: 700; color: #475569;">വ്യക്തിഗത നോട്സ് / റിമൈൻഡറുകൾ:</label>
+                <textarea id="modal-notes-input" placeholder="ഓർമ്മപ്പെടുത്തലുകൾ എഴുതാം..."></textarea>
                 
-                <label style="font-size: 11px; font-weight: 700; color: #475569; display:block;">📸 സ്ഥാപനത്തിന്റെ ഫോട്ടോ / ലോഗോ:</label>
-                <input type="file" id="photo-upload-input" accept="image/*" style="margin-top:2px; margin-bottom:10px; font-size:10px;">
+                <label style="font-size: 10px; font-weight: 700; color: #475569; display:block;">📸 സ്ഥാപനത്തിന്റെ ലോഗോ / ഫോട്ടോ:</label>
+                <input type="file" id="photo-upload-input" accept="image/*" style="margin-top:2px; margin-bottom:8px; font-size:9px;">
             </div>
             <div class="modal-buttons">
-                <button class="btn btn-save" onclick="saveDayNotes()">Save Note</button>
+                <button class="btn btn-save" onclick="saveDayNotes()">Save</button>
                 <button class="btn btn-download" onclick="generatePosterFromModal()">Status Image</button>
                 <button class="btn btn-close" onclick="closeModal()">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Offscreen Poster Canvas -->
+    <!-- Offscreen Canvas Poster -->
     <div id="poster-canvas">
         <div class="poster-top-header">
             <div class="header-left-part">
                 <div class="poster-photo-container">
-                    <img id="poster-institution-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e3a8a'><path d='M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z'/></svg>" alt="Logo">
+                    <img id="poster-institution-img" src="logo.png" alt="Logo">
                 </div>
                 <div class="poster-header-title">CM CENTER CHERUVATTOOR</div>
             </div>
@@ -298,13 +312,13 @@
         const hijriMonthsAra = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
         const malMonths = ["ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം", "മിഥുനം", "കർക്കടകം"];
 
-        // Prayer Timings for Vazhakkad region (24-hour format array)
+        // Prayer Timings (12-Hour Standard Display)
         const prayerSchedule = [
-            { name: "സുബഹി", time: "04:56", id: "p-subah" },
-            { name: "ളൂഹർ", time: "12:30", id: "p-luhar" },
-            { name: "അസർ", time: "15:52", id: "p-asar" },
-            { name: "മഗ്‌രിബ്", time: "18:48", id: "p-magrib" },
-            { name: "ഇശാഅ്", time: "20:02", id: "p-isha" }
+            { name: "സുബഹി", time: "04:56 AM", rawTime: "04:56", id: "p-subah" },
+            { name: "ളുഹർ", time: "12:30 PM", rawTime: "12:30", id: "p-luhar" },
+            { name: "അസർ", time: "03:52 PM", rawTime: "15:52", id: "p-asar" },
+            { name: "മഗ്‌രിബ്", time: "06:48 PM", rawTime: "18:48", id: "p-magrib" },
+            { name: "ഇശാഅ്", time: "08:02 PM", rawTime: "20:02", id: "p-isha" }
         ];
 
         let currentDate = new Date();
@@ -312,7 +326,6 @@
         let deferredPrompt = null;
         const notesRegistry = JSON.parse(localStorage.getItem('cm_notes_registry') || '{}');
 
-        // PWA Install Prompt Listener
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -321,20 +334,15 @@
         function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('App Installed');
-                    }
-                    deferredPrompt = null;
-                });
+                deferredPrompt.userChoice.then((result) => { deferredPrompt = null; });
             } else {
-                alert("മൊബൈലിൽ Browser Menu തുറന്ന് 'Add to Home Screen' ക്ലിക്ക് ചെയ്താൽ CM Center ആപ്പ് ഐക്കണായി ഫോണിൽ സേവ് ചെയ്യാം!");
+                alert("മൊബൈൽ ബ്രൗസർ ഓപ്ഷനിൽ 'Add to Home Screen' നൽകിയാൽ CM Center ആപ്പ് ഐക്കണായി സ്ക്രീനിൽ ലഭിക്കും.");
             }
         }
 
         function shareToWhatsApp() {
             const today = new Date();
-            const text = `📌 *CM Center Cheruvattoor Calendar*\nഇന്നത്തെ തീയതി: ${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}\nനിസ്കാര സമയങ്ങളും പ്രതിദിന സന്ദേശങ്ങളും കാണാൻ സന്ദർശിക്കൂ: ${window.location.href}`;
+            const text = `📌 *CM Center Cheruvattoor Calendar*\nതീയതി: ${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}\nനിസ്കാര സമയങ്ങളും സന്ദേശങ്ങളും കാണാൻ സന്ദർശിക്കൂ: ${window.location.href}`;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
 
@@ -345,62 +353,40 @@
             let nextP = null;
             prayerSchedule.forEach(p => {
                 document.getElementById(p.id).classList.remove('active');
-                if (currentTimeStr < p.time && !nextP) {
+                if (currentTimeStr < p.rawTime && !nextP) {
                     nextP = p;
                 }
             });
 
-            if (!nextP) nextP = prayerSchedule[0]; // If night, next is Subahi
+            if (!nextP) nextP = prayerSchedule[0];
             document.getElementById(nextP.id).classList.add('active');
             document.getElementById('next-prayer-txt').innerText = `അടുത്തത്: ${nextP.name} (${nextP.time})`;
         }
 
         function getHijriDetails(targetDate) {
             const baseDate = new Date(2026, 6, 31);
-            const baseTime = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime();
-            const targetTime = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
-            
-            const diffDays = Math.round((targetTime - baseTime) / (1000 * 60 * 60 * 24));
+            const diffDays = Math.round((new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime() - new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime()) / (1000 * 60 * 60 * 24));
 
             let day = 17 + diffDays;
             let monthIdx = 1;
             let year = 1448;
 
-            while (day > 30) {
-                day -= 30;
-                monthIdx = (monthIdx + 1) % 12;
-                if (monthIdx === 0) year++;
-            }
-            while (day < 1) {
-                day += 30;
-                monthIdx = (monthIdx - 1 + 12) % 12;
-                if (monthIdx === 11) year--;
-            }
+            while (day > 30) { day -= 30; monthIdx = (monthIdx + 1) % 12; if (monthIdx === 0) year++; }
+            while (day < 1) { day += 30; monthIdx = (monthIdx - 1 + 12) % 12; if (monthIdx === 11) year--; }
 
             return { day, monthName: hijriMonthsAra[monthIdx], year };
         }
 
         function getMalayalamDetails(targetDate) {
             const baseDate = new Date(2026, 6, 31);
-            const baseTime = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime();
-            const targetTime = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
-
-            const diffDays = Math.round((targetTime - baseTime) / (1000 * 60 * 60 * 24));
+            const diffDays = Math.round((new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime() - new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime()) / (1000 * 60 * 60 * 24));
 
             let day = 15 + diffDays;
             let monthIdx = 11;
             let year = 1201;
 
-            while (day > 30) {
-                day -= 30;
-                monthIdx = (monthIdx + 1) % 12;
-                if (monthIdx === 0) year++;
-            }
-            while (day < 1) {
-                day += 30;
-                monthIdx = (monthIdx - 1 + 12) % 12;
-                if (monthIdx === 11) year--;
-            }
+            while (day > 30) { day -= 30; monthIdx = (monthIdx + 1) % 12; if (monthIdx === 0) year++; }
+            while (day < 1) { day += 30; monthIdx = (monthIdx - 1 + 12) % 12; if (monthIdx === 11) year--; }
 
             return { day, monthName: malMonths[monthIdx], year };
         }
@@ -468,11 +454,11 @@
                 cell.innerHTML = `
                     ${isToday ? `<div class="today-badge-label">TODAY</div>` : ''}
                     <div class="eng-num-center">${day}</div>
-                    ${isLastSunday ? `<div class="event-badge">✨ ബദ്‌രിയ്യ</div>` : ''}
+                    ${isLastSunday ? `<div class="event-badge">✨ മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ</div>` : ''}
                     ${noteText ? `<div class="saved-note-badge">📌 ${noteText}</div>` : ''}
                     <div class="alt-date-row">
-                        <span class="hijri-txt">🌙 ${hijriDisplay}</span>
-                        <span class="mal-txt">🌾 ${malDisplay}</span>
+                        <span class="hijri-txt">🌙${hijriDisplay}</span>
+                        <span class="mal-txt">🌾${malDisplay}</span>
                     </div>
                 `;
 
@@ -537,7 +523,6 @@
             renderCalendar();
         }
 
-        // Daily quote setup based on day of month
         const today = new Date();
         const quoteObj = dailyQuotes[(today.getDate() - 1) % dailyQuotes.length];
         document.getElementById('daily-quote-text').innerText = `📖 ${quoteObj.mal}`;
