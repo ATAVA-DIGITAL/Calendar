@@ -6,11 +6,16 @@
     <title>CM CENTER CHERUVATTOOR</title>
     
     <!-- PWA Application Icons & Embedded Manifest -->
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
     <link rel="shortcut icon" href="logo.png">
-    <link rel="manifest" href='data:application/json,{"name":"CM CENTER CHERUVATTOOR","short_name":"CM CENTER","start_url":"./","display":"standalone","background_color":"#1e3a8a","theme_color":"#1e3a8a","icons":[{"src":"logo.png","sizes":"192x192","type":"image/png"},{"src":"logo.png","sizes":"512x512","type":"image/png"}]}'>
+    
+    <!-- Updated PWA Manifest for Home Screen Logo -->
+    <link rel="manifest" href='data:application/json,{"name":"CM CENTER CHERUVATTOOR","short_name":"CM CENTER","start_url":"./","display":"standalone","background_color":"#1e3a8a","theme_color":"#1e3a8a","icons":[{"src":"logo.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
     <meta name="theme-color" content="#1e3a8a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="CM CENTER">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
@@ -88,13 +93,13 @@
             background: #1e3a8a; color: #fef08a; text-align: center; font-size: 9px; font-weight: 800; padding: 2px; border-radius: 2px;
         }
 
-        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f9ff; padding: 2px 0; font-size: 8px; color: #1e3a8a; }
+        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f9ff; padding: 2px 0; font-size: 9px; color: #1e3a8a; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; flex: 1; }
         
-        /* Cell Layout Redesign */
+        /* Cell Layout Redesign - Bigger fonts and Centered English Date */
         .day-cell { 
-            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 3px; padding: 1px 2px;
-            display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; position: relative; overflow: hidden;
+            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px 3px;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center; cursor: pointer; position: relative; overflow: hidden;
         }
         .day-cell.sunday { background: #fff5f5; }
         .day-cell.friday { background: #f0fdf4; }
@@ -102,22 +107,39 @@
         
         .today-badge-label { 
             position: absolute; top: 0; left: 50%; transform: translateX(-50%); 
-            background: #f59e0b; color: white; font-size: 5.5px; font-weight: 900; padding: 0px 3px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; z-index: 2;
+            background: #f59e0b; color: white; font-size: 6px; font-weight: 900; padding: 0px 4px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; z-index: 2;
         }
 
-        .eng-num-center { font-size: 13px; font-weight: 900; color: #0f172a; text-align: center; line-height: 1.1; margin-top: 3px; }
+        /* Large & Centered English Date */
+        .eng-num-center { 
+            font-size: 18px; 
+            font-weight: 900; 
+            color: #0f172a; 
+            text-align: center; 
+            line-height: 1; 
+            margin: auto 0; 
+        }
         .sunday .eng-num-center { color: #dc2626; }
         .friday .eng-num-center { color: #16a34a; }
 
-        .alt-date-row { display: flex; justify-content: space-between; align-items: center; font-size: 7px; font-weight: 800; margin-top: auto; }
+        /* Bottom Alternate Dates (Hijri & Malayalam) */
+        .alt-date-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
+            font-size: 9px; 
+            font-weight: 800; 
+            margin-top: auto; 
+        }
         .hijri-txt { color: #16a34a; }
         .mal-txt { color: #c2410c; }
 
-        .event-badge { font-size: 5.5px; background-color: #7c3aed; color: white; padding: 0.5px 1px; border-radius: 2px; font-weight: 800; text-align: center; }
-        .saved-note-badge { font-size: 5.5px; background-color: #0284c7; color: white; padding: 0.5px 1px; border-radius: 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 700; text-align: center; }
+        .event-badge { font-size: 6px; background-color: #7c3aed; color: white; padding: 1px 2px; border-radius: 2px; font-weight: 800; text-align: center; width: 100%; }
+        .saved-note-badge { font-size: 6px; background-color: #0284c7; color: white; padding: 1px 2px; border-radius: 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 700; text-align: center; width: 100%; }
 
         /* Upcoming Events & Bottom Marquee */
-        .events-box { background: #fffbe2; border: 1px solid #fde68a; border-radius: 4px; padding: 2px 4px; font-size: 8px; color: #92400e; flex-shrink: 0; margin-top: 2px; }
+        .events-box { background: #fffbe2; border: 1px solid #fde68a; border-radius: 4px; padding: 2px 4px; font-size: 8.5px; color: #92400e; flex-shrink: 0; margin-top: 2px; }
         
         .bottom-ticker {
             background: #15803d; color: white; font-size: 8.5px; font-weight: 800; padding: 2px 4px;
@@ -224,16 +246,16 @@
         <b>✨ വരുന്ന വിശേഷ ദിവസങ്ങൾ:</b> അവസാന ഞായർ: മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ മജ്‌ലിസ് | വ്യാഴം: സ്വലാത്ത് മജ്‌ലിസ് മഗ്‌രിബിന് ശേഷം 
     </div>
 
-    <!-- Bottom Event Announcements Marquee (നാട്ടിലെ പരിപാടികൾ) -->
+    <!-- Bottom Event Announcements Marquee -->
     <div class="bottom-ticker" id="bottom-event-ticker">
-        <marquee scrollamount="3" id="bottom-marquee-text">🕌 നാട്ടിലെ പരിപാടികൾ: വാർഷിക മജ്‌ലിസ് സ്വലാത്തും പ്രാർത്ഥനാ സദസ്സും വരുന്നു...</marquee>
+        <marquee scrollamount="3" id="bottom-marquee-text">🕌 നാട്ടിലെ പരിപാടികൾ: </marquee>
     </div>
 
     <!-- Footer -->
     <div class="brand-footer">
         <h2>Powered by : ATAVA DIGITAL SERVICES & TRADING</h2>
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
-         <p>Abdul salam ahsani vazhakkad</p>
+        <p>Abdul salam ahsani vazhakkad</p>
     </div>
 
     <!-- Modal Dialog -->
@@ -312,7 +334,6 @@
         const hijriMonthsAra = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
         const malMonths = ["ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം", "മിഥുനം", "കർക്കടകം"];
 
-        // Prayer Timings (12-Hour Standard Display)
         const prayerSchedule = [
             { name: "സുബഹി", time: "04:56 AM", rawTime: "04:56", id: "p-subah" },
             { name: "ളുഹർ", time: "12:30 PM", rawTime: "12:30", id: "p-luhar" },
