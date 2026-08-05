@@ -146,11 +146,34 @@
             border-radius: 4px; overflow: hidden; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
         }
 
-        /* Branding Footer */
-        .brand-footer { text-align: center; padding: 3px 2px; background-color: #0f172a; color: white; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
-        .brand-footer h2 { color: #38bdf8; font-size: 7.5px; font-weight: 800; }
-        .brand-footer p { color: #cbd5e1; font-size: 6px; }
+       /* Branding Footer - Big & Bold Redesign */
+.brand-footer { 
+    text-align: center; 
+    padding: 8px 4px; /* ഫൂട്ടറിനുള്ളിലെ സ്ഥലം കൂട്ടി */
+    background-color: #0f172a; 
+    color: white; 
+    border-radius: 6px; 
+    flex-shrink: 0; 
+    margin-top: 3px;
+    border-top: 2px solid #38bdf8; /* കമ്പനി ശ്രദ്ധിക്കപ്പെടാൻ മുകളിൽ ഒരു ചെറിയ ലൈൻ */
+}
 
+/* Company Name Font Bigger */
+.brand-footer h2 { 
+    color: #38bdf8; 
+    font-size: 11px; /* പഴയത് 7.5px ആയിരുന്നു */
+    font-weight: 900; 
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+/* Services & Owner Details Font Bigger */
+.brand-footer p { 
+    color: #cbd5e1; 
+    font-size: 8.5px; /* പഴയത് 6px ആയിരുന്നു */
+    font-weight: 700;
+    line-height: 1.3;
+}
         /* Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); justify-content: center; align-items: center; z-index: 1000; padding: 10px; }
         .modal-content { background: white; padding: 12px; border-radius: 10px; width: 100%; max-width: 320px; }
