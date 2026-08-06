@@ -200,28 +200,87 @@
         .btn-download { background-color: #16a34a; color: white; }
         .btn-close { background-color: #64748b; color: white; flex-grow: 0; }
 
-        /* Offscreen Poster Canvas */
-        #poster-canvas { position: absolute; left: -9999px; width: 800px; height: 800px; background: linear-gradient(135deg, #ffffff, #f1f5f9); padding: 25px; display: flex; flex-direction: column; justify-content: space-between; border: 12px solid #1e3a8a; }
-        .poster-top-header { background: #ffffff; border: 2px solid #1e3a8a; border-radius: 18px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .header-left-part { display: flex; align-items: center; gap: 15px; }
-        .poster-photo-container { width: 55px; height: 55px; border-radius: 12px; border: 2px solid #1e3a8a; overflow: hidden; background: #eff6ff; display: flex; justify-content: center; align-items: center; }
+        /* Offscreen Poster Canvas - BIGGER FONT DESIGN */
+        #poster-canvas { 
+            position: absolute; 
+            left: -9999px; 
+            width: 800px; 
+            height: 800px; 
+            background: linear-gradient(135deg, #ffffff, #f1f5f9); 
+            padding: 28px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            border: 12px solid #1e3a8a; 
+        }
+        .poster-top-header { 
+            background: #ffffff; 
+            border: 3px solid #1e3a8a; 
+            border-radius: 20px; 
+            padding: 14px 22px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .header-left-part { display: flex; align-items: center; gap: 16px; }
+        .poster-photo-container { 
+            width: 65px; 
+            height: 65px; 
+            border-radius: 14px; 
+            border: 3px solid #1e3a8a; 
+            overflow: hidden; 
+            background: #eff6ff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
         .poster-photo-container img { width: 100%; height: 100%; object-fit: cover; }
-        .poster-header-title { font-size: 20px; font-weight: 900; color: #1e3a8a; }
-        .poster-header-sub { background: #1e3a8a; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 14px; }
-        .poster-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 15px 0; }
-        .p-card { background: #ffffff; border-radius: 18px; padding: 18px 10px; text-align: center; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
-        .p-card-title { font-size: 13px; font-weight: 800; text-transform: uppercase; }
-        .p-card-num { font-size: 48px; font-weight: 900; line-height: 1; margin: 8px 0; }
-        .p-card-sub { font-size: 14px; font-weight: 800; }
-        .card-eng { border-top: 6px solid #2563eb; background: #eff6ff; } .card-eng .p-card-title { color: #1d4ed8; } .card-eng .p-card-num { color: #1e3a8a; }
-        .card-mal { border-top: 6px solid #f59e0b; background: #fffbe2; } .card-mal .p-card-title { color: #d97706; } .card-mal .p-card-num { color: #b45309; }
-        .card-hij { border-top: 6px solid #10b981; background: #f0fdf4; } .card-hij .p-card-title { color: #059669; } .card-hij .p-card-num { color: #065f46; }
-        .poster-hadith-box { background: #ffffff; border: 2px dashed #1e3a8a; border-radius: 20px; padding: 22px; text-align: center; min-height: 170px; display: flex; flex-direction: column; justify-content: center; }
-        .hadith-ara { font-size: 25px; font-weight: bold; color: #0f172a; direction: rtl; margin-bottom: 10px; }
-        .hadith-mal { font-size: 16px; font-weight: 700; color: #334155; }
-        .poster-footer-bar { background: #0f172a; border-radius: 14px; padding: 12px; text-align: center; border-top: 3px solid #38bdf8; }
-        .poster-footer-bar h3 { color: #38bdf8; font-size: 16px; font-weight: 900; }
-        .poster-footer-bar p { color: #94a3b8; font-size: 12px; }
+        .poster-header-title { font-size: 24px; font-weight: 900; color: #1e3a8a; letter-spacing: 0.5px; }
+        .poster-header-sub { background: #1e3a8a; color: #ffffff; padding: 8px 18px; border-radius: 20px; font-weight: 900; font-size: 16px; letter-spacing: 0.5px; }
+        
+        .poster-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 15px 0; }
+        .p-card { 
+            background: #ffffff; 
+            border-radius: 20px; 
+            padding: 20px 12px; 
+            text-align: center; 
+            border: 2px solid #e2e8f0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+        .p-card-title { font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; }
+        .p-card-num { font-size: 68px; font-weight: 900; line-height: 1; margin: 10px 0; }
+        .p-card-sub { font-size: 16px; font-weight: 900; }
+        
+        .card-eng { border-top: 8px solid #2563eb; background: #eff6ff; } .card-eng .p-card-title { color: #1d4ed8; } .card-eng .p-card-num { color: #1e3a8a; }
+        .card-mal { border-top: 8px solid #f59e0b; background: #fffbe2; } .card-mal .p-card-title { color: #d97706; } .card-mal .p-card-num { color: #b45309; }
+        .card-hij { border-top: 8px solid #10b981; background: #f0fdf4; } .card-hij .p-card-title { color: #059669; } .card-hij .p-card-num { color: #065f46; }
+        
+        .poster-hadith-box { 
+            background: #ffffff; 
+            border: 3px dashed #1e3a8a; 
+            border-radius: 22px; 
+            padding: 24px 20px; 
+            text-align: center; 
+            min-height: 180px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .hadith-ara { font-size: 32px; font-weight: 900; color: #0f172a; direction: rtl; margin-bottom: 12px; line-height: 1.3; }
+        .hadith-mal { font-size: 20px; font-weight: 800; color: #1e293b; line-height: 1.4; }
+        
+        .poster-footer-bar { 
+            background: #0f172a; 
+            border-radius: 16px; 
+            padding: 14px; 
+            text-align: center; 
+            border-top: 4px solid #38bdf8; 
+        }
+        .poster-footer-bar h3 { color: #38bdf8; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .poster-footer-bar p { color: #cbd5e1; font-size: 14px; font-weight: 700; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -395,7 +454,7 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((result) => { deferredPrompt = null; });
             } else {
-                alert("മുകളിൽ വലതു ഭാഗത്ത് മൂന്ന് ഡോട്ട് എടുത്ത് അതിൽ 'Add to Home Screen' എന്നത് ക്ലിക്ക് ചെയ്‌താൽ CM Center ആപ്പ് ഐക്കണായി നിങ്ങളുടെ സ്ക്രീനിൽ ലഭിക്കും. അത് എപ്പോഴും ഓപ്പൺ ആക്കാൻ പറ്റും.ം.");
+                alert("മുകളിൽ വലതു ഭാഗത്ത് മൂന്ന് ഡോട്ട് എടുത്ത് അതിൽ 'Add to Home Screen' എന്നത് ക്ലിക്ക് ചെയ്‌താൽ CM Center ആപ്പ് ഐക്കണായി നിങ്ങളുടെ സ്ക്രീനിൽ ലഭിക്കും. അത് എപ്പോഴും ഓപ്പൺ ആക്കാൻ പറ്റും.");
             }
         }
 
