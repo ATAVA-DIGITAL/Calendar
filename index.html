@@ -36,17 +36,34 @@
             padding: 4px;
         }
 
-        /* Top Announcement Ticker */
-        .news-ticker {
-            background: #dc2626; color: white; font-size: 9px; font-weight: 800; padding: 2px 4px;
-            border-radius: 4px; overflow: hidden; white-space: nowrap; flex-shrink: 0;
-        }
+       /* Top Announcement Ticker - Bigger & Clear Font */
+.news-ticker {
+    background: #dc2626; 
+    color: white; 
+    font-size: 11px; /* പഴയത് 9px ആയിരുന്നു */
+    font-weight: 900; 
+    padding: 4px 6px; /* ടിക്കറിന്റെ പൊക്കം കൂട്ടി */
+    border-radius: 4px; 
+    overflow: hidden; 
+    white-space: nowrap; 
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
+}
 
-        /* Header */
-        .top-app-bar {
-            background: #1e3a8a; color: white; text-align: center; padding: 4px 2px; border-radius: 5px; flex-shrink: 0;
-        }
-        .top-app-bar h1 { font-size: 12px; font-weight: 900; letter-spacing: 0.3px; }
+/* Bottom Event Announcements Ticker - Bigger & Highlighted */
+.bottom-ticker {
+    background: #15803d; 
+    color: white; 
+    font-size: 11px; /* പഴയത് 8.5px ആയിരുന്നു */
+    font-weight: 900; 
+    padding: 4px 6px; 
+    border-radius: 4px; 
+    overflow: hidden; 
+    white-space: nowrap; 
+    flex-shrink: 0; 
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+}
         .top-app-bar p { font-size: 8px; opacity: 0.9; color: #93c5fd; }
 
         /* Hadith Bar */
@@ -213,8 +230,8 @@
 
     <!-- Header News Ticker -->
     <div class="news-ticker">
-        <marquee scrollamount="3">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ്  | നാട്ടുദർസ് പുരുഷന്മാർ : ബുധൻ മഗ്രിബിന് ശേഷം | നാട്ടുദർസ് സഹോദരിമാർ :വ്യാഴം ഉച്ചക്ക് 2.30 To 3.30 വരെ .</marquee>
-    </div>
+    <marquee scrollamount="2">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ്  | നാട്ടുദർസ് പുരുഷന്മാർ : ബുധൻ മഗ്രിബിന് ശേഷം | നാട്ടുദർസ് സഹോദരിമാർ : വ്യാഴം ഉച്ചക്ക് 2.30 To 3.30 വരെ .</marquee>
+</div>
 
     <!-- Main Header -->
     <div class="top-app-bar">
@@ -270,9 +287,9 @@
     </div>
 
     <!-- Bottom Event Announcements Marquee -->
-    <div class="bottom-ticker" id="bottom-event-ticker">
-        <marquee scrollamount="3" id="bottom-marquee-text">🕌 സമസ്ത:  100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം</marquee>
-    </div>
+   <div class="bottom-ticker" id="bottom-event-ticker">
+    <marquee scrollamount="2" id="bottom-marquee-text">🕌 സമസ്ത: 100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം</marquee>
+</div>
 
     <!-- Footer -->
     <div class="brand-footer">
