@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
     <link rel="shortcut icon" href="logo.png">
     
-    <!-- Updated PWA Manifest for Home Screen Logo -->
+    <!-- PWA Manifest for Home Screen Logo -->
     <link rel="manifest" href='data:application/json,{"name":"CM CENTER CHERUVATTOOR","short_name":"CM CENTER","start_url":"./","display":"standalone","background_color":"#1e3a8a","theme_color":"#1e3a8a","icons":[{"src":"logo.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
     <meta name="theme-color" content="#1e3a8a">
     <meta name="mobile-web-app-capable" content="yes">
@@ -36,34 +36,25 @@
             padding: 4px;
         }
 
-       /* Top Announcement Ticker - Bigger & Clear Font */
-.news-ticker {
-    background: #dc2626; 
-    color: white; 
-    font-size: 11px; /* പഴയത് 9px ആയിരുന്നു */
-    font-weight: 900; 
-    padding: 4px 6px; /* ടിക്കറിന്റെ പൊക്കം കൂട്ടി */
-    border-radius: 4px; 
-    overflow: hidden; 
-    white-space: nowrap; 
-    flex-shrink: 0;
-    letter-spacing: 0.3px;
-}
+        /* Top Announcement Ticker - Bigger Font & Bold */
+        .news-ticker {
+            background: #dc2626; 
+            color: white; 
+            font-size: 11px; 
+            font-weight: 900; 
+            padding: 4px 6px; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            flex-shrink: 0;
+            letter-spacing: 0.3px;
+        }
 
-/* Bottom Event Announcements Ticker - Bigger & Highlighted */
-.bottom-ticker {
-    background: #15803d; 
-    color: white; 
-    font-size: 11px; /* പഴയത് 8.5px ആയിരുന്നു */
-    font-weight: 900; 
-    padding: 4px 6px; 
-    border-radius: 4px; 
-    overflow: hidden; 
-    white-space: nowrap; 
-    flex-shrink: 0; 
-    margin-top: 2px;
-    letter-spacing: 0.3px;
-}
+        /* Header */
+        .top-app-bar {
+            background: #1e3a8a; color: white; text-align: center; padding: 4px 2px; border-radius: 5px; flex-shrink: 0;
+        }
+        .top-app-bar h1 { font-size: 12px; font-weight: 900; letter-spacing: 0.3px; }
         .top-app-bar p { font-size: 8px; opacity: 0.9; color: #93c5fd; }
 
         /* Hadith Bar */
@@ -113,7 +104,7 @@
         .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f9ff; padding: 2px 0; font-size: 9px; color: #1e3a8a; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; flex: 1; }
         
-        /* Cell Layout Redesign - Bigger fonts and Centered English Date */
+        /* Cell Layout */
         .day-cell { 
             background: #ffffff; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px 3px;
             display: flex; flex-direction: column; justify-content: space-between; align-items: center; cursor: pointer; position: relative; overflow: hidden;
@@ -127,7 +118,7 @@
             background: #f59e0b; color: white; font-size: 6px; font-weight: 900; padding: 0px 4px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; z-index: 2;
         }
 
-        /* Large & Centered English Date */
+        /* Centered English Date */
         .eng-num-center { 
             font-size: 18px; 
             font-weight: 900; 
@@ -139,7 +130,7 @@
         .sunday .eng-num-center { color: #dc2626; }
         .friday .eng-num-center { color: #16a34a; }
 
-        /* Bottom Alternate Dates (Hijri & Malayalam) */
+        /* Bottom Alternate Dates */
         .alt-date-row { 
             display: flex; 
             justify-content: space-between; 
@@ -155,42 +146,49 @@
         .event-badge { font-size: 6px; background-color: #7c3aed; color: white; padding: 1px 2px; border-radius: 2px; font-weight: 800; text-align: center; width: 100%; }
         .saved-note-badge { font-size: 6px; background-color: #0284c7; color: white; padding: 1px 2px; border-radius: 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 700; text-align: center; width: 100%; }
 
-        /* Upcoming Events & Bottom Marquee */
+        /* Upcoming Events Box */
         .events-box { background: #fffbe2; border: 1px solid #fde68a; border-radius: 4px; padding: 2px 4px; font-size: 8.5px; color: #92400e; flex-shrink: 0; margin-top: 2px; }
         
+        /* Bottom Ticker - Bigger Font & Bold */
         .bottom-ticker {
-            background: #15803d; color: white; font-size: 8.5px; font-weight: 800; padding: 2px 4px;
-            border-radius: 4px; overflow: hidden; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+            background: #15803d; 
+            color: white; 
+            font-size: 11px; 
+            font-weight: 900; 
+            padding: 4px 6px; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            flex-shrink: 0; 
+            margin-top: 2px;
+            letter-spacing: 0.3px;
         }
 
-       /* Branding Footer - Big & Bold Redesign */
-.brand-footer { 
-    text-align: center; 
-    padding: 8px 4px; /* ഫൂട്ടറിനുള്ളിലെ സ്ഥലം കൂട്ടി */
-    background-color: #0f172a; 
-    color: white; 
-    border-radius: 6px; 
-    flex-shrink: 0; 
-    margin-top: 3px;
-    border-top: 2px solid #38bdf8; /* കമ്പനി ശ്രദ്ധിക്കപ്പെടാൻ മുകളിൽ ഒരു ചെറിയ ലൈൻ */
-}
+        /* Branding Footer - Prominent & Big Font */
+        .brand-footer { 
+            text-align: center; 
+            padding: 8px 4px; 
+            background-color: #0f172a; 
+            color: white; 
+            border-radius: 6px; 
+            flex-shrink: 0; 
+            margin-top: 3px;
+            border-top: 2px solid #38bdf8;
+        }
+        .brand-footer h2 { 
+            color: #38bdf8; 
+            font-size: 11px; 
+            font-weight: 900; 
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .brand-footer p { 
+            color: #cbd5e1; 
+            font-size: 8.5px; 
+            font-weight: 700;
+            line-height: 1.3;
+        }
 
-/* Company Name Font Bigger */
-.brand-footer h2 { 
-    color: #38bdf8; 
-    font-size: 11px; /* പഴയത് 7.5px ആയിരുന്നു */
-    font-weight: 900; 
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
-}
-
-/* Services & Owner Details Font Bigger */
-.brand-footer p { 
-    color: #cbd5e1; 
-    font-size: 8.5px; /* പഴയത് 6px ആയിരുന്നു */
-    font-weight: 700;
-    line-height: 1.3;
-}
         /* Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); justify-content: center; align-items: center; z-index: 1000; padding: 10px; }
         .modal-content { background: white; padding: 12px; border-radius: 10px; width: 100%; max-width: 320px; }
@@ -230,8 +228,8 @@
 
     <!-- Header News Ticker -->
     <div class="news-ticker">
-    <marquee scrollamount="2">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ്  | നാട്ടുദർസ് പുരുഷന്മാർ : ബുധൻ മഗ്രിബിന് ശേഷം | നാട്ടുദർസ് സഹോദരിമാർ : വ്യാഴം ഉച്ചക്ക് 2.30 To 3.30 വരെ .</marquee>
-</div>
+        <marquee scrollamount="2">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ്  | നാട്ടുദർസ് പുരുഷന്മാർ : ബുധൻ മഗ്രിബിന് ശേഷം | നാട്ടുദർസ് സഹോദരിമാർ : വ്യാഴം ഉച്ചക്ക് 2.30 To 3.30 വരെ .</marquee>
+    </div>
 
     <!-- Main Header -->
     <div class="top-app-bar">
@@ -244,7 +242,7 @@
         📖 "തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്."
     </div>
 
-    <!-- Prayer Times Box (12-Hour Format & Blinking Alert) -->
+    <!-- Prayer Times Box -->
     <div class="prayer-container">
         <div class="prayer-title-row">
             <span>🕌 നിസ്കാര സമയങ്ങൾ (വാഴക്കാട്)</span>
@@ -287,9 +285,9 @@
     </div>
 
     <!-- Bottom Event Announcements Marquee -->
-   <div class="bottom-ticker" id="bottom-event-ticker">
-    <marquee scrollamount="2" id="bottom-marquee-text">🕌 സമസ്ത: 100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം</marquee>
-</div>
+    <div class="bottom-ticker" id="bottom-event-ticker">
+        <marquee scrollamount="2" id="bottom-marquee-text">🕌 സമസ്ത: 100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം</marquee>
+    </div>
 
     <!-- Footer -->
     <div class="brand-footer">
@@ -397,7 +395,7 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((result) => { deferredPrompt = null; });
             } else {
-                alert("മൊബൈൽ ബ്രൗസർ ഓപ്ഷനിൽ 'Add to Home Screen' നൽകിയാൽ CM Center ആപ്പ് ഐക്കണായി സ്ക്രീനിൽ ലഭിക്കും.");
+                alert("മുകളിൽ വലതു ഭാഗത്ത് മൂന്ന് ഡോട്ട് എടുത്ത് അതിൽ 'Add to Home Screen' എന്നത് ക്ലിക്ക് ചെയ്‌താൽ CM Center ആപ്പ് ഐക്കണായി നിങ്ങളുടെ സ്ക്രീനിൽ ലഭിക്കും. അത് എപ്പോഴും ഓപ്പൺ ആക്കാൻ പറ്റും.ം.");
             }
         }
 
