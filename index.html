@@ -424,21 +424,31 @@
 
         // ഗൂഗിൾ ഷീറ്റിൽ നിന്നും ലൈവ് ഡാറ്റ ഫെച്ച് ചെയ്യുന്ന ഫങ്ഷൻ
         async function fetchSheetEvents() {
-            try {
-                const response = await fetch(GOOGLE_SHEET_API + "?t=" + new Date().getTime());
-                const rawData = await response.json();
-                
-                sheetEvents = {};
-                for (let key in rawData) {
-                    sheetEvents[key.trim()] = rawData[key];
-                }
-                renderCalendar();
-            } catch (error) {
-                console.error("Error fetching events:", error);
-                renderCalendar();
+    try {
+        const response = await fetch(GOOGLE_SHEET_API + "?t=" + new Date().getTime());
+        const rawData = await response.json();
+        
+        sheetEvents = {};
+        for (let key in rawData) {
+            let cleanKey = key.trim();
+            sheetEvents[cleanKey] = rawData[key];
+            
+            // 2026-7-11 ഫോർമാറ്റിനെ 2026-8-11 മായും മാപ്പ് ചെയ്യുന്നു
+            let parts = cleanKey.split('-');
+            if(parts.length === 3) {
+                let y = parts[0];
+                let m = parseInt(parts[1]);
+                let d = parts[2];
+                sheetEvents[`${y}-${m + 1}-${d}`] = rawData[key];
             }
         }
-
+        renderCalendar();
+    } catch (error) {
+        console.error("Error fetching events:", error);
+        renderCalendar();
+    }
+}
+        
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
