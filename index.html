@@ -329,7 +329,6 @@
     <div class="brand-footer">
         <h2>Powered by : ATAVA DIGITAL SERVICES & TRADING</h2>
         <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
-        <p>Abdul salam ahsani vazhakkad</p>
     </div>
 
     <div class="modal-overlay" id="date-modal">
@@ -393,8 +392,8 @@
     </div>
 
     <script>
-        // ഇവിടെ പുതിയ ഗൂഗിൾ വെബ് ആപ്പ് ലിങ്ക് ചേർത്തുവെച്ചു
-        const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbyPYvtqCAWrSdBal6A6scAA_-Z3WHT-unoGgnw1Y0FdIiw8r9AFckZNNO03IJN9kz-lNg/exec";
+        // പുതിയ Web App URL ചേർത്തു
+        const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec";
         let sheetEvents = {};
 
         const dailyQuotes = [
@@ -423,11 +422,16 @@
         let deferredPrompt = null;
         const notesRegistry = JSON.parse(localStorage.getItem('cm_notes_registry') || '{}');
 
-        // ഗൂഗിൾ ഷീറ്റിൽ നിന്നും ലൈവ് ഡാറ്റ കൊണ്ടുവരുന്ന ഫങ്ഷൻ
+        // ഗൂഗിൾ ഷീറ്റിൽ നിന്നും ലൈവ് ഡാറ്റ ഫെച്ച് ചെയ്യുന്ന ഫങ്ഷൻ
         async function fetchSheetEvents() {
             try {
-                const response = await fetch(GOOGLE_SHEET_API);
-                sheetEvents = await response.json();
+                const response = await fetch(GOOGLE_SHEET_API + "?t=" + new Date().getTime());
+                const rawData = await response.json();
+                
+                sheetEvents = {};
+                for (let key in rawData) {
+                    sheetEvents[key.trim()] = rawData[key];
+                }
                 renderCalendar();
             } catch (error) {
                 console.error("Error fetching events:", error);
@@ -558,7 +562,6 @@
 
                 const key = `${year}-${month}-${day}`;
                 
-                // ഗൂഗിൾ ഷീറ്റിൽ നിന്നുള്ള വിവരങ്ങളും പേഴ്സണൽ നോട്ട്സും
                 const sheetNote = sheetEvents[key] || ""; 
                 const noteText = notesRegistry[key] || "";
                 const isLastSunday = (day === lastSundayDay);
