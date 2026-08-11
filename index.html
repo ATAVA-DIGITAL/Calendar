@@ -1,660 +1,289 @@
 <!DOCTYPE html>
 <html lang="ml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CM CENTER CHERUVATTOOR</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CM Center Calendar</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f6f9; color: #333; }
     
-    <!-- PWA Application Icons & Embedded Manifest -->
-    <link rel="icon" type="image/png" sizes="192x192" href="logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-    <link rel="shortcut icon" href="logo.png">
+    .header-bar { background: #d32f2f; color: #fff; text-align: center; padding: 8px; font-weight: bold; font-size: 13px; }
+    .title-box { background: #0d47a1; color: #fff; text-align: center; padding: 12px; font-size: 16px; font-weight: bold; }
+    .subtitle { font-size: 11px; font-weight: normal; margin-top: 4px; color: #e0e0e0; }
     
-    <!-- PWA Manifest for Home Screen Logo -->
-    <link rel="manifest" href='data:application/json,{"name":"CM CENTER CHERUVATTOOR","short_name":"CM CENTER","start_url":"./","display":"standalone","background_color":"#1e3a8a","theme_color":"#1e3a8a","icons":[{"src":"logo.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
-    <meta name="theme-color" content="#1e3a8a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="CM CENTER">
+    /* Hadith Box */
+    .poster-hadith-box { background: #fff; margin: 8px; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .hadith-ara { font-size: 15px; font-weight: bold; color: #0d47a1; margin-bottom: 4px; line-height: 1.4; }
+    .hadith-mal { font-size: 12px; color: #444; line-height: 1.4; }
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    /* Namaz Schedule */
+    .namaz-container { background: #fff; margin: 8px; padding: 8px; border-radius: 8px; border: 1px solid #e0e0e0; }
+    .namaz-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 6px; }
+    .namaz-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; text-align: center; }
+    .namaz-card { background: #f8f9fa; border: 1px solid #ddd; padding: 4px 2px; border-radius: 4px; }
+    .namaz-card.active { background: #e8f5e9; border-color: #2e7d32; }
+    .namaz-title { font-size: 10px; color: #666; }
+    .namaz-time { font-size: 11px; font-weight: bold; color: #000; }
     
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        
-        html, body { 
-            height: 100%; 
-            width: 100%; 
-            overflow: hidden; 
-            background-color: #f8fafc; 
-        }
-
-        body { 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-            padding: 4px;
-        }
-
-        .news-ticker {
-            background: #dc2626; 
-            color: white; 
-            font-size: 11px; 
-            font-weight: 900; 
-            padding: 4px 6px; 
-            border-radius: 4px; 
-            overflow: hidden; 
-            white-space: nowrap; 
-            flex-shrink: 0;
-            letter-spacing: 0.3px;
-        }
-
-        .top-app-bar {
-            background: #1e3a8a; color: white; text-align: center; padding: 4px 2px; border-radius: 5px; flex-shrink: 0;
-        }
-        .top-app-bar h1 { font-size: 12px; font-weight: 900; letter-spacing: 0.3px; }
-        .top-app-bar p { font-size: 8px; opacity: 0.9; color: #93c5fd; }
-
-        .daily-hadith-bar {
-            background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; padding: 3px 5px;
-            text-align: center; color: #1e3a8a; font-size: 8.5px; font-weight: 700; flex-shrink: 0;
-        }
-
-        .prayer-container {
-            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 5px; padding: 3px 4px; flex-shrink: 0;
-        }
-        .prayer-title-row { display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; font-weight: 800; color: #1e3a8a; margin-bottom: 2px; }
-        
-        @keyframes blinker {
-            50% { opacity: 0.3; background-color: #15803d; }
-        }
-        .next-prayer-badge { 
-            background: #16a34a; color: white; padding: 2px 5px; border-radius: 3px; font-size: 8px; font-weight: 900;
-            animation: blinker 1.2s linear infinite; 
-        }
-
-        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; text-align: center; }
-        .prayer-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 3px; padding: 2px 1px; }
-        .prayer-card.active { background: #dcfce7; border-color: #16a34a; }
-        .p-name { font-size: 7.5px; font-weight: 800; color: #475569; }
-        .p-time { font-size: 8px; font-weight: 900; color: #0f172a; }
-
-        .action-bar { display: flex; gap: 3px; flex-shrink: 0; }
-        .act-btn { flex: 1; padding: 4px; border: none; border-radius: 4px; font-size: 8.5px; font-weight: 800; cursor: pointer; color: white; text-align: center; }
-        .btn-wa { background: #25d366; }
-        .btn-pwa { background: #0284c7; }
-
-        .calendar-container { 
-            background: #ffffff; border-radius: 6px; padding: 2px; border: 1.5px solid #1e3a8a; display: flex; flex-direction: column; flex: 1; justify-content: space-between;
-        }
-        .calendar-nav { display: flex; justify-content: space-between; align-items: center; padding: 1px 4px; }
-        .nav-btn { background-color: #1e3a8a; color: white; border: none; padding: 2px 8px; font-weight: bold; border-radius: 3px; cursor: pointer; font-size: 10px; }
-        #month-year-display { font-size: 12px; font-weight: 900; color: #1e3a8a; }
-
-        .hijri-month-strip {
-            background: #1e3a8a; color: #fef08a; text-align: center; font-size: 9px; font-weight: 800; padding: 2px; border-radius: 2px;
-        }
-
-        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f9ff; padding: 2px 0; font-size: 9px; color: #1e3a8a; }
-        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; flex: 1; }
-        
-        .day-cell { 
-            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px 3px;
-            display: flex; flex-direction: column; justify-content: space-between; align-items: center; cursor: pointer; position: relative; overflow: hidden;
-        }
-        .day-cell.sunday { background: #fff5f5; }
-        .day-cell.friday { background: #f0fdf4; }
-        .day-cell.today-cell { border: 2px solid #f59e0b !important; background: #fffbe2 !important; }
-        
-        .today-badge-label { 
-            position: absolute; top: 0; left: 50%; transform: translateX(-50%); 
-            background: #f59e0b; color: white; font-size: 6px; font-weight: 900; padding: 0px 4px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; z-index: 2;
-        }
-
-        .eng-num-center { 
-            font-size: 18px; 
-            font-weight: 900; 
-            color: #0f172a; 
-            text-align: center; 
-            line-height: 1; 
-            margin: auto 0; 
-        }
-        .sunday .eng-num-center { color: #dc2626; }
-        .friday .eng-num-center { color: #16a34a; }
-
-        .alt-date-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            width: 100%; 
-            font-size: 9px; 
-            font-weight: 800; 
-            margin-top: auto; 
-        }
-        .hijri-txt { color: #16a34a; }
-        .mal-txt { color: #c2410c; }
-
-        .event-badge { font-size: 6px; background-color: #7c3aed; color: white; padding: 1px 2px; border-radius: 2px; font-weight: 800; text-align: center; width: 100%; }
-        .saved-note-badge { font-size: 6px; background-color: #0284c7; color: white; padding: 1px 2px; border-radius: 2px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 700; text-align: center; width: 100%; }
-
-        .events-box { background: #fffbe2; border: 1px solid #fde68a; border-radius: 4px; padding: 2px 4px; font-size: 8.5px; color: #92400e; flex-shrink: 0; margin-top: 2px; }
-        
-        .bottom-ticker {
-            background: #15803d; 
-            color: white; 
-            font-size: 11px; 
-            font-weight: 900; 
-            padding: 4px 6px; 
-            border-radius: 4px; 
-            overflow: hidden; 
-            white-space: nowrap; 
-            flex-shrink: 0; 
-            margin-top: 2px;
-            letter-spacing: 0.3px;
-        }
-
-        .brand-footer { 
-            text-align: center; 
-            padding: 8px 4px; 
-            background-color: #0f172a; 
-            color: white; 
-            border-radius: 6px; 
-            flex-shrink: 0; 
-            margin-top: 3px;
-            border-top: 2px solid #38bdf8;
-        }
-        .brand-footer h2 { 
-            color: #38bdf8; 
-            font-size: 11px; 
-            font-weight: 900; 
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
-        }
-        .brand-footer p { 
-            color: #cbd5e1; 
-            font-size: 8.5px; 
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); justify-content: center; align-items: center; z-index: 1000; padding: 10px; }
-        .modal-content { background: white; padding: 12px; border-radius: 10px; width: 100%; max-width: 320px; }
-        .modal-header { font-size: 13px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; }
-        .modal-body textarea { width: 100%; height: 50px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; resize: none; font-size: 11px; margin: 4px 0; }
-        .modal-buttons { display: flex; gap: 4px; }
-        .btn { padding: 5px 8px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 10px; flex-grow: 1; text-align: center; }
-        .btn-save { background-color: #0284c7; color: white; }
-        .btn-download { background-color: #16a34a; color: white; }
-        .btn-close { background-color: #64748b; color: white; flex-grow: 0; }
-
-        #poster-canvas { 
-            position: absolute; 
-            left: -9999px; 
-            width: 800px; 
-            height: 800px; 
-            background: linear-gradient(135deg, #ffffff, #f1f5f9); 
-            padding: 28px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            border: 12px solid #1e3a8a; 
-        }
-        .poster-top-header { 
-            background: #ffffff; 
-            border: 3px solid #1e3a8a; 
-            border-radius: 20px; 
-            padding: 14px 22px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        .header-left-part { display: flex; align-items: center; gap: 16px; }
-        .poster-photo-container { 
-            width: 65px; 
-            height: 65px; 
-            border-radius: 14px; 
-            border: 3px solid #1e3a8a; 
-            overflow: hidden; 
-            background: #eff6ff; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        .poster-photo-container img { width: 100%; height: 100%; object-fit: cover; }
-        .poster-header-title { font-size: 24px; font-weight: 900; color: #1e3a8a; letter-spacing: 0.5px; }
-        .poster-header-sub { background: #1e3a8a; color: #ffffff; padding: 8px 18px; border-radius: 20px; font-weight: 900; font-size: 16px; letter-spacing: 0.5px; }
-        
-        .poster-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 15px 0; }
-        .p-card { 
-            background: #ffffff; 
-            border-radius: 20px; 
-            padding: 20px 12px; 
-            text-align: center; 
-            border: 2px solid #e2e8f0; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-        }
-        .p-card-title { font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; }
-        .p-card-num { font-size: 68px; font-weight: 900; line-height: 1; margin: 10px 0; }
-        .p-card-sub { font-size: 16px; font-weight: 900; }
-        
-        .card-eng { border-top: 8px solid #2563eb; background: #eff6ff; } .card-eng .p-card-title { color: #1d4ed8; } .card-eng .p-card-num { color: #1e3a8a; }
-        .card-mal { border-top: 8px solid #f59e0b; background: #fffbe2; } .card-mal .p-card-title { color: #d97706; } .card-mal .p-card-num { color: #b45309; }
-        .card-hij { border-top: 8px solid #10b981; background: #f0fdf4; } .card-hij .p-card-title { color: #059669; } .card-hij .p-card-num { color: #065f46; }
-        
-        .poster-hadith-box { 
-            background: #ffffff; 
-            border: 3px dashed #1e3a8a; 
-            border-radius: 22px; 
-            padding: 24px 20px; 
-            text-align: center; 
-            min-height: 180px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        .hadith-ara { font-size: 32px; font-weight: 900; color: #0f172a; direction: rtl; margin-bottom: 12px; line-height: 1.3; }
-        .hadith-mal { font-size: 20px; font-weight: 800; color: #1e293b; line-height: 1.4; }
-        
-        .poster-footer-bar { 
-            background: #0f172a; 
-            border-radius: 16px; 
-            padding: 14px; 
-            text-align: center; 
-            border-top: 4px solid #38bdf8; 
-        }
-        .poster-footer-bar h3 { color: #38bdf8; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .poster-footer-bar p { color: #cbd5e1; font-size: 14px; font-weight: 700; line-height: 1.4; }
-    </style>
+    /* Buttons */
+    .btn-container { display: flex; gap: 8px; margin: 8px; }
+    .action-btn { flex: 1; padding: 8px; background: #1976d2; color: #fff; text-align: center; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; }
+    
+    /* Calendar Styling */
+    .calendar-container { background: #fff; margin: 8px; padding: 8px; border-radius: 8px; border: 1px solid #e0e0e0; }
+    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .cal-btn { background: #0d47a1; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    .cal-title { text-align: center; }
+    .cal-month { font-weight: bold; font-size: 16px; color: #0d47a1; }
+    .cal-sub { font-size: 11px; color: #666; }
+    
+    .week-days { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 4px; }
+    .sun { color: #d32f2f; }
+    .fri { color: #2e7d32; }
+    
+    .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .day-cell { background: #fff; border: 1px solid #eee; min-height: 52px; padding: 2px; position: relative; cursor: pointer; border-radius: 4px; display: flex; flex-direction: column; justify-content: space-between; }
+    .day-cell.today { border: 2px solid #ff9800; background: #fff8e1; }
+    .day-num { font-weight: bold; font-size: 14px; text-align: center; margin-top: 2px; }
+    
+    .sub-info { display: flex; justify-content: space-between; font-size: 8px; padding: 0 2px; }
+    .hijri-num { color: #2e7d32; font-weight: bold; }
+    .mal-num { color: #d84315; font-weight: bold; }
+    
+    /* Event Badge inside calendar cell */
+    .event-badge { background: #d32f2f; color: #fff; font-size: 8px; padding: 1px 2px; border-radius: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    
+    .footer-bar { background: #000; color: #fff; text-align: center; padding: 10px; margin-top: 15px; font-size: 11px; }
+    .footer-bar h3 { font-size: 12px; color: #64b5f6; margin-bottom: 2px; }
+    
+    /* Popup Modal Styling */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; }
+    .modal-card { background: #fff; padding: 20px; border-radius: 12px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    .modal-date { color: #0d47a1; font-size: 15px; font-weight: bold; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    .modal-label { font-size: 12px; color: #666; font-weight: bold; margin-bottom: 4px; }
+    .modal-event { font-size: 15px; font-weight: bold; color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ffcdd2; line-height: 1.4; word-break: break-word; }
+    .modal-close-btn { background: #0d47a1; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
+  </style>
 </head>
 <body>
 
-    <div class="news-ticker">
-        <marquee scrollamount="2">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ്  | നാട്ടുദർസ് പുരുഷന്മാർ : ബുധൻ മഗ്രിബിന് ശേഷം | നാട്ടുദർസ് സഹോദരിമാർ : വ്യാഴം ഉച്ചക്ക് 2.30 To 3.30 വരെ .</marquee>
+  <div class="header-bar">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്‌രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ്</div>
+  
+  <div class="title-box">
+    CM CENTER CHERUVATTOOR, VAZHAKKAD
+    <div class="subtitle">തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് നോട്ടുകൾ എഴുതാം & Status ഡൗൺലോഡ് ചെയ്യാം</div>
+  </div>
+
+  <!-- Hadith Box -->
+  <div class="poster-hadith-box">
+    <div class="hadith-ara" id="p-hadith-ara"></div>
+    <div class="hadith-mal" id="p-hadith-mal"></div>
+  </div>
+
+  <!-- Prayer Schedule -->
+  <div class="namaz-container">
+    <div class="namaz-header">
+      <span>🕌 നിസ്കാര സമയങ്ങൾ (വാഴക്കാട്)</span>
+      <span style="color:#2e7d32;" id="nextPrayerText">അടുത്തത്: മഗ്‌രിബ് (06:48 PM)</span>
+    </div>
+    <div class="namaz-grid">
+      <div class="namaz-card" id="p-subah"><div class="namaz-title">സുബഹി</div><div class="namaz-time">04:56 AM</div></div>
+      <div class="namaz-card" id="p-luhar"><div class="namaz-title">ളൂഹർ</div><div class="namaz-time">12:30 PM</div></div>
+      <div class="namaz-card" id="p-asar"><div class="namaz-title">അസർ</div><div class="namaz-time">03:52 PM</div></div>
+      <div class="namaz-card active" id="p-magrib"><div class="namaz-title">മഗ്‌രിബ്</div><div class="namaz-time">06:48 PM</div></div>
+      <div class="namaz-card" id="p-isha"><div class="namaz-title">ഇശാഅ്</div><div class="namaz-time">08:02 PM</div></div>
+    </div>
+  </div>
+
+  <div class="btn-container">
+    <button class="action-btn" style="background:#25D366;" onclick="shareApp()">WhatsApp Share</button>
+    <button class="action-btn" onclick="installApp()">Mobile App ഇൻസ്റ്റാൾ ചെയ്യാം</button>
+  </div>
+
+  <!-- Calendar Container -->
+  <div class="calendar-container">
+    <div class="cal-header">
+      <button class="cal-btn" onclick="changeMonth(-1)">◀ Prev</button>
+      <div class="cal-title">
+        <div class="cal-month" id="monthYearText">August 2026</div>
+        <div class="cal-sub" id="hijriMonthText">صفر - ربيع الأول | 1448 AH</div>
+      </div>
+      <button class="cal-btn" onclick="changeMonth(1)">Next ▶</button>
     </div>
 
-    <div class="top-app-bar">
-        <h1>CM CENTER CHERUVATTOOR, VAZHAKKAD</h1>
-        <p>തീയതിയിൽ ക്ലിക്ക് ചെയ്ത് നോട്സ് എഴുതാം & Status ഡൗൺലോഡ് ചെയ്യാം</p>
+    <div class="week-days">
+      <div class="sun">SUN</div>
+      <div>MON</div>
+      <div>TUE</div>
+      <div>WED</div>
+      <div>THU</div>
+      <div class="fri">FRI</div>
+      <div>SAT</div>
     </div>
 
-    <div class="daily-hadith-bar" id="daily-quote-text">
-        📖 "തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്."
+    <div class="days-grid" id="daysGrid"></div>
+  </div>
+
+  <div class="footer-bar">
+    <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
+    <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
+    <p>Abdul salam ahsani vazhakkad</p>
+  </div>
+
+  <!-- Event Modal (Pop-up) -->
+  <div id="eventModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-date" id="modalDate">തീയതി: 2026 August 11</div>
+      <div class="modal-label">വിശേഷം / പരിപാടി:</div>
+      <div class="modal-event" id="modalEvent">🕌 ഹംസ ഹാജിയുടെ വീട്ടിൽ മൗലിദ്</div>
+      <button class="modal-close-btn" onclick="closeModal()">ശരി (Close)</button>
     </div>
+  </div>
 
-    <div class="prayer-container">
-        <div class="prayer-title-row">
-            <span>🕌 നിസ്കാര സമയങ്ങൾ (വാഴക്കാട്)</span>
-            <span class="next-prayer-badge" id="next-prayer-txt">അടുത്തത്: --</span>
-        </div>
-        <div class="prayer-grid">
-            <div class="prayer-card" id="p-subah"><div class="p-name">സുബഹി</div><div class="p-time">04:56 AM</div></div>
-            <div class="prayer-card" id="p-luhar"><div class="p-name">ളുഹർ</div><div class="p-time">12:30 PM</div></div>
-            <div class="prayer-card" id="p-asar"><div class="p-name">അസർ</div><div class="p-time">03:52 PM</div></div>
-            <div class="prayer-card" id="p-magrib"><div class="p-name">മഗ്‌രിബ്</div><div class="p-time">06:48 PM</div></div>
-            <div class="prayer-card" id="p-isha"><div class="p-name">ഇശാഅ്</div><div class="p-time">08:02 PM</div></div>
-        </div>
-    </div>
+  <script>
+    const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec";
+    let sheetEvents = {};
+    let currentDate = new Date(2026, 7, 11); // Setting August 2026
+    let deferredPrompt = null;
 
-    <div class="action-bar">
-        <button class="act-btn btn-wa" onclick="shareToWhatsApp()">📲 WhatsApp Share</button>
-        <button class="act-btn btn-pwa" onclick="installApp()">📲 Mobile App ലോഗോയായി ഇൻസ്റ്റാൾ ചെയ്യാം</button>
-    </div>
+    const dailyQuotes = [
+      { ara: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", mal: "\"തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്.\"" },
+      { ara: "الدِّينُ النَّصِيحَةُ", mal: "\"മതം എന്നാൽ ഗുണകാംക്ഷയാകുന്നു.\"" },
+      { ara: "الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", mal: "\"നല്ല വാക്ക് പറയുക എന്നത് ഒരു ദാനധർമ്മമാണ് (സ്വദഖ).\"" },
+      { ara: "الطُّهُورُ شَطْرُ الإِيمَانِ", mal: "\"ശുദ്ധി എന്നത് സത്യവിശ്വാസത്തിന്റെ പകുതിയാകുന്നു.\"" },
+      { ara: "مَنْ لاَ يَرْحَمِ النَّاسَ لاَ يَرْحَمْهُ اللَّهُ", mal: "\"മനുഷ്യരോട് കരുണ കാണിക്കാത്തവനോട് അല്ലാഹുവും കരുണ കാണിക്കുകയില്ല.\"" }
+    ];
 
-    <div class="calendar-container">
-        <div class="calendar-nav">
-            <button class="nav-btn" onclick="changeMonth(-1)">◀ Prev</button>
-            <div id="month-year-display">August 2026</div>
-            <button class="nav-btn" onclick="changeMonth(1)">Next ▶</button>
-        </div>
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-        <div class="hijri-month-strip" id="hijri-month-strip-display">1448 AH | صفر - ربيع الأول</div>
+    function loadHadith() {
+      const todayIndex = new Date().getDate() % dailyQuotes.length;
+      const q = dailyQuotes[todayIndex];
+      document.getElementById("p-hadith-ara").innerText = q.ara;
+      document.getElementById("p-hadith-mal").innerText = q.mal;
+    }
 
-        <div class="weekdays-grid">
-            <div style="color:#dc2626;">SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div style="color:#16a34a;">FRI</div><div>SAT</div>
-        </div>
-        <div class="days-grid" id="calendar-days"></div>
-    </div>
-
-    <div class="events-box">
-        <b>✨ വരുന്ന വിശേഷ ദിവസങ്ങൾ:</b> അവസാന ഞായർ: മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ മജ്‌ലിസ് | വ്യാഴം: സ്വലാത്ത് മജ്‌ലിസ് മഗ്രിബിന് ശേഷം 
-    </div>
-
-    <div class="bottom-ticker" id="bottom-event-ticker">
-        <marquee scrollamount="2" id="bottom-marquee-text">🕌 സമസ്ത: 100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം</marquee>
-    </div>
-
-    <div class="brand-footer">
-        <h2>Powered by : ATAVA DIGITAL SERVICES & TRADING</h2>
-        <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
-    </div>
-
-    <div class="modal-overlay" id="date-modal">
-        <div class="modal-content">
-            <div class="modal-header" id="modal-date-title">Date Details</div>
-            <div class="modal-body">
-                <label style="font-size: 10px; font-weight: 700; color: #475569;">വ്യക്തിഗത നോട്സ് / റിമൈൻഡറുകൾ:</label>
-                <textarea id="modal-notes-input" placeholder="ഓർമ്മപ്പെടുത്തലുകൾ എഴുതാം..."></textarea>
-                
-                <label style="font-size: 10px; font-weight: 700; color: #475569; display:block;">📸 സ്ഥാപനത്തിന്റെ ലോഗോ / ഫോട്ടോ:</label>
-                <input type="file" id="photo-upload-input" accept="image/*" style="margin-top:2px; margin-bottom:8px; font-size:9px;">
-            </div>
-            <div class="modal-buttons">
-                <button class="btn btn-save" onclick="saveDayNotes()">Save</button>
-                <button class="btn btn-download" onclick="generatePosterFromModal()">Status Image</button>
-                <button class="btn btn-close" onclick="closeModal()">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="poster-canvas">
-        <div class="poster-top-header">
-            <div class="header-left-part">
-                <div class="poster-photo-container">
-                    <img id="poster-institution-img" src="logo.png" alt="Logo">
-                </div>
-                <div class="poster-header-title">CM CENTER CHERUVATTOOR</div>
-            </div>
-            <div class="poster-header-sub">DAILY BULLETIN</div>
-        </div>
-
-        <div class="poster-grid-3">
-            <div class="p-card card-eng">
-                <div class="p-card-title" id="p-eng-day">DAY</div>
-                <div class="p-card-num" id="p-eng-num">1</div>
-                <div class="p-card-sub" id="p-eng-month">AUGUST 2026</div>
-            </div>
-
-            <div class="p-card card-mal">
-                <div class="p-card-title">മലയാളം</div>
-                <div class="p-card-num" id="p-mal-num">1</div>
-                <div class="p-card-sub" id="p-mal-month">ചിങ്ങം 1201</div>
-            </div>
-
-            <div class="p-card card-hij">
-                <div class="p-card-title" id="p-hij-day">اليوم</div>
-                <div class="p-card-num" id="p-hij-num">1</div>
-                <div class="p-card-sub" id="p-hij-month">صفر 1448</div>
-            </div>
-        </div>
-
-        <div class="poster-hadith-box">
-            <div class="hadith-ara" id="p-hadith-ara"></div>
-            <div class="hadith-mal" id="p-hadith-mal"></div>
-        </div>
-
-        <div class="poster-footer-bar">
-            <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
-            <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
-        </div>
-    </div>
-
-    <script>
-        // പുതിയ Web App URL ചേർത്തു
-        const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec";
-        let sheetEvents = {};
-
-        const dailyQuotes = [
-            { ara: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", mal: "\"തീർച്ചയായും എല്ലാ പ്രവൃത്തികളും ഉദ്ദേശ്യങ്ങളെ (നിയ്യത്ത്) അടിസ്ഥാനമാക്കിയുള്ളതാണ്.\"" },
-            { ara: "الدِّينُ النَّصِيحَةُ", mal: "\"മതം എന്നാൽ ഗുണകാംക്ഷയാകുന്നു.\"" },
-            { ara: "الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", mal: "\"നല്ല വാക്ക് പറയുക എന്നത് ഒരു ദാനധർമ്മമാണ് (സ്വദഖ).\"" },
-            { ara: "الطهُورُ شَطْرُ الإِيمَانِ", mal: "\"ശുദ്ധി എന്നത് സത്യവിശ്വാസത്തിന്റെ പകുതിയാകുന്നു.\"" },
-            { ara: "مَنْ لاَ يَرْحَمِ النَّاسَ لاَ يَرْحَمْهُ اللَّهُ", mal: "\"മനുഷ്യരോട് കരുണ കാണിക്കാത്തവനോട് അല്ലാഹുവും കരുണ കാണിക്കുകയില്ല.\"" }
-        ];
-
-        const dayNamesEng = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const hijriMonthsAra = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
-        const malMonths = ["ചിങ്ങം", "കന്നി", "തുലാം", "വൃശ്ചികം", "ധനു", "മകരം", "കുംഭം", "മീനം", "മേടം", "ഇടവം", "മിഥുനം", "കർക്കടകം"];
-
-        const prayerSchedule = [
-            { name: "സുബഹി", time: "04:56 AM", rawTime: "04:56", id: "p-subah" },
-            { name: "ളുഹർ", time: "12:30 PM", rawTime: "12:30", id: "p-luhar" },
-            { name: "അസർ", time: "03:52 PM", rawTime: "15:52", id: "p-asar" },
-            { name: "മഗ്‌രിബ്", time: "06:48 PM", rawTime: "18:48", id: "p-magrib" },
-            { name: "ഇശാഅ്", time: "08:02 PM", rawTime: "20:02", id: "p-isha" }
-        ];
-
-        let currentDate = new Date();
-        let selectedDayInfo = null;
-        let deferredPrompt = null;
-        const notesRegistry = JSON.parse(localStorage.getItem('cm_notes_registry') || '{}');
-
-        // ഗൂഗിൾ ഷീറ്റിൽ നിന്നും ലൈവ് ഡാറ്റ ഫെച്ച് ചെയ്യുന്ന ഫങ്ഷൻ
-        async function fetchSheetEvents() {
-    try {
-        const response = await fetch(GOOGLE_SHEET_API + "?t=" + new Date().getTime());
-        const rawData = await response.json();
-        
-        sheetEvents = {};
-        for (let key in rawData) {
-            let cleanKey = key.trim();
-            sheetEvents[cleanKey] = rawData[key];
+    async function fetchSheetEvents() {
+        try {
+            const response = await fetch(GOOGLE_SHEET_API + "?t=" + new Date().getTime());
+            const rawData = await response.json();
             
-            // 2026-7-11 ഫോർമാറ്റിനെ 2026-8-11 മായും മാപ്പ് ചെയ്യുന്നു
-            let parts = cleanKey.split('-');
-            if(parts.length === 3) {
-                let y = parts[0];
-                let m = parseInt(parts[1]);
-                let d = parts[2];
-                sheetEvents[`${y}-${m + 1}-${d}`] = rawData[key];
+            sheetEvents = {};
+            for (let key in rawData) {
+                let cleanKey = key.trim();
+                sheetEvents[cleanKey] = rawData[key];
+                
+                let parts = cleanKey.split('-');
+                if(parts.length === 3) {
+                    let y = parts[0];
+                    let m = parseInt(parts[1]);
+                    let d = parts[2];
+                    sheetEvents[`${y}-${m + 1}-${d}`] = rawData[key];
+                }
             }
+            renderCalendar();
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            renderCalendar();
         }
-        renderCalendar();
-    } catch (error) {
-        console.error("Error fetching events:", error);
+    }
+
+    function renderCalendar() {
+        const grid = document.getElementById('daysGrid');
+        grid.innerHTML = '';
+
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        document.getElementById('monthYearText').innerText = `${monthNames[month]} ${year}`;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'day-cell';
+            emptyCell.style.background = '#fafafa';
+            grid.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+            const dayCell = document.createElement('div');
+            dayCell.className = 'day-cell';
+
+            if (day === 11 && month === 7 && year === 2026) {
+                dayCell.classList.add('today');
+            }
+
+            const eventKey = `${year}-${month}-${day}`;
+            const eventData = sheetEvents[eventKey];
+
+            let badgeHTML = '';
+            if (eventData) {
+                badgeHTML = `<div class="event-badge">🕌 ${eventData}</div>`;
+            }
+
+            dayCell.innerHTML = `
+                <div class="day-num">${day}</div>
+                ${badgeHTML}
+                <div class="sub-info">
+                    <span class="hijri-num">${day + 17}</span>
+                    <span class="mal-num">${day + 15}</span>
+                </div>
+            `;
+
+            dayCell.onclick = function() {
+                const formattedDate = `${day} ${monthNames[month]} ${year}`;
+                showEventDetail(formattedDate, eventData);
+            };
+
+            grid.appendChild(dayCell);
+        }
+    }
+
+    function changeMonth(direction) {
+        currentDate.setMonth(currentDate.getMonth() + direction);
         renderCalendar();
     }
-}
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
+
+    function showEventDetail(dateStr, eventText) {
+        document.getElementById('modalDate').innerText = "തീയതി: " + dateStr;
+        document.getElementById('modalEvent').innerText = eventText ? "🕌 " + eventText : "പ്രത്യേക പരിപാടികൾ ഒന്നുമില്ല";
+        document.getElementById('eventModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('eventModal').style.display = 'none';
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+      } else {
+        alert("Mobile App ഇൻസ്റ്റാൾ ചെയ്യാനുള്ള ഓപ്ഷൻ ലഭ്യമാണ്. (Add to Home Screen നൽകുക)");
+      }
+    }
+
+    function shareApp() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'CM Center Calendar',
+          url: window.location.href
         });
+      } else {
+        alert("Link copied: " + window.location.href);
+      }
+    }
 
-        function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((result) => { deferredPrompt = null; });
-            } else {
-                alert("മുകളിൽ വലതു ഭാഗത്ത് മൂന്ന് ഡോട്ട് എടുത്ത് അതിൽ 'Add to Home Screen' എന്നത് ക്ലിക്ക് ചെയ്‌താൽ CM Center ആപ്പ് ഐക്കണായി നിങ്ങളുടെ സ്ക്രീനിൽ ലഭിക്കും. അത് എപ്പോഴും ഓപ്പൺ ആക്കാൻ പറ്റും.");
-            }
-        }
-
-        function shareToWhatsApp() {
-            const today = new Date();
-            const text = `📌 *CM Center Cheruvattoor Calendar*\nതീയതി: ${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}\nനിസ്കാര സമയങ്ങളും സന്ദേശങ്ങളും കാണാൻ സന്ദർശിക്കൂ: ${window.location.href}`;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        function updatePrayerCountdown() {
-            const now = new Date();
-            const currentTimeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            
-            let nextP = null;
-            prayerSchedule.forEach(p => {
-                document.getElementById(p.id).classList.remove('active');
-                if (currentTimeStr < p.rawTime && !nextP) {
-                    nextP = p;
-                }
-            });
-
-            if (!nextP) nextP = prayerSchedule[0];
-            document.getElementById(nextP.id).classList.add('active');
-            document.getElementById('next-prayer-txt').innerText = `അടുത്തത്: ${nextP.name} (${nextP.time})`;
-        }
-
-        function getHijriDetails(targetDate) {
-            const baseDate = new Date(2026, 6, 31);
-            const diffDays = Math.round((new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime() - new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime()) / (1000 * 60 * 60 * 24));
-
-            let day = 17 + diffDays;
-            let monthIdx = 1;
-            let year = 1448;
-
-            while (day > 30) { day -= 30; monthIdx = (monthIdx + 1) % 12; if (monthIdx === 0) year++; }
-            while (day < 1) { day += 30; monthIdx = (monthIdx - 1 + 12) % 12; if (monthIdx === 11) year--; }
-
-            return { day, monthName: hijriMonthsAra[monthIdx], year };
-        }
-
-        function getMalayalamDetails(targetDate) {
-            const baseDate = new Date(2026, 6, 31);
-            const diffDays = Math.round((new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime() - new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate()).getTime()) / (1000 * 60 * 60 * 24));
-
-            let day = 15 + diffDays;
-            let monthIdx = 11;
-            let year = 1201;
-
-            while (day > 30) { day -= 30; monthIdx = (monthIdx + 1) % 12; if (monthIdx === 0) year++; }
-            while (day < 1) { day += 30; monthIdx = (monthIdx - 1 + 12) % 12; if (monthIdx === 11) year--; }
-
-            return { day, monthName: malMonths[monthIdx], year };
-        }
-
-        function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-
-            document.getElementById('month-year-display').innerText = `${monthNames[month]} ${year}`;
-
-            const firstDayDate = new Date(year, month, 1);
-            const lastDayDate = new Date(year, month + 1, 0);
-            
-            const startHij = getHijriDetails(firstDayDate);
-            const endHij = getHijriDetails(lastDayDate);
-            
-            document.getElementById('hijri-month-strip-display').innerText = `${startHij.year} AH  |  ${startHij.monthName} - ${endHij.monthName}`;
-
-            const daysGrid = document.getElementById('calendar-days');
-            daysGrid.innerHTML = '';
-
-            const firstDay = firstDayDate.getDay();
-            const totalDays = lastDayDate.getDate();
-
-            let lastSundayDay = -1;
-            for (let d = totalDays; d >= 1; d--) {
-                if (new Date(year, month, d).getDay() === 0) {
-                    lastSundayDay = d;
-                    break;
-                }
-            }
-
-            for (let i = 0; i < firstDay; i++) {
-                const empty = document.createElement('div');
-                empty.style.border = 'none';
-                daysGrid.appendChild(empty);
-            }
-
-            const today = new Date();
-
-            for (let day = 1; day <= totalDays; day++) {
-                const cell = document.createElement('div');
-                cell.className = 'day-cell';
-
-                const cellDate = new Date(year, month, day);
-                const dayOfWeek = cellDate.getDay();
-                if (dayOfWeek === 0) cell.classList.add('sunday');
-                if (dayOfWeek === 5) cell.classList.add('friday');
-
-                const isToday = (day === today.getDate() && month === today.getMonth() && year === today.getFullYear());
-                if (isToday) {
-                    cell.classList.add('today-cell');
-                }
-
-                const hijri = getHijriDetails(cellDate);
-                const mal = getMalayalamDetails(cellDate);
-
-                let hijriDisplay = (hijri.day === 1 || day === 1) ? `${hijri.day} ${hijri.monthName}` : `${hijri.day}`;
-                let malDisplay = (mal.day === 1 || day === 1) ? `${mal.day} ${mal.monthName}` : `${mal.day}`;
-
-                const key = `${year}-${month}-${day}`;
-                
-                const sheetNote = sheetEvents[key] || ""; 
-                const noteText = notesRegistry[key] || "";
-                const isLastSunday = (day === lastSundayDay);
-
-                cell.innerHTML = `
-                    ${isToday ? `<div class="today-badge-label">TODAY</div>` : ''}
-                    <div class="eng-num-center">${day}</div>
-                    ${isLastSunday ? `<div class="event-badge">✨ മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ</div>` : ''}
-                    ${sheetNote ? `<div class="saved-note-badge" style="background:#dc2626;">🕌 ${sheetNote}</div>` : ''}
-                    ${noteText ? `<div class="saved-note-badge">📌 ${noteText}</div>` : ''}
-                    <div class="alt-date-row">
-                        <span class="hijri-txt">🌙${hijriDisplay}</span>
-                        <span class="mal-txt">🌾${malDisplay}</span>
-                    </div>
-                `;
-
-                cell.onclick = () => openModal(day, dayNamesEng[dayOfWeek], hijri, mal, monthNames[month], year);
-                daysGrid.appendChild(cell);
-            }
-        }
-
-        function openModal(day, engDayName, hijri, mal, engMonthName, year) {
-            selectedDayInfo = { day, engDayName, hijri, mal, engMonthName, year };
-            const key = `${year}-${currentDate.getMonth()}-${day}`;
-            
-            document.getElementById('modal-date-title').innerText = `${day} ${engMonthName} ${year}`;
-            document.getElementById('modal-notes-input').value = notesRegistry[key] || "";
-            document.getElementById('date-modal').style.display = 'flex';
-        }
-
-        function saveDayNotes() {
-            if(!selectedDayInfo) return;
-            const key = `${selectedDayInfo.year}-${currentDate.getMonth()}-${selectedDayInfo.day}`;
-            notesRegistry[key] = document.getElementById('modal-notes-input').value;
-            localStorage.setItem('cm_notes_registry', JSON.stringify(notesRegistry));
-            closeModal();
-            renderCalendar();
-        }
-
-        function generatePosterFromModal() {
-            if(!selectedDayInfo) return;
-            const { day, engDayName, hijri, mal, engMonthName, year } = selectedDayInfo;
-            const quote = dailyQuotes[(day - 1) % dailyQuotes.length];
-
-            document.getElementById('p-eng-num').innerText = day;
-            document.getElementById('p-eng-day').innerText = engDayName;
-            document.getElementById('p-eng-month').innerText = `${engMonthName.toUpperCase()} ${year}`;
-
-            document.getElementById('p-mal-num').innerText = mal.day;
-            document.getElementById('p-mal-month').innerText = `${mal.monthName} ${mal.year}`;
-
-            document.getElementById('p-hij-num').innerText = hijri.day;
-            document.getElementById('p-hij-day').innerText = "اليوم";
-            document.getElementById('p-hij-month').innerText = `${hijri.monthName} ${hijri.year}`;
-            
-            document.getElementById('p-hadith-ara').innerText = quote.ara;
-            document.getElementById('p-hadith-mal').innerText = quote.mal;
-
-            const poster = document.getElementById('poster-canvas');
-            html2canvas(poster, { scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Status_${engMonthName}_${day}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-        }
-
-        function closeModal() {
-            document.getElementById('date-modal').style.display = 'none';
-            selectedDayInfo = null;
-        }
-
-        function changeMonth(dir) {
-            currentDate.setMonth(currentDate.getMonth() + dir);
-            renderCalendar();
-        }
-
-        const today = new Date();
-        const quoteObj = dailyQuotes[(today.getDate() - 1) % dailyQuotes.length];
-        document.getElementById('daily-quote-text').innerText = `📖 ${quoteObj.mal}`;
-
-        updatePrayerCountdown();
-        fetchSheetEvents();
-    </script>
+    // Initializations
+    loadHadith();
+    fetchSheetEvents();
+  </script>
 </body>
 </html>
