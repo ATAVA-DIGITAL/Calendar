@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CM CENTER CHERUVATTOOR VAZHAKKAD</title>
+    <title>CM CENTER CHERUVATTOOR</title>
     
     <!-- PWA Application Icons & Embedded Manifest -->
     <link rel="icon" type="image/png" sizes="192x192" href="logo.png">
@@ -319,7 +319,7 @@
     </div>
 
     <div class="events-box">
-        <b>✨ വരുന്ന വിശേഷ ദിവസങ്ങൾ:</b> അവസാന ഞായർ: മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ മജ്‌ലിസ് | വ്യാഴം: സ്വലാത്ത് മജ്‌ലിസ് മഗ്‌രിബിന് ശേഷം 
+        <b>✨ വരുന്ന വിശേഷ ദിവസങ്ങൾ:</b> അവസാന ഞായർ: മഹ്‌ളറത്തുൽ ബദ്‌രിയ്യ മജ്‌ലിസ് | വ്യാഴം: സ്വലാത്ത് മജ്‌ലിസ് മഗ്രിബിന് ശേഷം 
     </div>
 
     <div class="bottom-ticker" id="bottom-event-ticker">
@@ -393,8 +393,8 @@
     </div>
 
     <script>
-        // നിന്റെ Google Sheet Web App URL ഇവിടെ സെറ്റ് ചെയ്തിട്ടുണ്ട്
-        const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbyT7h6OusdknEZbZ2myfNaMqJjXmyx1J4oYawatn58Nsz5NuSal2CcrV7E62PH1x8qUug/exec";
+        // ഇവിടെ പുതിയ ഗൂഗിൾ വെബ് ആപ്പ് ലിങ്ക് ചേർത്തുവെച്ചു
+        const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbyPYvtqCAWrSdBal6A6scAA_-Z3WHT-unoGgnw1Y0FdIiw8r9AFckZNNO03IJN9kz-lNg/exec";
         let sheetEvents = {};
 
         const dailyQuotes = [
@@ -423,7 +423,7 @@
         let deferredPrompt = null;
         const notesRegistry = JSON.parse(localStorage.getItem('cm_notes_registry') || '{}');
 
-        // ഗൂഗിൾ ഷീറ്റിൽ നിന്നും ലൈവ് ആയി പരിപാടികൾ ഡൗൺലോഡ് ചെയ്യുന്ന ഫങ്ഷൻ
+        // ഗൂഗിൾ ഷീറ്റിൽ നിന്നും ലൈവ് ഡാറ്റ കൊണ്ടുവരുന്ന ഫങ്ഷൻ
         async function fetchSheetEvents() {
             try {
                 const response = await fetch(GOOGLE_SHEET_API);
@@ -558,7 +558,7 @@
 
                 const key = `${year}-${month}-${day}`;
                 
-                // ഗൂഗിൾ ഷീറ്റിൽ നിന്നുള്ള ഡാറ്റ + പേഴ്സണൽ നോട്ട്സ്
+                // ഗൂഗിൾ ഷീറ്റിൽ നിന്നുള്ള വിവരങ്ങളും പേഴ്സണൽ നോട്ട്സും
                 const sheetNote = sheetEvents[key] || ""; 
                 const noteText = notesRegistry[key] || "";
                 const isLastSunday = (day === lastSundayDay);
