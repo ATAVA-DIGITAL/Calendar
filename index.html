@@ -2,20 +2,22 @@
 <html lang="ml">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CM Center Calendar</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-    html, body { height: 100vh; overflow: hidden; background-color: #f0f2f5; color: #333; }
     
-    .main-wrapper { display: flex; flex-direction: column; height: 100vh; justify-content: space-between; }
+    /* 100dvh to fix full screen height issue on mobile browsers */
+    html, body { height: 100dvh; width: 100vw; overflow: hidden; background-color: #f0f2f5; color: #333; }
+    
+    .main-wrapper { display: flex; flex-direction: column; height: 100dvh; justify-content: space-between; box-sizing: border-box; }
 
     /* Top Marquee */
     .top-marquee { background: #d32f2f; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 0; overflow: hidden; white-space: nowrap; }
     
-    .app-header { background: #0d47a1; color: #fff; text-align: center; padding: 4px; }
-    .app-title { font-size: 12px; font-weight: bold; }
+    .app-header { background: #0d47a1; color: #fff; text-align: center; padding: 3px; }
+    .app-title { font-size: 11px; font-weight: bold; }
     .app-subtitle { font-size: 8px; opacity: 0.9; }
 
     /* Compact Hadith Box */
@@ -42,28 +44,28 @@
     .btn-container { display: flex; gap: 4px; margin: 2px 4px; }
     .action-btn { flex: 1; padding: 3px; background: #1976d2; color: #fff; text-align: center; border-radius: 3px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; }
 
-    /* Calendar Container */
-    .calendar-container { background: #fff; margin: 2px 4px; padding: 3px; border-radius: 4px; border: 1px solid #e0e0e0; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    /* Calendar Container - Flexible height */
+    .calendar-container { background: #fff; margin: 2px 4px; padding: 3px; border-radius: 4px; border: 1px solid #e0e0e0; flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; }
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
     .cal-btn { background: #0d47a1; color: #fff; border: none; padding: 2px 6px; border-radius: 3px; font-size: 8px; font-weight: bold; cursor: pointer; }
     .cal-title { text-align: center; }
     .cal-month { font-weight: bold; font-size: 11px; color: #0d47a1; }
-    .cal-sub { font-size: 8px; color: #666; }
+    .cal-sub { font-size: 7.5px; color: #666; }
 
     .week-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; font-weight: bold; font-size: 8px; margin-bottom: 2px; }
     .sun { color: #d32f2f; }
     .fri { color: #2e7d32; }
 
-    .days-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; width: 100%; flex-grow: 1; }
+    .days-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; width: 100%; flex: 1; min-height: 0; }
     
     /* Day Cell - Centered Big Date */
     .day-cell { background: #fff; border: 1px solid #eee; padding: 1px; position: relative; cursor: pointer; border-radius: 2px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; min-width: 0; overflow: hidden; }
     .day-cell.today { border: 1.5px solid #ff9800; background: #fff8e1; }
     
     /* Centered Large Date Font */
-    .day-num { font-weight: bold; font-size: 15px; text-align: center; margin: auto 0; color: #111; }
+    .day-num { font-weight: bold; font-size: 14px; text-align: center; margin: auto 0; color: #111; }
 
-    .sub-info { display: flex; justify-content: space-between; width: 100%; font-size: 7px; padding: 0 1px; }
+    .sub-info { display: flex; justify-content: space-between; width: 100%; font-size: 6.5px; padding: 0 1px; }
     .hijri-num { color: #2e7d32; font-weight: bold; }
     .mal-num { color: #d84315; font-weight: bold; }
 
@@ -72,9 +74,9 @@
     /* Bottom Event Scroll */
     .bottom-marquee { background: #fff3e0; color: #d84315; font-size: 8px; font-weight: bold; padding: 2px 0; border-top: 1px solid #ffe0b2; overflow: hidden; white-space: nowrap; }
 
-    /* Visible Fixed Footer */
-    .company-footer { background: #000; color: #fff; text-align: center; padding: 4px; font-size: 8px; border-top: 1px solid #333; }
-    .company-footer h3 { font-size: 9px; color: #64b5f6; margin-bottom: 1px; }
+    /* Always Visible Fixed Footer */
+    .company-footer { background: #000; color: #fff; text-align: center; padding: 4px; font-size: 8px; border-top: 2px solid #64b5f6; z-index: 100; position: relative; }
+    .company-footer h3 { font-size: 8.5px; color: #64b5f6; margin-bottom: 1px; }
 
     /* Modal / Pop-up Card Styling */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; }
@@ -157,16 +159,17 @@
     <div class="days-grid" id="daysGrid"></div>
   </div>
 
+  <!-- Bottom Section (Scroll + Footer) -->
   <div>
     <!-- Bottom Announcement Marquee -->
     <div class="bottom-marquee">
       <marquee scrollamount="3">🕌 വരാനിരിക്കുന്ന പൊതുപരിപാടികൾ: ഓഗസ്റ്റ് 11 - മൗലിദ് മജ്‌ലിസ് | എല്ലാ വ്യാഴാഴ്ചയും - സ്വലാത്ത് മജ്‌ലിസ് CM Center Cheruvattoor 🕌</marquee>
     </div>
 
-    <!-- Company Footer -->
+    <!-- Company Footer Bar -->
     <div class="company-footer">
       <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
-      <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
+      <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services | Abdul salam ahsani vazhakkad</p>
     </div>
   </div>
 </div>
@@ -179,7 +182,6 @@
       <div class="modal-date-box" id="modalDateBox"></div>
       <div class="modal-hadith" id="modalHadith"></div>
       
-      <!-- Show details in modal -->
       <div class="modal-event" id="modalEvent"></div>
       
       <div class="modal-company">
@@ -279,7 +281,6 @@
               badgeHTML = `<div class="event-badge">🕌 ${eventData}</div>`;
           }
 
-          // Accurate Date Alignment based on Aug 11, 2026 (28 Safar 1448 AH | Karkidakam 26, 1201)
           const hijriDay = ((day + 17) % 30) || 30;
           const malDay = ((day + 15) % 31) || 31;
 
@@ -319,7 +320,6 @@
           <b>${quote.ara}</b><br>${quote.mal}
       `;
 
-      // Show full Sheet Details on Click
       document.getElementById('modalEvent').innerText = eventText ? "🕌 " + eventText : "🕌 CM Center Cheruvattoor - ദൈനംദിന പ്രാർത്ഥനകൾ";
       
       document.getElementById('eventModal').style.display = 'flex';
@@ -329,7 +329,6 @@
     const eventElement = document.getElementById('modalEvent');
     const originalText = eventElement.innerText;
     
-    // Set common status message during status poster download
     eventElement.innerText = "🕌 CM Center Cheruvattoor Vazhakkad";
 
     const card = document.getElementById('statusCardToCapture');
@@ -339,7 +338,6 @@
       link.href = canvas.toDataURL();
       link.click();
 
-      // Restore original text back on modal
       eventElement.innerText = originalText;
     });
   }
@@ -357,7 +355,7 @@
     if (deferredPrompt) {
       deferredPrompt.prompt();
     } else {
-      alert("Mobile App ഇൻസ്റ്റാൾ ചെയ്യാനുള്ള ഓപ്ഷൻ ലഭ്യമാണ്.മുകളിൽ വലതു ഭാഗത്ത് മൂന്ന് ഡോട്ട് എടുത്ത് അതിൽ 'Add to Home Screen' എന്നത് ക്ലിക്ക് ചെയ്‌താൽ CM Center ആപ്പ് ഐക്കണായി നിങ്ങളുടെ സ്ക്രീനിൽ ലഭിക്കും. അത് എപ്പോഴും ഓപ്പൺ ആക്കാൻ പറ്റും.");
+      alert("Mobile App ഇൻസ്റ്റാൾ ചെയ്യാനുള്ള ഓപ്ഷൻ ലഭ്യമാണ്.");
     }
   }
 
