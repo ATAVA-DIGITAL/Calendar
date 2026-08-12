@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CM Center Calendar</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="[https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js](https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js)"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
     
@@ -64,7 +64,7 @@
     /* Centered Large Main Date */
     .day-num { font-weight: bold; font-size: 15px; text-align: center; margin: auto 0; color: #111; }
 
-    /* Increased Hijri & Malayalam Date Font Size */
+    /* Hijri & Malayalam Date Font */
     .sub-info { display: flex; justify-content: space-between; width: 100%; font-size: 8.5px; padding: 0 2px; font-weight: bold; }
     .hijri-num { color: #2e7d32; }
     .mal-num { color: #d84315; }
@@ -72,11 +72,11 @@
     .event-badge { background: #d32f2f; color: #fff; font-size: 6px; padding: 1px 2px; border-radius: 2px; text-align: center; font-weight: bold; line-height: 1; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Bottom Event Scroll */
-    .bottom-marquee { background: #fff3e0; color: #d84315; font-size: 8px; font-weight: bold; padding: 2px 0; border-top: 1px solid #ffe0b2; overflow: hidden; white-space: nowrap; }
+    .bottom-marquee { background: #fff3e0; color: #d84315; font-size: 8.5px; font-weight: bold; padding: 3px 0; border-top: 1px solid #ffe0b2; overflow: hidden; white-space: nowrap; }
 
-    /* Visible Fixed Footer */
-    .company-footer { background: #000; color: #fff; text-align: center; padding: 4px; font-size: 8px; border-top: 2px solid #64b5f6; z-index: 100; position: relative; }
-    .company-footer h3 { font-size: 8.5px; color: #64b5f6; margin-bottom: 1px; }
+    /* Enlarged Fixed Footer */
+    .company-footer { background: #000; color: #fff; text-align: center; padding: 6px 4px; font-size: 9.5px; border-top: 2px solid #64b5f6; z-index: 100; position: relative; line-height: 1.3; }
+    .company-footer h3 { font-size: 10.5px; color: #64b5f6; margin-bottom: 2px; letter-spacing: 0.5px; }
 
     /* Modal / Pop-up Card Styling */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; }
@@ -109,7 +109,7 @@
   <div>
     <!-- Top Announcement Marquee -->
     <div class="top-marquee">
-      <marquee scrollamount="4">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്‌രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ് | നാട്ടു ദർസ് പുരുഷന്മാർ : എല്ലാ ബുധനാഴ്ചയും മഗ്‌രിബിന് ശേഷം | നാട്ടു ദർസ് സ്ത്രീകൾ : എല്ലാ വ്യാഴാഴ്‌ചയും 2.30 മുതൽ 3.30 വരെം 📢</marquee>
+      <marquee scrollamount="4">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്‌രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ് | നാട്ടു ദർസ് പുരുഷന്മാർ : എല്ലാ ബുധനാഴ്ചയും മഗ്‌രിബിന് ശേഷം | നാട്ടു ദർസ് സ്ത്രീകൾ : എല്ലാ വ്യാഴാഴ്‌ചയും 2.30 മുതൽ 3.30 വരെ 📢</marquee>
     </div>
     
     <div class="app-header">
@@ -150,7 +150,7 @@
       <button class="cal-btn" onclick="changeMonth(-1)">◀ Prev</button>
       <div class="cal-title">
         <div class="cal-month" id="monthYearText">August 2026</div>
-        <div class="cal-sub" id="hijriMonthText">صفر 1448 AH | കർക്കടകം - ചിങ്ങം 1201</div>
+        <div class="cal-sub" id="hijriMonthText">صفر- ربيع الاول 1448 AH | കർക്കടകം - ചിങ്ങം 1201</div>
       </div>
       <button class="cal-btn" onclick="changeMonth(1)">Next ▶</button>
     </div>
@@ -172,14 +172,14 @@
   <div>
     <!-- Bottom Announcement Marquee -->
     <div class="bottom-marquee">
-      <marquee scrollamount="3">🕌 സമസ്ത:  100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം 🕌</marquee>
+      <marquee scrollamount="3">🕌 സമസ്ത: 100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം 🕌</marquee>
     </div>
 
-    <!-- Fixed Footer -->
+    <!-- Fixed Footer (Enlarged Size) -->
     <div class="company-footer">
       <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
       <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
-      <p>Abdul salam ahsani vazhakkad</p>
+      <p style="font-weight: bold; color: #ffeb3b; margin-top: 1px;">Abdul salam ahsani vazhakkad</p>
     </div>
   </div>
 </div>
@@ -216,7 +216,7 @@
 </div>
 
 <script>
-  const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec";
+  const GOOGLE_SHEET_API = "[https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec](https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec)";
   let sheetEvents = {};
   let currentDate = new Date(2026, 7, 11);
   let deferredPrompt = null;
@@ -332,7 +332,7 @@
       // Fill separate date boards
       document.getElementById('badgeEngDate').innerText = `${day} ${monthName} ${year}`;
       document.getElementById('badgeHijriDate').innerText = `Hijri: ${hijriDay} Safar 1448 AH (صفر)`;
-      document.getElementById('badgeMalDate').innerText = ${malDay}, 1201 (കർക്കടകം ${malDay})`;
+      document.getElementById('badgeMalDate').innerText = `Malayalam: Karkidakam ${malDay}, 1201 (കർക്കടകം ${malDay})`;
       
       document.getElementById('modalHadith').innerHTML = `
           <b>${quote.ara}</b><br>${quote.mal}
@@ -354,7 +354,7 @@
     const eventBox = document.getElementById('modalEvent');
     const wasDisplayed = eventBox.style.display;
     
-    // Hide specific event box during status poster download to keep it clean
+    // Hide specific event box during status poster download
     eventBox.style.display = 'none';
 
     const card = document.getElementById('statusCardToCapture');
@@ -382,7 +382,7 @@
     if (deferredPrompt) {
       deferredPrompt.prompt();
     } else {
-      alert("Mobile App ഇൻസ്റ്റാൾ ചെയ്യാനുള്ള ഓപ്ഷൻ ലഭ്യമാണ്.മുകളിൽ വലതു ഭാഗത്ത് മൂന്ന് ഡോട്ട് എടുത്ത് അതിൽ 'Add to Home Screen' എന്നത് ക്ലിക്ക് ചെയ്‌താൽ CM Center ആപ്പ് ഐക്കണായി നിങ്ങളുടെ സ്ക്രീനിൽ ലഭിക്കും. അത് എപ്പോഴും ഓപ്പൺ ആക്കാൻ പറ്റും.");
+      alert("Mobile App ഇൻസ്റ്റാൾ ചെയ്യാനുള്ള ഓപ്ഷൻ ലഭ്യമാണ്. മുകളിൽ വലതു ഭാഗത്ത് മൂന്ന് ഡോട്ട് എടുത്ത് അതിൽ 'Add to Home Screen' എന്നത് ക്ലിക്ക് ചെയ്‌താൽ CM Center ആപ്പ് ഐക്കണായി നിങ്ങളുടെ സ്ക്രീനിൽ ലഭിക്കും.");
     }
   }
 
