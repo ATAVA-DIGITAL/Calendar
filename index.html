@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CM Center Calendar</title>
-  <script src="[https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js](https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js)"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
     
@@ -15,9 +15,10 @@
     /* Top Marquee */
     .top-marquee { background: #d32f2f; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 0; overflow: hidden; white-space: nowrap; }
     
-    .app-header { background: #0d47a1; color: #fff; text-align: center; padding: 3px; }
-    .app-title { font-size: 11px; font-weight: bold; }
-    .app-subtitle { font-size: 8px; opacity: 0.9; }
+    /* Enlarged Header */
+    .app-header { background: #0d47a1; color: #fff; text-align: center; padding: 6px 4px; }
+    .app-title { font-size: 14px; font-weight: bold; letter-spacing: 0.5px; }
+    .app-subtitle { font-size: 9.5px; opacity: 0.95; margin-top: 2px; }
 
     /* Compact Hadith Box */
     .hadith-box { background: #fff; margin: 2px 4px; padding: 2px 4px; border-radius: 4px; text-align: center; border: 1px solid #e0e0e0; }
@@ -59,7 +60,7 @@
     
     /* Day Cell */
     .day-cell { background: #fff; border: 1px solid #eee; padding: 1px; position: relative; cursor: pointer; border-radius: 2px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; min-width: 0; overflow: hidden; }
-    .day-cell.today { border: 1.5px solid #ff9800; background: #fff8e1; }
+    .day-cell.today { border: 2px solid #ff9800; background: #fff8e1; font-weight: bold; }
     
     /* Centered Large Main Date */
     .day-num { font-weight: bold; font-size: 15px; text-align: center; margin: auto 0; color: #111; }
@@ -69,12 +70,12 @@
     .hijri-num { color: #2e7d32; }
     .mal-num { color: #d84315; }
 
-    .event-badge { background: #d32f2f; color: #fff; font-size: 6px; padding: 1px 2px; border-radius: 2px; text-align: center; font-weight: bold; line-height: 1; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-badge { background: #d32f2f; color: #fff; font-size: 6.5px; padding: 1px 2px; border-radius: 2px; text-align: center; font-weight: bold; line-height: 1; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Bottom Event Scroll */
     .bottom-marquee { background: #fff3e0; color: #d84315; font-size: 8.5px; font-weight: bold; padding: 3px 0; border-top: 1px solid #ffe0b2; overflow: hidden; white-space: nowrap; }
 
-    /* Enlarged Fixed Footer */
+    /* Fixed Footer */
     .company-footer { background: #000; color: #fff; text-align: center; padding: 6px 4px; font-size: 9.5px; border-top: 2px solid #64b5f6; z-index: 100; position: relative; line-height: 1.3; }
     .company-footer h3 { font-size: 10.5px; color: #64b5f6; margin-bottom: 2px; letter-spacing: 0.5px; }
 
@@ -112,6 +113,7 @@
       <marquee scrollamount="4">📢 CM CENTER CHERUVATTOOR: എല്ലാ വ്യാഴാഴ്ചയും മഗ്‌രിബിന് ശേഷം സ്വലാത്ത് മജ്‌ലിസ് | നാട്ടു ദർസ് പുരുഷന്മാർ : എല്ലാ ബുധനാഴ്ചയും മഗ്‌രിബിന് ശേഷം | നാട്ടു ദർസ് സ്ത്രീകൾ : എല്ലാ വ്യാഴാഴ്‌ചയും 2.30 മുതൽ 3.30 വരെ 📢</marquee>
     </div>
     
+    <!-- Enlarged App Header -->
     <div class="app-header">
       <div class="app-title">CM CENTER CHERUVATTOOR, VAZHAKKAD</div>
       <div class="app-subtitle">തീയതിയിൽ തൊട്ടാൽ ഇന്നത്തെ വിവരങ്ങളും സ്റ്റാറ്റസും കാണാം</div>
@@ -150,7 +152,7 @@
       <button class="cal-btn" onclick="changeMonth(-1)">◀ Prev</button>
       <div class="cal-title">
         <div class="cal-month" id="monthYearText">August 2026</div>
-        <div class="cal-sub" id="hijriMonthText">صفر- ربيع الاول 1448 AH | കർക്കടകം - ചിങ്ങം 1201</div>
+        <div class="cal-sub" id="hijriMonthText">صفر 1448 AH | കർക്കടകം - ചിങ്ങം 1201</div>
       </div>
       <button class="cal-btn" onclick="changeMonth(1)">Next ▶</button>
     </div>
@@ -175,7 +177,7 @@
       <marquee scrollamount="3">🕌 സമസ്ത: 100 പ്രകാശ വർഷങ്ങൾ - സമസ്ത സെന്ററിനറി കോൺഫറൻസ് - 2027 ജനുവരി 28, 29, 30, 31 - വാദീ ഹറമൈൻ, മലപ്പുറം 🕌</marquee>
     </div>
 
-    <!-- Fixed Footer (Enlarged Size) -->
+    <!-- Fixed Footer -->
     <div class="company-footer">
       <h3>Powered by : ATAVA DIGITAL SERVICES & TRADING</h3>
       <p>Data Entry, Typing Works, Poster & Badge Design And Digital Services</p>
@@ -216,9 +218,13 @@
 </div>
 
 <script>
-  const GOOGLE_SHEET_API = "[https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec](https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec)";
+  const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec";
   let sheetEvents = {};
-  let currentDate = new Date(2026, 7, 11);
+  
+  // Dynamic Current Date setup
+  let currentDate = new Date(); 
+  let realToday = new Date();
+
   let deferredPrompt = null;
   let currentSelectedData = {};
 
@@ -249,12 +255,15 @@
               let cleanKey = key.trim();
               sheetEvents[cleanKey] = rawData[key];
               
-              let parts = cleanKey.split('-');
+              let parts = cleanKey.split(/[-/]/);
               if(parts.length === 3) {
-                  let y = parts[0];
+                  let y = parseInt(parts[0]);
                   let m = parseInt(parts[1]);
-                  let d = parts[2];
-                  sheetEvents[`${y}-${m + 1}-${d}`] = rawData[key];
+                  let d = parseInt(parts[2]);
+                  
+                  // Store both 0-indexed and 1-indexed month keys to avoid mismatch
+                  sheetEvents[`${y}-${m - 1}-${d}`] = rawData[key];
+                  sheetEvents[`${y}-${m}-${d}`] = rawData[key];
               }
           }
           renderCalendar();
@@ -287,12 +296,17 @@
           const dayCell = document.createElement('div');
           dayCell.className = 'day-cell';
 
-          if (day === 11 && month === 7 && year === 2026) {
+          // Dynamic Today Highlight Check
+          if (day === realToday.getDate() && month === realToday.getMonth() && year === realToday.getFullYear()) {
               dayCell.classList.add('today');
           }
 
-          const eventKey = `${year}-${month}-${day}`;
-          const eventData = sheetEvents[eventKey];
+          // Robust event retrieval across various date formats
+          const key1 = `${year}-${month}-${day}`;
+          const key2 = `${year}-${month + 1}-${day}`;
+          const key3 = `${year}-${String(month + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+          
+          const eventData = sheetEvents[key1] || sheetEvents[key2] || sheetEvents[key3];
 
           let badgeHTML = '';
           if (eventData) {
