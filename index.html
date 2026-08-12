@@ -192,7 +192,7 @@
     <div class="modal-card" id="statusCardToCapture">
       <div class="modal-header-tag">✨ CM CENTER CHERUVATTOOR ✨</div>
       
-      <!-- Date Badges (Separate Boards) -->
+      <!-- Date Badges -->
       <div class="status-date-container">
         <div class="date-badge badge-eng" id="badgeEngDate"></div>
         <div class="date-badge badge-hijri" id="badgeHijriDate"></div>
@@ -201,7 +201,7 @@
 
       <div class="modal-hadith" id="modalHadith"></div>
       
-      <!-- Event Area (Dynamic) -->
+      <!-- Event Area -->
       <div class="modal-event" id="modalEvent" style="display:none;"></div>
       
       <div class="modal-company">
@@ -221,7 +221,6 @@
   const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbx_p-nrXMO_NPQ1v7uVcO6akyfcMraRidFlP2uWnzXPFibu-iEnlGh2D9AncZEDmIuQ4g/exec";
   let sheetEvents = {};
   
-  // Dynamic Current Date setup
   let currentDate = new Date(); 
   let realToday = new Date();
 
@@ -251,19 +250,39 @@
           const rawData = await response.json();
           
           sheetEvents = {};
+          
           for (let key in rawData) {
-              let cleanKey = key.trim();
-              sheetEvents[cleanKey] = rawData[key];
+              let val = rawData[key];
+              if (!val) continue;
+
+              let str = key.trim();
               
-              let parts = cleanKey.split(/[-/]/);
-              if(parts.length === 3) {
-                  let y = parseInt(parts[0]);
-                  let m = parseInt(parts[1]);
-                  let d = parseInt(parts[2]);
-                  
-                  // Store both 0-indexed and 1-indexed month keys to avoid mismatch
-                  sheetEvents[`${y}-${m - 1}-${d}`] = rawData[key];
-                  sheetEvents[`${y}-${m}-${d}`] = rawData[key];
+              // Store direct raw key
+              sheetEvents[str] = val;
+
+              // Parse dates robustly whether DD-MM-YYYY or YYYY-MM-DD
+              let parts = str.split(/[-/.]/);
+              if (parts.length === 3) {
+                  let p1 = parseInt(parts[0], 10);
+                  let p2 = parseInt(parts[1], 10);
+                  let p3 = parseInt(parts[2], 10);
+
+                  let y, m, d;
+                  if (p1 > 1000) {
+                      // YYYY-MM-DD format
+                      y = p1; m = p2; d = p3;
+                  } else if (p3 > 1000) {
+                      // DD-MM-YYYY format
+                      d = p1; m = p2; y = p3;
+                  }
+
+                  if (y && m && d) {
+                      // Store in multiple key patterns so it never misses
+                      sheetEvents[`${y}-${m}-${d}`] = val;
+                      sheetEvents[`${y}-${m-1}-${d}`] = val;
+                      sheetEvents[`${d}-${m}-${y}`] = val;
+                      sheetEvents[`${d}/${m}/${y}`] = val;
+                  }
               }
           }
           renderCalendar();
@@ -296,17 +315,23 @@
           const dayCell = document.createElement('div');
           dayCell.className = 'day-cell';
 
-          // Dynamic Today Highlight Check
+          // Highlight today
           if (day === realToday.getDate() && month === realToday.getMonth() && year === realToday.getFullYear()) {
               dayCell.classList.add('today');
           }
 
-          // Robust event retrieval across various date formats
-          const key1 = `${year}-${month}-${day}`;
-          const key2 = `${year}-${month + 1}-${day}`;
-          const key3 = `${year}-${String(month + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-          
-          const eventData = sheetEvents[key1] || sheetEvents[key2] || sheetEvents[key3];
+          // Robust check across all possible key variations
+          const m1 = month + 1;
+          const padM = String(m1).padStart(2, '0');
+          const padD = String(day).padStart(2, '0');
+
+          const eventData = sheetEvents[`${year}-${month}-${day}`] ||
+                            sheetEvents[`${year}-${m1}-${day}`] ||
+                            sheetEvents[`${year}-${padM}-${padD}`] ||
+                            sheetEvents[`${day}-${m1}-${year}`] ||
+                            sheetEvents[`${day}/${m1}/${year}`] ||
+                            sheetEvents[`${padD}-${padM}-${year}`] ||
+                            sheetEvents[`${padD}/${padM}/${year}`];
 
           let badgeHTML = '';
           if (eventData) {
@@ -343,7 +368,6 @@
       
       currentSelectedData = { day, monthName, year, hijriDay, malDay, eventText, quote };
 
-      // Fill separate date boards
       document.getElementById('badgeEngDate').innerText = `${day} ${monthName} ${year}`;
       document.getElementById('badgeHijriDate').innerText = `Hijri: ${hijriDay} Safar 1448 AH (صفر)`;
       document.getElementById('badgeMalDate').innerText = `Malayalam: Karkidakam ${malDay}, 1201 (കർക്കടകം ${malDay})`;
@@ -368,7 +392,6 @@
     const eventBox = document.getElementById('modalEvent');
     const wasDisplayed = eventBox.style.display;
     
-    // Hide specific event box during status poster download
     eventBox.style.display = 'none';
 
     const card = document.getElementById('statusCardToCapture');
@@ -378,7 +401,6 @@
       link.href = canvas.toDataURL();
       link.click();
 
-      // Restore view
       eventBox.style.display = wasDisplayed;
     });
   }
