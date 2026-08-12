@@ -152,7 +152,7 @@
       <button class="cal-btn" onclick="changeMonth(-1)">◀ Prev</button>
       <div class="cal-title">
         <div class="cal-month" id="monthYearText">August 2026</div>
-        <div class="cal-sub" id="hijriMonthText">صفر 1448 AH | കർക്കടകം - ചിങ്ങം 1201</div>
+        <div class="cal-sub" id="hijriMonthText">صفر - ربيع الاول 1448 AH | കർക്കടകം - ചിങ്ങം 1201</div>
       </div>
       <button class="cal-btn" onclick="changeMonth(1)">Next ▶</button>
     </div>
@@ -370,7 +370,7 @@
 
       document.getElementById('badgeEngDate').innerText = `${day} ${monthName} ${year}`;
       document.getElementById('badgeHijriDate').innerText = `Hijri: ${hijriDay} Safar 1448 AH (صفر)`;
-      document.getElementById('badgeMalDate').innerText = `Malayalam: Karkidakam ${malDay}, 1201 (കർക്കടകം ${malDay})`;
+      document.getElementById('badgeMalDate').innerText = ` ${malDay}, 1201 (കർക്കടകം ${malDay})`;
       
       document.getElementById('modalHadith').innerHTML = `
           <b>${quote.ara}</b><br>${quote.mal}
